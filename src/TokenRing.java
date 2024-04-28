@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 
@@ -9,6 +10,7 @@ public class TokenRing {
         LinkedList<Token.Endpoint> candidates = new LinkedList<>();
         if (first) {
             candidates.add(new Token.Endpoint(ip, port));
+            //System.out.println("Token erstellt");
         }
         while (true) {
             try {
@@ -57,6 +59,15 @@ public class TokenRing {
             else if (args.length == 2) {
                 Token rc = new Token().append(ip,port);
                 rc.send(socket,args[0],Integer.parseInt(args[1]));
+//                try {
+                //Versuch ob es bei einer falschen IP eine IOException gibt
+//                    rc.send(socket,"192.#.#.#",Integer.parseInt(args[1]));
+//                }
+//                catch (IOException e) {
+//                    System.out.println("Error: " + e.getMessage());
+//                    System.out.println(Arrays.toString(e.getStackTrace()));
+//                }
+                //Da IOException geworfen wurde, war die sonst verwendete IP adresse nicht falsch, da dort keine Exception geworfen wurde
                 loop(socket,ip,port,false);
             }
             else {
@@ -71,7 +82,7 @@ public class TokenRing {
         }
         catch (IOException e) {
             System.out.println("IO error: " + e.getMessage());
-            System.out.println(e.getStackTrace());
+            System.out.println(Arrays.toString(e.getStackTrace()));
         }
     }
 }
