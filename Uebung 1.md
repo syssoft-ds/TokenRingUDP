@@ -1,4 +1,4 @@
-Rechnernetzwerke Übung 1:
+Rechnernetzwerke Übung 1 Sascha Schäfer 1545577:
 
 Aufgabe 4; Bericht:
 
