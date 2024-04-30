@@ -1,0 +1,28 @@
+1)
+Habe das Repository mit git clone https://github.com/syssoft-ds/TokenRingUDP auf meinem Rechner geklont und dann mithilfe
+der gitbash und des eingebauten Terminal in IntelliJ gestestet. Das Programm lief wie erwartet, hier ein Ausschnitt aus
+dem IntelliJ Terminal: 
+Token: seq=0, #members=1 (192.*.*.*, 62046) (192.*.*.*, 50509)	
+Token: seq=1, #members=2 (192.*.*.*, 62046) (192.*.*.*, 50509)
+Token: seq=3, #members=2 (192.*.*.*, 62046) (192.*.*.*, 50509)
+Token: seq=5, #members=2 (192.*.*.*, 62046) (192.*.*.*, 50509)
+
+
+2)
+Programm will nicht zwischen 2 Rechnern kommunizieren, bzw. UML Packete verdenden und annehmen. Es erkennt die IP
+Adresse und den Port, es wurde getestet ob es an der Firewall liegen könnte ohne Erfolg. Der Grund warum 
+nichts gesendet/angenommen werden kann ist mir noch unbekannt.
+
+3)
+Wireshark wurde heruntergeladen, installiert und benutzt um die UML Packete die lokal versendet wurden 
+zu tracken. Hier ein Ausschnitt der traffic capture:
+(meine IP adresse ist zennsiert)
+92	55.243684	192.*.*.*	192.*.*.*	UDP	131	52646 → 60535 Len=99
+117	74.319677	192.*.*.*	192.*.*.*	UDP	131	60535 → 52646 Len=99
+118	75.324790	192.*.*.*	192.*.*.*	UDP	131	52646 → 60535 Len=99
+119	76.328478	192.*.*.*	192.*.*.*	UDP	131	60535 → 52646 Len=99
+120	77.333819	192.*.*.*	192.*.*.*	UDP	131	52646 → 60535 Len=99
+121	78.339144	192.*.*.*	192.*.*.*	UDP	131	60535 → 52646 Len=99
+123	80.350592	192.*.*.*	192.*.*.*	UDP	131	60535 → 52646 Len=99
+122	79.344036	192.*.*.*	192.*.*.*	UDP	131	52646 → 60535 Len=99
+124	81.354000	192.*.*.*	192.*.*.*	UDP	131	52646 → 60535 Len=99
