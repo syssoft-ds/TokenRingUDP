@@ -1,0 +1,65 @@
+Aufgabe 2:
+Ich habe zunächst die Klasse TokenRing laufen lassen. Der Endpoint ist laut der Ausgabe unter der IP-Adresse "136.199.218.222"
+und unter dem Port 51152 erreichbar. Dann habe ich die fatjar-Datei über die Kommandozeile ausgeführt unter Eingabe
+der oben genannten IP-Adresse und dem Port. Sobald ich die farjar-Datei ausgeführt habe, find die Konsole in Intellij an, Ausgaben
+im Sekundentakt zu produzieren.
+
+Intellij:
+
+Token: seq=0, #members=1 (136.199.218.222, 56552)
+Token: seq=1, #members=2 (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=3, #members=2 (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=5, #members=2 (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=7, #members=2 (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=9, #members=2 (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=11, #members=2 (136.199.218.222, 56552) (136.199.218.222, 56550)
+...
+
+
+Intellij:
+
+Token: seq=2, #members=2 (136.199.218.222, 56550) (136.199.218.222, 56552)
+Token: seq=4, #members=2 (136.199.218.222, 56550) (136.199.218.222, 56552)
+Token: seq=6, #members=2 (136.199.218.222, 56550) (136.199.218.222, 56552)
+Token: seq=8, #members=2 (136.199.218.222, 56550) (136.199.218.222, 56552)
+Token: seq=10, #members=2 (136.199.218.222, 56550) (136.199.218.222, 56552)
+Token: seq=12, #members=2 (136.199.218.222, 56550) (136.199.218.222, 56552)
+...
+
+Habe ich eine weitere Kommandozeile geöffnet und die selben Schritte durchgeführt, ändert sich die Ausgabe in Intellij und in der
+Kommandozeile. Ich habe testweiese zwei weitere Kommandozeilen geöffnet. So sieht die Ausgabe nun aus:
+
+Intellij:
+
+...
+Token: seq=64, #members=4 (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=68, #members=4 (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=72, #members=4 (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=76, #members=4 (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=80, #members=4 (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552) (136.199.218.222, 56550)
+Token: seq=84, #members=4 (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552) (136.199.218.222, 56550)
+...
+
+
+
+
+Kommandozeile:
+
+...
+Token: seq=67, #members=4 (136.199.218.222, 56550) (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552)
+Token: seq=71, #members=4 (136.199.218.222, 56550) (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552)
+Token: seq=75, #members=4 (136.199.218.222, 56550) (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552)
+Token: seq=79, #members=4 (136.199.218.222, 56550) (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552)
+Token: seq=83, #members=4 (136.199.218.222, 56550) (136.199.218.222, 64561) (136.199.218.222, 64560) (136.199.218.222, 56552)
+...
+
+
+Da alles auf meinem Rechner läuft, sind die IP-Adressen aller Mitglieder identisch.
+
+
+
+
+Aufgabe 3:
+Wireshark wurde installiert. Es wurde jedoch auch gefordert, "npcap" zu installieren. Die Wahl der Verbindung konnten
+die Pakete erfolgreich angezeigt werden. Jedoch konnte ich keine UDP-Pakete finden. Unter "Capture" -> "Capture filters"
+habe ich ein wenig experimentiert, jedoch ohne Erfolg.
