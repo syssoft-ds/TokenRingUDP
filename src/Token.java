@@ -55,8 +55,9 @@ public class Token {
         String rc_json = toJSON();
         byte[] rc_json_bytes = rc_json.getBytes(StandardCharsets.UTF_8);
         InetAddress address = InetAddress.getByName(ip_address);
+        //System.out.println(address.isReachable(1000));
         DatagramPacket packet = new DatagramPacket(rc_json_bytes, rc_json_bytes.length, address, port);
-        // System.out.printf("Sending %s to %s:%d\n", rc_json, ip_address, port);
+        //System.out.printf("Sending %s to %s:%d\n", rc_json, ip_address, port);
         s.send(packet);
     }
 
