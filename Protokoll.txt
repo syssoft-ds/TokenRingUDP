@@ -1,0 +1,43 @@
+-----------Rechnernetze Übungsblatt 1-----------
+------------Roman Schander - 1598510------------
+
+Aufgezeichnet wurden 23 Pakete innerhalb 24s, welche im Tokenring zwischen zwei Rechnern im selben Netzwerk ausgetauscht
+wurden. Die Netzwerkteilhaber versenden ein Token welcher Daten im JSON Format bezüglich der aktuellen Sequenz und der
+Ringteilnehmer (Ip-Adresse, Port) enthält. Pakete wurden mit Wireshark aufgezeichnet unter Verwendung folgender
+Filterregel (Caputre Filter):
+"host 192.168.178.101 and udp"
+
+Vollständiger Log:
+No.	Time	Source	Destination	Protocol	Length	Info
+1	0.000000	192.168.178.45	192.168.178.101	UDP	102	59440  >  47806 Len=60
+2	2.559966	192.168.178.101	192.168.178.45	UDP	140	47806  >  59440 Len=98
+3	3.615249	192.168.178.45	192.168.178.101	UDP	140	59440  >  47806 Len=98
+4	4.710008	192.168.178.101	192.168.178.45	UDP	140	47806  >  59440 Len=98
+5	5.713418	192.168.178.45	192.168.178.101	UDP	140	59440  >  47806 Len=98
+6	6.758091	192.168.178.101	192.168.178.45	UDP	140	47806  >  59440 Len=98
+7	7.761093	192.168.178.45	192.168.178.101	UDP	140	59440  >  47806 Len=98
+8	8.806279	192.168.178.101	192.168.178.45	UDP	140	47806  >  59440 Len=98
+9	9.815126	192.168.178.45	192.168.178.101	UDP	140	59440  >  47806 Len=98
+10	10.879455	192.168.178.101	192.168.178.45	UDP	141	47806  >  59440 Len=99
+11	11.886211	192.168.178.45	192.168.178.101	UDP	141	59440  >  47806 Len=99
+12	13.004822	192.168.178.101	192.168.178.45	UDP	141	47806  >  59440 Len=99
+13	14.012902	192.168.178.45	192.168.178.101	UDP	141	59440  >  47806 Len=99
+14	15.024787	192.168.178.101	192.168.178.45	UDP	141	47806  >  59440 Len=99
+15	16.028204	192.168.178.45	192.168.178.101	UDP	141	59440  >  47806 Len=99
+16	17.101210	192.168.178.101	192.168.178.45	UDP	141	47806  >  59440 Len=99
+17	18.104529	192.168.178.45	192.168.178.101	UDP	141	59440  >  47806 Len=99
+18	19.120868	192.168.178.101	192.168.178.45	UDP	141	47806  >  59440 Len=99
+19	20.127350	192.168.178.45	192.168.178.101	UDP	141	59440  >  47806 Len=99
+20	21.139200	192.168.178.101	192.168.178.45	UDP	141	47806  >  59440 Len=99
+21	22.145961	192.168.178.45	192.168.178.101	UDP	141	59440  >  47806 Len=99
+22	23.245319	192.168.178.101	192.168.178.45	UDP	141	47806  >  59440 Len=99
+23	24.249487	192.168.178.45	192.168.178.101	UDP	141	59440  >  47806 Len=99
+
+
+Besonderheiten:
+Packet 1: Datenlänge = 60byte
+Ursache: "ring" Parameter speichert aktuell nur die Daten des einzigen Ringteilnehmers
+{"sequence":0,"ring":[{"ip":"192.168.178.45","port":59440}]}
+
+Nach erfolgreicher Verbindung des zweiten Teilnehmers mit dem Tokenring sind beide sichtbar in den versendeten Daten:
+{"sequence":2,"ring":[{"ip":"192.168.178.101","port":47806},{"ip":"192.168.178.45","port":59440}]}
