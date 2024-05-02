@@ -1,0 +1,51 @@
+Maxim Smirnov 1537234
+AUFGABE 2:
+
+Zunächst habe ich den Tokenring lokal auf meinem PC ausgeführt und getestet:
+
+Token: seq=0, #members=1 (192.168.2.150, 60648)
+Token: seq=1, #members=2 (192.168.2.150, 60648) (192.168.2.150, 61932)
+Token: seq=3, #members=2 (192.168.2.150, 60648) (192.168.2.150, 61932)
+Token: seq=5, #members=2 (192.168.2.150, 60648) (192.168.2.150, 61932)
+Token: seq=7, #members=2 (192.168.2.150, 60648) (192.168.2.150, 61932)
+Token: seq=9, #members=2 (192.168.2.150, 60648) (192.168.2.150, 61932)
+
+Dann hab ich versucht, das Programm in eine Android-App zu integrieren und mit meinem PC zu kommunizieren.:
+
+UDP endpoint is (192.168.2.150, 55085)
+Received {"ring":[{"ip":"192.168.2.41","port":34031}],"sequence":0} from 192.168.2.41:33129
+Token: seq=0, #members=1 (192.168.2.41, 34031)
+Sending {"sequence":1,"ring":[{"ip":"192.168.2.41","port":34031},{"ip":"192.168.2.150","port":55085}]} to 192.168.2.150:55085
+Received {"sequence":1,"ring":[{"ip":"192.168.2.41","port":34031},{"ip":"192.168.2.150","port":55085}]} from 192.168.2.150:55085
+Token: seq=1, #members=2 (192.168.2.41, 34031) (192.168.2.150, 55085)
+Sending {"sequence":2,"ring":[{"ip":"192.168.2.150","port":55085},{"ip":"192.168.2.41","port":34031}]} to 192.168.2.41:34031
+
+Jedoch hat es mit den Ports auf dem Handy nicht richtig funktioniert. Ich schaffte es nur, ein UDP-Paket vom Handy
+auf den PC zu senden, jedoch nicht umgekehrt. 192.168.2.41 ist die IP meines Handys und 192.168.2.150 die meines PCs.
+
+Hat sich rausgestellt, dass man den Port auf Android explizit angeben muss, da sich der Port beim senden eines Pakets
+ändert und somit nicht mehr am richtigen Port empfängt. Ich habe den Port auf 4444 hardgecoded und es hat funktioniert.
+
+UDP endpoint is (192.168.2.150, 58602)
+Token: seq=0, #members=1 (192.168.2.41, 4444)
+Token: seq=1, #members=2 (192.168.2.41, 4444) (192.168.2.150, 58602)
+Token: seq=3, #members=2 (192.168.2.41, 4444) (192.168.2.150, 58602)
+Token: seq=5, #members=2 (192.168.2.41, 4444) (192.168.2.150, 58602)
+Token: seq=7, #members=2 (192.168.2.41, 4444) (192.168.2.150, 58602)
+
+AUFGABE 3:
+
+Ich habe als Displayfilter "udp.port==4444" verwendet, da mein Handy auf diesem Port sendet und empfängt.
+Damit konnte ich die Tokens auslesen, siehe unten:
+
+{"ring":[{"ip":"192.168.2.41","port":4444},{"ip":"192.168.2.150","port":61663}],"sequence":113}
+
+0000   d4 e9 8a 41 f8 b1 de ef 0d 48 c3 b9 08 00 45 00   ...A.....H....E.
+0010   00 7b df 0a 40 00 40 11 d5 57 c0 a8 02 29 c0 a8   .{..@.@..W...)..
+0020   02 96 11 5c f0 df 00 67 91 3b 7b 22 72 69 6e 67   ...\...g.;{"ring
+0030   22 3a 5b 7b 22 69 70 22 3a 22 31 39 32 2e 31 36   ":[{"ip":"192.16
+0040   38 2e 32 2e 34 31 22 2c 22 70 6f 72 74 22 3a 34   8.2.41","port":4
+0050   34 34 34 7d 2c 7b 22 69 70 22 3a 22 31 39 32 2e   444},{"ip":"192.
+0060   31 36 38 2e 32 2e 31 35 30 22 2c 22 70 6f 72 74   168.2.150","port
+0070   22 3a 36 31 36 36 33 7d 5d 2c 22 73 65 71 75 65   ":61663}],"seque
+0080   6e 63 65 22 3a 31 31 33 7d                        nce":113}
