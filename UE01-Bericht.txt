@@ -1,0 +1,23 @@
+Aufgabe 1:
+Das klonen des Repositories hat einwandfrei funktioniert, man musste anschließend nur noch min Java 21 installiren/auswählen und die Anwendung hat Problemlos funktioniert.
+Das ausführen hat sowohl über die Fatjar als auch direkt über die IDE funktioniert.
+Man konnte nach einfach beliebig viele Instanzen erstellen die miteinander kommuniziert haben.
+
+Aufgabe 2:
+Das erstellen eines Rings mit Kommilitonen hat in der Übung mit einigen Komplikationen funktioniert.
+Wir haben es nur zum laufen bekommen in dem wir an beiden Rechnern im Uni-Netzwerk die Firewall ausgeschaltet haben.
+Zuerest haben wir versucht das ganze über Ausnahmeregeln in der Firewall (Portfreigabe) zu regeln, allerdings hat das nicht funktioniert.
+Wir mussten dafür ja feste Ports setzen und wir vermute das die Router der Uni das nicht einfach so zulassen.
+Wenn man jetzt allerdings variable Ports hatte konnte man keine Ausnahmeregeln setzten also hat es nur über das ausschalten der Firewall funktioniert.
+Logs hab ich leider gerade nicht zu verfügung.
+
+Aufgabe 3:
+Lokal auf einem Rechner:
+In Wireshark konnte man beobachten, wie die Nachrichten über das Netzwerk geschickt wurden.
+Dabei wurden sie immer von der gleichen IP-Adresse gesendet, da sie ja nur lokal auf einem Rechner lief, aber immer mit einem anderen Port
+Die Länge der Packete bleibt auch solange gleich wie man die gleiche Teilnehmeranzahl, sowie Tokenanzahl im Ring hat.
+
+Versuch mit Kommilitonen habe ich leider nicht aufgezeichnet.
+
+Protokoll von Wireshark und die Ausgabe der Anwendung:
+ist in einem extra Dokument zu finden -->
