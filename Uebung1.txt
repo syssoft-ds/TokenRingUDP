@@ -1,0 +1,61 @@
+
+Aufgabe 1:
+
+Das Repository TokenRingUDP wurde erfolgreich geklont und importiert. 
+Es traten beim Übersetzen und Starten des Codes Schwierigkeiten auf, weshalb (aus zeitlichen Gründen) vorerst auf das bereits vorhandene Fatjar im Wurzelverzeichnis zurückgegriffen wurde. 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Aufgabe 2:
+
+Es wird ein eines Token Ring Netzwerks zwischen zwei Rechnern, die sich im selben WLAN befinden, aufgebaut.
+
+Schritt 1: Zunächst wurde das Programm TokenRingUDP auf Rechner1 gestartet. In Folge gab Rechner1 seine IP-Adresse und einen Port aus:
+           PS C:\...\TokenRingUDP> java -jar TokenRingUDP.jar
+           UDP endpoint is (---.---.---.62, 64235)
+
+Schritt 2: Anschließend wurde das TokenRingUDP-Programm auf Rechner2 mit der IP-Adresse und dem Port von Rechner1 gestartet. In Folge gab Rechner2 seine IP-Adresse, Port aus und sendete das Token:
+           PS C:\...\TokenRingUDP> java -jar TokenRingUDP.jar ---.---.---.62 64235
+           UDP endpoint is (---.---.---.180, 41798)
+           Token: seq=2, #members=2 (---.---.---.62, 64235) (---.---.---.180, 41798)
+
+Schritt 3: Das System wurde mehr als 5 Minuten lang betrieben, und lief insgesamt bis zur Sequenznummer 292:
+           Token: seq=2, #members=2 (---.---.---.62, 64235) (---.---.---.180, 41798)
+           Token: seq=4, #members=2 (---.---.---.62, 64235) (---.---.---.180, 41798)
+                                           ...
+           Token: seq=292, #members=2 (---.---.---.62, 64235) (---.---.---.180, 41798)
+
+Es war nicht möglich, weitere Mitglieder dem Token Ring hinzuzufügen. 
+Es ist anzumerken, dass das Verhalten möglicherweise anders wäre, wenn sich die Rechner nicht im selben WLAN befänden. Dies wurde jedoch nicht getestet.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Aufgabe 3:
+
+Um einzelne Nachrichten eines Token-Rings zu erfassen, der lokal nur auf einem Rechner läuft, wurde die aktuelle Version des Paket-Sniffers Wireshark installiert.
+
+Möglichkeit 1: Capture-Filter
+def: bestimmen, welche Pakete aufgezeichnet werden sollen.
+Schritt 1: Zunächst wurde ein Token-Ring mit 4 Mitgliedern gestartet. Die Ausgabe des Token-Rings lautete wie folgt:
+           UDP endpoint is (---.---.---.180, 51107)
+           Token: seq=75, #members=4 (---.---.---.180, 54569) (---.---.---.180, 53031) (---.---.---.180, 60729) (---.---.---.180, 51107)
+           Token: seq=79, #members=4 (---.---.---.180, 54569) (---.---.---.180, 53031) (---.---.---.180, 60729) (---.---.---.180, 51107)
+           Token: seq=83, #members=4 (---.---.---.180, 54569) (---.---.---.180, 53031) (---.---.---.180, 60729) (---.---.---.180, 51107)
+                                                                         ...
+           Token: seq=191, #members=4 (---.---.---.180, 54569) (---.---.---.180, 53031) (---.---.---.180, 60729) (---.---.---.180, 51107)
+
+Schritt 2: Ein Capture-Filter wurde eingegeben (siehe Bild CFa). Die aufgezeichneten Pakete wurden entsprechend des Filters erfasst (siehe Bild CFb).
+
+Möglichkeit 2: Display-Filter:
+def: bestimmen, welche der aufgezeichneten Pakete angezeigt werden sollen.
+Schritt 1: Ein Token-Ring mit 8 Mitgliedern wurde gestartet. Die Ausgabe des Token-Rings lautete wie folgt:
+           UDP endpoint is (---.---.---.180, 61169)
+           Token: seq=316, #members=8 (---.---.---.180, 50321) (---.---.---.180, 64806) (---.---.---.180, 63640) (---.---.---.180, 59545) (---.---.---.180, 64685) (---.---.---.180, 64441) (---.---.---.180, 54207) (---.---.---.180, 61169)
+           Token: seq=324, #members=8 (---.---.---.180, 50321) (---.---.---.180, 64806) (---.---.---.180, 63640) (---.---.---.180, 59545) (---.---.---.180, 64685) (---.---.---.180, 64441) (---.---.---.180, 54207) (---.---.---.180, 61169)
+                                                                                                                            ...
+           Token: seq=556, #members=8 (---.---.---.180, 50321) (---.---.---.180, 64806) (---.---.---.180, 63640) (---.---.---.180, 59545) (---.---.---.180, 64685) (---.---.---.180, 64441) (---.---.---.180, 54207) (---.---.---.180, 61169)
+
+Schritt 2: Ein Display-Filter wurde eingegeben. Die aufgezeichneten Pakete wurden entsprechend des Filters angezeigt (siehe Bild DF).
+
+
+
