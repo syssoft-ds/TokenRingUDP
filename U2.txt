@@ -41,7 +41,8 @@ Die Aufgabe 4 ist nicht exakt so gelöst wie die Aufgabenstellung es gefordert h
 dazu habe ich mehrere unterschiedliche Methoden verwendet. Bspw. hat mir die Herangehensweise mit `Socket` fälcherlicherweise false zurückgegeben, obwohl der Port
 offen war. Ebenso hat mir `DatagramSocket` fälchlicherweise `true` zurückgegeben, wenn der Port geschlossen war.
 In WireShark habe ich die Protokolle meiner verschiedenen Herangehensweisen nachverfolgt und gesehen, dass mein Programm nicht mehr gearbeitet hat, weil 
-"Destination unreachable (Port unreachable)" nicht abgefangen wurde. In der Konsole wurde mir bei keinem Versuch eine Ausgabe gegeben, die Knoten welche noch aktiv
-waren haben nichts mehr empfangen und nichts mehr gesendet, diese haben einfach nur gewartet.
+"Destination unreachable (Port unreachable)" nicht abgefangen wurde. In der Konsole wurde mir bei keinem Versuch eine Ausgabe gegeben oder Exception geworfen,
+was die Fehlersuche erschwert hat.
+Habe ich einen Knoten aus dem UDP Ring deaktiviert, so haben die noch aktiven nur gewartet, nichts mehr gesendet und nichts mehr empfangen.
 Die momentane Implementierung arbeitet wie folgt: Es lassen sich 2 Knoten starten und der dritte Knoten ersetzt den 1. Knoten. Dies soll simulieren, dass ein
-Knoten "unreachable" ist, aber der UDP-Ring weiter bestehen bleibt.
+Knoten "unreachable" ist, aber der UDP-Ring weiter bestehen bleibt und der Ring wieder geschlossen wird. 
