@@ -1,0 +1,44 @@
+1.
+Als erstes hab ich die Videos von dem verlinkten Kanal durchgearbeitet und meine Settings angepasst
+Für den ersten Tipp hab ich im Filter nach "tcp contains "password" gefiltert, um wie im Tipp angemerkt das Passwort zu finden.
+Als Resultat habe ich zwei Ergebnisse angezeigt bekommen, in denen man bei beiden das Passwort "dzh20szq" ganz unten finden konnte.
+
+Der nächste Tipp war "One HTTP error is different".
+Hier hab ich erstmal nach "http" gefiltert, um alle HTTP-Protokolle zu erhalten.
+Da es nun überschaubar war, hab ich in den Infos geguckt und dort den nächsten Code "ra6rgv7h" gefunden.
+
+Der letzte Tipp lautet "Your next clue is: Hiddeninping".Also muss etwas in einem Ping versteckt sein
+Deshalb hab ich nach "icmp" Protokollen gefiltert. Dort konnte ich dann im Hexadezimalcode den Code "nd7hark3" finden.
+
+Der Lösungscode lautet: Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
+
+
+2.
+Bei der Ausführung hab ich folgende Ausgaben bekommen:
+C:\Users\timur>tracert www.anu.edu.au
+
+Routenverfolgung zu terra-web.anu.edu.au [130.56.67.33]
+über maximal 30 Hops:
+
+  1     3 ms     2 ms     1 ms  speedport.ip [192.168.2.1]
+  2    19 ms    21 ms    22 ms  p3e9bf63c.dip0.t-ipconnect.de [62.155.246.60]
+  3    22 ms    21 ms    22 ms  f-eh1-i.F.DE.NET.DTAG.DE [217.0.201.26]
+  4     *        *        *     Zeitüberschreitung der Anforderung.
+  5     *        *        *     Zeitüberschreitung der Anforderung.
+  6    37 ms    37 ms    35 ms  AARNET-PTY.ear4.London1.Level3.net [217.163.113.74]
+  7   516 ms   610 ms   439 ms  et-0-3-0.pe1.actn.act.aarnet.net.au [113.197.15.11]
+
+Man sieht hier, dass zuerst das eigene lokale Netzwerk antworte, was in meinem Fall speedport.ip ist von der Telekom.
+Von da aus leitet der Router das Paket  an den nächsten Router, der zum Internetdienstanbieters Telekom weiter.
+Man sieht auch ab da, dass der Vorgang ab da länger braucht.
+
+Es ist außerdem zu sehen, dass es zwischendrin zu Zeitüberschreitung der Anforderung kommen kann.
+Dies geschieht, wenn ein Router nicht in der Lage ist, das Datenpaket innerhalb einer bestimmten Zeit zu erreichen oder zu beantworten.
+Das kann daran liegen, dass der Router überlastet ist, das Netzwerk überlastet ist oder auch an der Konfiguration des Routers, der keine Antwortpakete sendet
+
+Als nächstes wird der Router von https://www.aarnet.edu.au/ angesprochen. AARNet verbindet verbindet das australische Netzwerk mit dem Rest der Welt.
+Durch diesen kann man dann zur Australian National University gelangen.
+
+
+3.
+Die Option mit TCP ist deutlich schneller. Grund dafür ist, dass der TCP-Scan

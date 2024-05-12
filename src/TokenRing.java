@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 
 public class TokenRing {
+    private static boolean[] deadNodes = new boolean[256];
 
     private static void loop(DatagramSocket socket, String ip, int port, boolean first){
         LinkedList<Token.Endpoint> candidates = new LinkedList<>();
@@ -19,7 +20,10 @@ public class TokenRing {
                 }
                 System.out.println();
                 if (rc.length() == 1) {
-                    candidates.add(rc.poll());
+                    Token.Endpoint next = rc.poll();
+                    if (!isDead(next)) {
+                        candidates.add(rc.poll());
+                    }
                     if (!first) {
                         continue;
                     }
@@ -30,6 +34,14 @@ public class TokenRing {
                 }
                 candidates.clear();
                 Token.Endpoint next = rc.poll();
+                while (isDead(next) && !rc.getRing().isEmpty()){
+                    next = rc.poll();
+                }
+                if (rc.getRing().isEmpty()){
+                    //Alle Knoten sind tot
+                    System.out.println("No more tokens");
+                    continue;
+                }
                 rc.append(next);
                 rc.incrementSequence();
                 Thread.sleep(1000);
@@ -42,6 +54,10 @@ public class TokenRing {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+    }
+
+    public static boolean isDead(Token.Endpoint endpoint) {
+        return deadNodes[endpoint.port()];
     }
 
     public static void main(String[] args) {
