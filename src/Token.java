@@ -59,14 +59,21 @@ public class Token {
         // System.out.printf("Sending %s to %s:%d\n", rc_json, ip_address, port);
         s.send(packet);
     }
-
     public void send (DatagramSocket s, Endpoint endpoint) throws IOException {
-        send(s, endpoint.ip(), endpoint.port());
+        try {
+            send(s, endpoint.ip(), endpoint.port());
+        } catch (IOException e) {
+            System.out.println("Error sending packet to: " + endpoint.ip() + ":"+ endpoint.port() + "Node may have quit");
+            throw e;
+        }
     }
 
     public static Token receive(DatagramSocket s) throws IOException {
         byte[] buf = new byte[max_buffer_size];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
+        // set a timeout for the receive so the program can check if one node quit the ring
+        // We then want to send the token to the next node in the ring.
+        s.setSoTimeout(1000);
         s.receive(packet);
         String rc_json = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
         // System.out.printf("Received %s from %s:%d\n", rc_json, packet.getAddress().getHostAddress(), packet.getPort());

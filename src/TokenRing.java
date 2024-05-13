@@ -1,25 +1,38 @@
 import java.io.IOException;
 import java.net.*;
 import java.util.LinkedList;
-
+import java.util.Queue;
+import java.util.Set;
+import java.util.HashSet;
 
 public class TokenRing {
+
+    private static Set<Token.Endpoint> removedNodes = new HashSet<>();
 
     private static void loop(DatagramSocket socket, String ip, int port, boolean first){
         LinkedList<Token.Endpoint> candidates = new LinkedList<>();
         if (first) {
             candidates.add(new Token.Endpoint(ip, port));
         }
+        Token rc = null;
         while (true) {
             try {
-                Token rc = Token.receive(socket);
+                rc = Token.receive(socket);
                 System.out.printf("Token: seq=%d, #members=%d", rc.getSequence(), rc.length());
                 for (Token.Endpoint endpoint : rc.getRing()) {
                     System.out.printf(" (%s, %d)", endpoint.ip(), endpoint.port());
                 }
                 System.out.println();
                 if (rc.length() == 1) {
-                    candidates.add(rc.poll());
+                    Token.Endpoint next = rc.poll();
+                    while(isRemoved(next) && !rc.getRing().isEmpty()) {
+                        next = rc.poll();
+                    }
+                    if (isRemoved(next) && rc.getRing().isEmpty()) {
+                        System.out.println("No more nodes in the ring");
+                        continue;
+                    }
+                    candidates.add(next);
                     if (!first) {
                         continue;
                     }
@@ -30,18 +43,46 @@ public class TokenRing {
                 }
                 candidates.clear();
                 Token.Endpoint next = rc.poll();
+                while (isRemoved(next) && !rc.getRing().isEmpty()){
+                    next = rc.poll();
+                }
+                if (isRemoved(next) && rc.getRing().isEmpty()){
+                    System.out.println("No more nodes in the ring");
+                    continue;
+                }
                 rc.append(next);
                 rc.incrementSequence();
                 Thread.sleep(1000);
                 rc.send(socket, next);
             }
-            catch (IOException e) {
+            // The ides is to catch the exception and try to send the token to the next node in the ring.
+            catch (SocketTimeoutException e) {
+                System.out.println("Timeout occurred, the previous node may have stopped sending the token");
+                if (rc != null) {
+                    Token.Endpoint next = rc.poll();
+                    while (isRemoved(next) && !rc.getRing().isEmpty()) {
+                        next = rc.poll();
+                    }
+                    if (isRemoved(next) && rc.getRing().isEmpty()) {
+                        System.out.println("No more nodes in the ring");
+                        continue;
+                    }
+                    candidates.add(next);
+                }
+            } catch (IOException e) {
                 System.out.println("Error receiving packet: " + e.getMessage());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
             }
         }
+    }
+
+    public static boolean isRemoved(Token.Endpoint endpoint) {
+        return removedNodes.contains(endpoint);
+    }
+
+    public static void removeNode(Token.Endpoint endpoint) {
+        removedNodes.add(endpoint);
     }
 
     public static void main(String[] args) {
