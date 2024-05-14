@@ -1,0 +1,50 @@
+Aufgabe 1:
+Displayfilter:
+data.len == 8
+
+Aufgabe 2:
+Der Tracerout-Befehl soll vom Ausgangsrechner zum Zielrechner die Hops zählen
+Dafür sendet er zunächst ein ICMP-Paket mit einer Time-to-Live(TTL) von 1 an den Zielhost
+Der erste Router emüfängt das Packet dekrementiert TTL auf 0 und sendet ein Packet zurück
+1 HOP
+
+anschließend wird das nächste Packet mit TTL 2 gesendet an den zweiten Router und dieser schickt wieder ein Packet zurück
+
+Das wiederholt sich bis entweder das Ziel erreicht und ein ICMP Echo Reply gesendet wird oder die maximale Hop-Anzahl von 30 erreicht ist
+
+An Stellen an denen * zu sehen sind kam keine Antwort vermutlich aufgrund von Firewall und Netzwerkkonfis
+
+Aufgabe 3:
+Ich habe festgestellt das TCP-SYN-Scan mit -sS deutlich schneller war als der UDP-Scan mit -sU
+Den Grund dafür vermute ich darin, dass das UDP Protokoll bei nicht Antwort eines Ports Retries durchführt für
+diese es auch die Waiting Time anpasst, hier immer in 200ms Schritten.
+Während das TCP-Protokoll einfach direkt zum nächsten Port geht, da keine Verbindung hergestellt werden kann.
+
+TCP ist ein verbindungsorientiertes Protokoll. Beim SYN-Scan sendet Nmap ein SYN-Paket 
+und wartet auf die Antwort SYN-ACK vom Ziel, um einen offenen Port zu erkennen. 
+Geschlossene Ports antworten mit RST. Dieser Ablauf ist relativ effizient.
+
+UDP ist verbindungslos. Nmap sendet UDP-Pakete an alle zu scannenden Ports 
+und wartet eine gewisse Zeit auf Antwort-Pakete vom Ziel. Offene Ports bleiben stumm, 
+geschlossene antworten mit "Port Unreachable" ICMP-Paketen. Da Nmap auf Timeouts warten muss, 
+ist der Scan langsamer.
+
+Möglichkeiten den Scan zu beschleunigen:
+1. Mit "-sU --max-retries=1" sendet Nmap nur ein Paket pro Port statt mehreren bei Timeouts.
+2. Die Option "--host-timeout=200000" erhöht den Timeout für das gesamte Ziel statt pro Port zu warten.
+3. "--min-rate=1000" gibt eine Mindestrate von 1000 Paketen/Sekunde vor.
+
+Diese Optionen führen allerdings dazu, dass der Scan mit höherer Wkeit offene Ports übersieht
+
+Insgesamt ist der TCP-SYN-Scan aufgrund des verbindungsorientierten Protokolls deutlich effizienter und schneller als der UDP-Scan. 
+Die Optimierungen für UDP-Scans erfordern einen Kompromiss zwischen Geschwindigkeit und Genauigkeit.
+
+Aufgabe 4:
+Grundgedanke war in der Klasse Token eine Methode RemoveEndpoint() hinzuzufügen
+und dann in der Loop in TokenRing immer vor dem erneuten hinzufügen in die Wartschlange zu überprüfen ob die Node ereichbar ist,
+falls dies nicht der Fall ist wird der Durchlauf geskipped und der endpunkt gelöscht.
+
+Allerdings habe ich es nicht hinbekommen, dass die existierenden Endpunkte als erreichbar erkannt wurden, es wurde immer nach Aufruf der Methode
+abgebrochen
+
+Fehler ließ sich hier auch in Absprache mit Kommilitonen nicht finden

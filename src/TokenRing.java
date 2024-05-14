@@ -29,7 +29,20 @@ public class TokenRing {
                     rc.append(candidate);
                 }
                 candidates.clear();
-                Token.Endpoint next = rc.poll();
+                Token.Endpoint next = null;
+                while (rc.length() > 0) {
+                    next = rc.poll();
+                    if (isEndpointReachable(next)) {
+                        break;
+                    } else {
+                        rc.removeEndpoint(next);
+                        next = null;
+                    }
+                }
+                if (next == null) {
+                    System.out.println("All nodes are unreachable.");
+                    break;
+                }
                 rc.append(next);
                 rc.incrementSequence();
                 Thread.sleep(1000);
@@ -40,6 +53,28 @@ public class TokenRing {
             }
             catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
+    private static boolean isEndpointReachable(Token.Endpoint endpoint) {
+        Socket socket = new Socket();
+        try {
+            socket.setReuseAddress(true);
+            InetAddress inetAddress = InetAddress.getByName(endpoint.ip());
+            InetSocketAddress socketAddress = new InetSocketAddress(inetAddress, endpoint.port());
+
+            // Verbindungsversuch mit einer Timeout von 2000 Millisekunden
+            socket.connect(socketAddress, 2000);
+
+            return true;
+        } catch (IOException e) {
+            return false;
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                // Ignorieren Sie die Ausnahme beim Schließen des Sockets
             }
         }
     }
