@@ -73,6 +73,10 @@ public class Token {
         return fromJSON(rc_json);
     }
 
+    public void delete(Endpoint endpoint){
+        ring.remove(endpoint);
+    }
+
     @JsonProperty
     private final Queue<Endpoint> ring = new LinkedList<>();
 
