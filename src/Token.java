@@ -76,11 +76,10 @@ public class Token {
     }
 
     public static void sendAnswer(DatagramSocket s, InetAddress ip_address, int port) throws IOException {
-        String answer = "Recived";
+        String answer = "Received";
         byte[] answer_bytes = answer.getBytes(StandardCharsets.UTF_8);
         DatagramPacket packet = new DatagramPacket(answer_bytes, answer_bytes.length, ip_address, port);
         s.send(packet);
-
     }
 
     public static Token receiveToken(DatagramSocket s) throws IOException {
@@ -89,8 +88,8 @@ public class Token {
         s.receive(packet);
         String rc_json = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
         // System.out.printf("Received %s from %s:%d\n", rc_json, packet.getAddress().getHostAddress(), packet.getPort());
+
         sendAnswer(s,packet.getAddress(), packet.getPort());
-        System.out.println(packet.getPort() + " " + packet.getAddress());
         return fromJSON(rc_json);
     }
 
@@ -106,10 +105,7 @@ public class Token {
             return false;
         }
         String answer = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
-        if(!answer.equals("Recived")){
-            return false;
-        }
-        return true;
+        return answer.equals("Received");
     }
 
     @JsonProperty
