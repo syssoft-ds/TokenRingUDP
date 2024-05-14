@@ -1,0 +1,172 @@
+Übung 2:
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Aufgabe 1 - Ablauf:
+
+Schritt 1. Versuch, ein Paket mit einem Passwort zu finden:
+  - Das Passwort besteht aus einer Zeichenfolge von 8 Kleinbuchstaben oder Zahlen.
+  - Verwendeter Filter: "http" - Filter, um HTTP-Pakete anzuzeigen.
+  
+Schritt 2. Besuch der Webseite www.lanwan.ninja/--------:
+  - Ergebnis: "Error 404" - Seite nicht gefunden.
+  - Eingegebenes Passwort war falsch.
+
+Schritt 3. Neuer Versuch:
+  - Verwendete Filter: 
+    - "frame contains "passwort"" - Keine Ergebnisse.
+    - "frame contains "Passwort"" - Keine Ergebnisse.
+
+Ergebnis: Die Suche nach dem Paket mit dem Passwort war nicht erfolgreich.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Aufgabe 2:
+
+Traceroute ist ein grundlegendes Netzwerkdiagnosewerkzeug, das oft von Administratoren und Technikern verwendet wird, um den Pfad zu verfolgen, den ein Paket von einem Computer zu einem bestimmten Zielhost nimmt. 
+In dieser Aufgabe wird die Funktionsweise von Traceroute untersucht und wie es dazu dient, den Weg von Paketen durch das Internet zu verfolgen.
+
+" >> C:\Users\> tracert www.anu.edu.au
+
+  Routenverfolgung zu terra-web.anu.edu.au [130.56.67.33]
+  über maximal 30 Hops:
+
+  1     4 ms     4 ms     4 ms  fritz.box 
+  2    12 ms    43 ms    12 ms  192.168.203.--
+  3    12 ms    10 ms    10 ms  192.168.125.-
+  4    14 ms     9 ms     9 ms  192.168.125.--
+  5     9 ms     9 ms     9 ms  192.168.125.--
+  6    12 ms    10 ms     9 ms  253-145-088-212.ip-addr.vsenet.de [212.88.145.253]
+  7    16 ms    10 ms    10 ms  et-2-0-5.0.vs-core-r1.6838.ip.vsenet.de [217.24.235.181]
+  8    15 ms    10 ms    12 ms  et-2-1-2.0.vs-core-r1.6898.ip-addr.vsenet.de [217.24.235.153]
+  9    13 ms    26 ms    21 ms  et-3-0-23.edge9.Frankfurt1.Level3.net [62.67.66.45]
+ 10     *        *        *     Zeitüberschreitung der Anforderung.
+ 11    28 ms    27 ms    25 ms  AARNET-PTY.ear4.London1.Level3.net [217.163.113.74]
+ 12   299 ms   296 ms   297 ms  et-0-3-0.pe1.actn.act.aarnet.net.au [113.197.15.11]
+ 13     *        *        *     Zeitüberschreitung der Anforderung.
+ 14     *        *        *     Zeitüberschreitung der Anforderung.
+ 15     *        *        *     Zeitüberschreitung der Anforderung.
+ 16     *        *        *     Zeitüberschreitung der Anforderung.
+ 17     *        *        *     Zeitüberschreitung der Anforderung.
+ 18     *        *        *     Zeitüberschreitung der Anforderung.
+ 19     *        *        *     Zeitüberschreitung der Anforderung.
+ 20     *        *        *     Zeitüberschreitung der Anforderung.
+ 21     *        *        *     Zeitüberschreitung der Anforderung.
+ 22     *        *        *     Zeitüberschreitung der Anforderung.
+ 23     *        *        *     Zeitüberschreitung der Anforderung.
+ 24     *        *        *     Zeitüberschreitung der Anforderung.
+ 25     *        *        *     Zeitüberschreitung der Anforderung.
+ 26     *        *        *     Zeitüberschreitung der Anforderung.
+ 27     *        *        *     Zeitüberschreitung der Anforderung.
+ 28     *        *        *     Zeitüberschreitung der Anforderung.
+ 29     *        *        *     Zeitüberschreitung der Anforderung.
+ 30     *        *        *     Zeitüberschreitung der Anforderung. "
+
+Die Funktionsweise von Traceroute lässt sich am besten anhand der ersten paar Hops erklären:
+
+1. Traceroute sendet ein Paket mit einer Time-To-Live (TTL) von 1 an das Ziel. Für jedes nachfolgende Paket wird die TTL um 1 erhöht.
+
+2. Das zweite Gerät auf dem Weg zum Ziel, in diesem Fall mit der IP-Adresse 192.168.203.--, empfängt das Paket und verringert die TTL um 1. Wenn die TTL den Wert 0 erreicht, verwirft das Gerät das Paket und sendet eine ICMP "Time Exceeded"-Nachricht zurück an den Absender.
+
+3. Traceroute erfasst die Zeit, die es dauert, bis die "Time Exceeded"-Nachricht zurückkommt, und notiert die Adresse des Geräts, das die Nachricht gesendet hat. Dies wird als Hop bezeichnet. Ein Beispiel für die Ausgabe wäre: "12 ms    43 ms    12 ms".
+
+4. Dieser Vorgang wird wiederholt, indem die TTL schrittweise erhöht wird, bis entweder das Ziel erreicht wird oder die maximale Anzahl von Hops erreicht ist.
+
+Traceroute liefert eine detaillierte Aufschlüsselung des Pfads, den ein Paket nimmt, um sein Ziel zu erreichen. 
+Durch die Erfassung von Informationen über die einzelnen Hops kann Traceroute dabei helfen, Probleme im Netzwerk zu identifizieren und zu diagnostizieren.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Aufgabe 3:
+
+Nmap, kurz für Network Mapper, ist ein leistungsstarkes Werkzeug für Netzwerkadministratoren, um Informationen über Netzwerke zu sammeln, einschließlich der Entdeckung von Geräten, offenen Ports und potenziellen Sicherheitslücken. 
+In dieser Aufgabe geht es um die Geschwindigkeitsunterschiede zwischen TCP- und UDP-Scans konzentrieren und Möglichkeiten, den Scan zu beschleunigen.
+
+TCP-Ports von der Seite scanme.nmap.org:
+"NSE: Loaded 157 scripts for scanning.
+ NSE: Script Pre-scanning.
+ Initiating NSE at 21:41
+ Completed NSE at 21:41, 0.00s elapsed
+ Initiating NSE at 21:41
+ Completed NSE at 21:41, 0.00s elapsed
+ Initiating NSE at 21:41
+ Completed NSE at 21:41, 0.00s elapsed
+ Failed to resolve "nmap".
+ Initiating Ping Scan at 21:41
+ Scanning scanme.nmap.org (45.33.32.156) [4 ports]
+ Completed Ping Scan at 21:41, 0.06s elapsed (1 total hosts)
+ Initiating Parallel DNS resolution of 1 host. at 21:41
+ Completed Parallel DNS resolution of 1 host. at 21:41, 0.01s elapsed
+ Initiating UDP Scan at 21:41
+ Scanning scanme.nmap.org (45.33.32.156) [1000 ports]
+ Increasing send delay for 45.33.32.156 from 0 to 50 due to max_successful_tryno increase to 5
+ Increasing send delay for 45.33.32.156 from 50 to 100 due to max_successful_tryno increase to 6
+ Warning: 45.33.32.156 giving up on port because retransmission cap hit (6).
+ Increasing send delay for 45.33.32.156 from 100 to 200 due to 11 out of 11 dropped probes since last increase.
+ UDP Scan Timing: About 6.03% done; ETC: 21:49 (0:08:03 remaining)
+ Increasing send delay for 45.33.32.156 from 200 to 400 due to 11 out of 14 dropped probes since last increase.
+ Increasing send delay for 45.33.32.156 from 400 to 800 due to 11 out of 11 dropped probes since last increase.
+ UDP Scan Timing: About 9.47% done; ETC: 21:52 (0:09:43 remaining)
+ UDP Scan Timing: About 12.46% done; ETC: 21:53 (0:10:40 remaining)
+ UDP Scan Timing: About 20.43% done; ETC: 21:55 (0:11:22 remaining)
+ UDP Scan Timing: About 26.69% done; ETC: 21:55 (0:10:37 remaining)
+ UDP Scan Timing: About 34.40% done; ETC: 21:56 (0:09:51 remaining)
+ UDP Scan Timing: About 40.74% done; ETC: 21:56 (0:09:02 remaining)
+ UDP Scan Timing: About 47.06% done; ETC: 21:56 (0:08:14 remaining)
+ UDP Scan Timing: About 52.64% done; ETC: 21:57 (0:07:26 remaining)
+ UDP Scan Timing: About 58.10% done; ETC: 21:57 (0:06:37 remaining)
+ UDP Scan Timing: About 63.50% done; ETC: 21:57 (0:05:49 remaining)
+ UDP Scan Timing: About 68.70% done; ETC: 21:57 (0:05:00 remaining)
+ UDP Scan Timing: About 73.91% done; ETC: 21:57 (0:04:10 remaining)
+ Discovered open port 123/udp on 45.33.32.156
+ UDP Scan Timing: About 79.26% done; ETC: 21:57 (0:03:20 remaining)
+ UDP Scan Timing: About 84.24% done; ETC: 21:57 (0:02:32 remaining)
+ UDP Scan Timing: About 89.34% done; ETC: 21:57 (0:01:43 remaining)
+ UDP Scan Timing: About 94.39% done; ETC: 21:57 (0:00:54 remaining)
+ Completed UDP Scan at 21:58, 1010.05s elapsed (1000 total ports)
+ Initiating Service scan at 21:58" Dauer etwa 17 min.
+
+UDP-Scan von der Seite scanme.nmap.org:
+"NSE: Loaded 157 scripts for scanning.
+NSE: Script Pre-scanning.
+Initiating NSE at 22:00
+Completed NSE at 22:00, 0.00s elapsed
+Initiating NSE at 22:00
+Completed NSE at 22:00, 0.00s elapsed
+Initiating NSE at 22:00
+Completed NSE at 22:00, 0.00s elapsed
+Failed to resolve "nmap".
+Initiating Ping Scan at 22:00
+Scanning scanme.nmap.org (45.33.32.156) [4 ports]
+Completed Ping Scan at 22:00, 0.07s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 22:00
+Completed Parallel DNS resolution of 1 host. at 22:00, 0.01s elapsed
+Initiating SYN Stealth Scan at 22:00
+Scanning scanme.nmap.org (45.33.32.156) [1000 ports]
+Discovered open port 80/tcp on 45.33.32.156
+Discovered open port 22/tcp on 45.33.32.156
+Discovered open port 9929/tcp on 45.33.32.156
+Discovered open port 31337/tcp on 45.33.32.156
+Completed SYN Stealth Scan at 22:00, 5.42s elapsed (1000 total ports)
+Initiating UDP Scan at 22:00" Dauer etwa 11 sek.
+
+
+Der TCP-Scan auf die Seite *scanme.nmap.org* dauerte etwa 17 Minuten, während der UDP-Scan nur 11 Sekunden benötigte. Diese erhebliche Geschwindigkeitsdifferenz lässt sich auf die unterschiedlichen Eigenschaften der beiden Protokolle zurückführen.
+
+TCP (Transmission Control Protocol) ist ein verbindungsorientiertes Protokoll, das einen "Handshake" durchführt, bevor Daten gesendet werden. Es wartet auf Bestätigungen für jedes gesendete Paket, was die Zuverlässigkeit erhöht, aber den Prozess verlangsamt.
+Im Gegensatz dazu ist UDP (User Datagram Protocol) ein verbindungsloses Protokoll, das Daten ohne vorherige Verbindung oder Bestätigung sendet. Dies beschleunigt den Prozess, kann jedoch dazu führen, dass Pakete verloren gehen.
+
+Um den Scan zu beschleunigen, stehen vier Möglichkeiten zur Verfügung. 
+1. Es können Timing-Vorlagen verwendet werden, um die Scan-Geschwindigkeit anzupassen.
+2. Es kann der Port-Bereich begrenzt werden, um unnötige Überprüfungen zu vermeiden.
+3. Es kann die Host-Entdeckung deaktiviert werden, um Zeit zu sparen. 
+4. Es können parallele Scans durchgeführt werden, um mehrere Ziele gleichzeitig zu überprüfen.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Aufgabe 4:
+
+Mögliche Vorgehensweise:
+1. Hinzu fügen einer Methode, um einen fehlgeschlagenen Knoten zu erkennen.
+2. Implementieren einer Methode, um einen fehlgeschlagenen Knoten aus dem Ring zu entfernen.
+3. Aktualisieren der die verbleibenden Knoten im Ring, um ohne den fehlgeschlagenen Knoten zu kommunizieren.
