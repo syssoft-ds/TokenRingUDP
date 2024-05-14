@@ -1,0 +1,337 @@
+Aufgabe 1
+===================================================================================
+Step 1
+Filter:	frame matches "[a-z0-9]{8}"
+Pakete: 213,251
+Info: War "getarnt" als Passwort
+Flag: dzh20szq
+
+Step 2
+Filter:	http.response.code >=400
+Pakete: 493
+Info: Stand in der Paketinfo 
+Flag: a6rgv7h
+
+Step 3
+Filter:	icmp
+Pakete: 342, 343
+Info: Gefunden in der Paketdata
+Flag: nd7hark3
+
+Final:
+The final solution code is Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
+Dieser code ist ergibt mit Base64 decoding: Congratulations! This is the Bonus!
+
+
+Aufgabe 2
+===================================================================================
+
+Leider hat mein traceroute mit "www.anu.edu.au" nicht funktioniert.
+
+		***AUSGABE-START***
+C:\Users\diddi>tracert -h 200 www.anu.edu.au
+
+Routenverfolgung zu terra-web.anu.edu.au [130.56.67.33]
+über maximal 200 Hops:
+
+  1     1 ms     1 ms     1 ms  fritz.box [192.168.178.1]
+  2     *        *        *     Zeitüberschreitung der Anforderung.
+  3     9 ms     9 ms     7 ms  b96cfb21.eltrona.net [185.108.251.33]
+  4     7 ms     7 ms     8 ms  b96cf84d.eltrona.net [185.108.248.77]
+  5    11 ms    13 ms    11 ms  100ge0-35.core2.lux1.he.net [184.104.194.106]
+  6    17 ms    16 ms    20 ms  100ge0-34.core2.bru1.he.net [184.104.194.110]
+  7     *        *        *     Zeitüberschreitung der Anforderung.
+  8     *        *        *     Zeitüberschreitung der Anforderung.
+  9     *        *        *     Zeitüberschreitung der Anforderung.
+ 10   108 ms   106 ms     *     port-channel1.core2.chi1.he.net [184.104.192.38]
+ 11     *      147 ms     *     port-channel18.core2.sea1.he.net [184.104.188.149]
+ 12   285 ms   283 ms   283 ms  as7575.seattle.megaport.com [206.53.171.12]
+ 13   281 ms   281 ms   281 ms  et-10-0-5.170.pe1.brwy.nsw.aarnet.net.au [113.197.15.62]
+ 14   281 ms   282 ms   280 ms  et-1-1-0.pe1.rsby.nsw.aarnet.net.au [113.197.15.12]
+ 15   285 ms   284 ms   284 ms  et-0-3-0.pe1.actn.act.aarnet.net.au [113.197.15.11]
+ 16     *        *        *     Zeitüberschreitung der Anforderung.
+ 17     *        *        *     Zeitüberschreitung der Anforderung.
+ 18     *        *        *     Zeitüberschreitung der Anforderung.
+ 19     *        *        *     Zeitüberschreitung der Anforderung.
+ 20     *        *        *     Zeitüberschreitung der Anforderung.
+ 21     *        *        *     Zeitüberschreitung der Anforderung.
+ 22     *        *        *     Zeitüberschreitung der Anforderung.
+ 23     *        *        *     Zeitüberschreitung der Anforderung.
+ 24     *        *        *     Zeitüberschreitung der Anforderung.
+ 25     *        *        *     Zeitüberschreitung der Anforderung.
+ 26     *        *        *     Zeitüberschreitung der Anforderung.
+ 27     *        *        *     Zeitüberschreitung der Anforderung.
+ 28     *        *        *     Zeitüberschreitung der Anforderung.
+ 29     *        *        *     Zeitüberschreitung der Anforderung.
+ 30     *        *        *     Zeitüberschreitung der Anforderung.
+ 31     *        *        *     Zeitüberschreitung der Anforderung.
+ 32     *        *        *     Zeitüberschreitung der Anforderung.
+ 33     *        *        *     Zeitüberschreitung der Anforderung.
+ 34     *        *        *     Zeitüberschreitung der Anforderung.
+ 35     *        *        *     Zeitüberschreitung der Anforderung.
+ 36     *        *        *     Zeitüberschreitung der Anforderung.
+ 37     *        *        *     Zeitüberschreitung der Anforderung.
+ 38     *        *        *     Zeitüberschreitung der Anforderung.
+ 39     *        *        *     Zeitüberschreitung der Anforderung.
+ 40     *        *        *     Zeitüberschreitung der Anforderung.
+ 41     *        *        *     Zeitüberschreitung der Anforderung.
+ 42     *        *        *     Zeitüberschreitung der Anforderung.
+ 43     *        *        *     Zeitüberschreitung der Anforderung.
+ 44     *        *        *     Zeitüberschreitung der Anforderung.
+ 45     *        *        *     Zeitüberschreitung der Anforderung.
+ 46     *        *        *     Zeitüberschreitung der Anforderung.
+ 47     *        *        *     Zeitüberschreitung der Anforderung.
+ 48     *        *        *     Zeitüberschreitung der Anforderung.
+ 49     *        *        *     Zeitüberschreitung der Anforderung.
+ 50     *        *        *     Zeitüberschreitung der Anforderung.
+ 51     *        *        *     Zeitüberschreitung der Anforderung.
+ 52     *        *        *     Zeitüberschreitung der Anforderung.
+ 53     *        *        *     Zeitüberschreitung der Anforderung.
+ 54     *        *        *     Zeitüberschreitung der Anforderung.
+ 55     *        *        *     Zeitüberschreitung der Anforderung.
+ 56     *        *        *     Zeitüberschreitung der Anforderung.
+ 57     *        *        *     Zeitüberschreitung der Anforderung.
+ 58     *        *        *     Zeitüberschreitung der Anforderung.
+ 59     *        *        *     Zeitüberschreitung der Anforderung.
+ 60     *        *        *     Zeitüberschreitung der Anforderung.
+ 61     *        *        *     Zeitüberschreitung der Anforderung.
+ 62     *        *        *     Zeitüberschreitung der Anforderung.
+ 63     *        *        *     Zeitüberschreitung der Anforderung.
+ 64     *        *        *     Zeitüberschreitung der Anforderung.
+ 65     *        *        *     Zeitüberschreitung der Anforderung.
+ 66     *        *        *     Zeitüberschreitung der Anforderung.
+ 67     *        *        *     Zeitüberschreitung der Anforderung.
+ 68     *        *        *     Zeitüberschreitung der Anforderung.
+ 69     *        *        *     Zeitüberschreitung der Anforderung.
+ 70     *        *        *     Zeitüberschreitung der Anforderung.
+ 71     *        *        *     Zeitüberschreitung der Anforderung.
+ 72     *        *        *     Zeitüberschreitung der Anforderung.
+ 73     *        *        *     Zeitüberschreitung der Anforderung.
+ 74     *        *        *     Zeitüberschreitung der Anforderung.
+ 75     *        *        *     Zeitüberschreitung der Anforderung.
+ 76     *        *        *     Zeitüberschreitung der Anforderung.
+ 77     *        *        *     Zeitüberschreitung der Anforderung.
+ 78     *        *        *     Zeitüberschreitung der Anforderung.
+ 79     *        *        *     Zeitüberschreitung der Anforderung.
+ 80     *        *        *     Zeitüberschreitung der Anforderung.
+ 81     *        *        *     Zeitüberschreitung der Anforderung.
+ 82     *        *        *     Zeitüberschreitung der Anforderung.
+ 83     *        *        *     Zeitüberschreitung der Anforderung.
+ 84     *        *        *     Zeitüberschreitung der Anforderung.
+ 85     *        *        *     Zeitüberschreitung der Anforderung.
+ 86     *        *        *     Zeitüberschreitung der Anforderung.
+ 87     *        *        *     Zeitüberschreitung der Anforderung.
+ 88     *        *        *     Zeitüberschreitung der Anforderung.
+ 89     *        *        *     Zeitüberschreitung der Anforderung.
+ 90     *        *        *     Zeitüberschreitung der Anforderung.
+ 91     *        *        *     Zeitüberschreitung der Anforderung.
+ 92     *        *        *     Zeitüberschreitung der Anforderung.
+ 93     *        *        *     Zeitüberschreitung der Anforderung.
+ 94     *        *        *     Zeitüberschreitung der Anforderung.
+ 95     *        *        *     Zeitüberschreitung der Anforderung.
+ 96     *        *        *     Zeitüberschreitung der Anforderung.
+ 97     *        *        *     Zeitüberschreitung der Anforderung.
+ 98     *        *        *     Zeitüberschreitung der Anforderung.
+ 99     *        *        *     Zeitüberschreitung der Anforderung.
+100     *        *        *     Zeitüberschreitung der Anforderung.
+101     *        *        *     Zeitüberschreitung der Anforderung.
+102     *        *        *     Zeitüberschreitung der Anforderung.
+103     *        *        *     Zeitüberschreitung der Anforderung.
+104     *        *        *     Zeitüberschreitung der Anforderung.
+105     *        *        *     Zeitüberschreitung der Anforderung.
+106     *        *        *     Zeitüberschreitung der Anforderung.
+107     *        *        *     Zeitüberschreitung der Anforderung.
+108     *        *        *     Zeitüberschreitung der Anforderung.
+109     *        *        *     Zeitüberschreitung der Anforderung.
+110     *        *        *     Zeitüberschreitung der Anforderung.
+111     *        *        *     Zeitüberschreitung der Anforderung.
+112     *        *        *     Zeitüberschreitung der Anforderung.
+113     *        *        *     Zeitüberschreitung der Anforderung.
+114     *        *        *     Zeitüberschreitung der Anforderung.
+115     *        *        *     Zeitüberschreitung der Anforderung.
+116     *        *        *     Zeitüberschreitung der Anforderung.
+117     *        *        *     Zeitüberschreitung der Anforderung.
+118     *        *        *     Zeitüberschreitung der Anforderung.
+119     *        *        *     Zeitüberschreitung der Anforderung.
+120     *        *        *     Zeitüberschreitung der Anforderung.
+121     *        *        *     Zeitüberschreitung der Anforderung.
+122     *        *        *     Zeitüberschreitung der Anforderung.
+123     *        *        *     Zeitüberschreitung der Anforderung.
+124     *        *        *     Zeitüberschreitung der Anforderung.
+125     *        *        *     Zeitüberschreitung der Anforderung.
+126     *        *        *     Zeitüberschreitung der Anforderung.
+127     *        *        *     Zeitüberschreitung der Anforderung.
+128     *        *        *     Zeitüberschreitung der Anforderung.
+129     *        *        *     Zeitüberschreitung der Anforderung.
+130     *        *        *     Zeitüberschreitung der Anforderung.
+131     *        *        *     Zeitüberschreitung der Anforderung.
+132     *        *        *     Zeitüberschreitung der Anforderung.
+133     *        *        *     Zeitüberschreitung der Anforderung.
+134     *        *        *     Zeitüberschreitung der Anforderung.
+135     *        *        *     Zeitüberschreitung der Anforderung.
+136     *        *        *     Zeitüberschreitung der Anforderung.
+137     *        *        *     Zeitüberschreitung der Anforderung.
+138     *        *        *     Zeitüberschreitung der Anforderung.
+139     *        *        *     Zeitüberschreitung der Anforderung.
+140     *        *        *     Zeitüberschreitung der Anforderung.
+141     *        *        *     Zeitüberschreitung der Anforderung.
+142     *        *        *     Zeitüberschreitung der Anforderung.
+143     *        *        *     Zeitüberschreitung der Anforderung.
+144     *        *        *     Zeitüberschreitung der Anforderung.
+145     *        *        *     Zeitüberschreitung der Anforderung.
+146     *        *        *     Zeitüberschreitung der Anforderung.
+147     *        *        *     Zeitüberschreitung der Anforderung.
+148     *        *        *     Zeitüberschreitung der Anforderung.
+149     *        *        *     Zeitüberschreitung der Anforderung.
+150     *        *        *     Zeitüberschreitung der Anforderung.
+151     *        *        *     Zeitüberschreitung der Anforderung.
+152     *        *        *     Zeitüberschreitung der Anforderung.
+153     *        *        *     Zeitüberschreitung der Anforderung.
+154     *        *        *     Zeitüberschreitung der Anforderung.
+155     *        *        *     Zeitüberschreitung der Anforderung.
+156     *        *        *     Zeitüberschreitung der Anforderung.
+157     *        *        *     Zeitüberschreitung der Anforderung.
+158     *        *        *     Zeitüberschreitung der Anforderung.
+159     *        *        *     Zeitüberschreitung der Anforderung.
+160     *        *        *     Zeitüberschreitung der Anforderung.
+161     *        *        *     Zeitüberschreitung der Anforderung.
+162     *        *        *     Zeitüberschreitung der Anforderung.
+163     *        *        *     Zeitüberschreitung der Anforderung.
+164     *        *        *     Zeitüberschreitung der Anforderung.
+165     *        *        *     Zeitüberschreitung der Anforderung.
+166     *        *        *     Zeitüberschreitung der Anforderung.
+167     *        *        *     Zeitüberschreitung der Anforderung.
+168     *        *        *     Zeitüberschreitung der Anforderung.
+169     *        *        *     Zeitüberschreitung der Anforderung.
+170     *        *        *     Zeitüberschreitung der Anforderung.
+171     *        *        *     Zeitüberschreitung der Anforderung.
+172     *        *        *     Zeitüberschreitung der Anforderung.
+173     *        *        *     Zeitüberschreitung der Anforderung.
+174     *        *        *     Zeitüberschreitung der Anforderung.
+175     *        *        *     Zeitüberschreitung der Anforderung.
+176     *        *        *     Zeitüberschreitung der Anforderung.
+177     *        *        *     Zeitüberschreitung der Anforderung.
+178     *        *        *     Zeitüberschreitung der Anforderung.
+179     *        *        *     Zeitüberschreitung der Anforderung.
+180     *        *        *     Zeitüberschreitung der Anforderung.
+181     *        *        *     Zeitüberschreitung der Anforderung.
+182     *        *        *     Zeitüberschreitung der Anforderung.
+183     *        *        *     Zeitüberschreitung der Anforderung.
+184     *        *        *     Zeitüberschreitung der Anforderung.
+185     *        *        *     Zeitüberschreitung der Anforderung.
+186     *        *        *     Zeitüberschreitung der Anforderung.
+187     *        *        *     Zeitüberschreitung der Anforderung.
+188     *        *        *     Zeitüberschreitung der Anforderung.
+189     *        *        *     Zeitüberschreitung der Anforderung.
+190     *        *        *     Zeitüberschreitung der Anforderung.
+191     *        *        *     Zeitüberschreitung der Anforderung.
+192     *        *        *     Zeitüberschreitung der Anforderung.
+193     *        *        *     Zeitüberschreitung der Anforderung.
+194     *        *        *     Zeitüberschreitung der Anforderung.
+195     *        *        *     Zeitüberschreitung der Anforderung.
+196  138.44.161.3  meldet: Zielnetz nicht erreichbar.
+
+Ablaufverfolgung beendet.
+		***AUSGABE-ENDE***
+
+Anschließend habe ich es nochtmal mit www.uni-trier.de versucht und hier hat es auch funktioniert.
+		
+		***AUSGABE-START***
+C:\Users\diddi>tracert -h 50 www.uni-trier.de
+
+Routenverfolgung zu www.uni-trier.de [136.199.189.15]
+über maximal 50 Hops:
+
+  1     1 ms    <1 ms     2 ms  fritz.box [192.168.178.1]
+  2     *        *        *     Zeitüberschreitung der Anforderung.
+  3    11 ms     7 ms     8 ms  b96cfb21.eltrona.net [185.108.251.33]
+  4     *        *        *     Zeitüberschreitung der Anforderung.
+  5     8 ms     8 ms     9 ms  be3477.rcr21.lux01.atlas.cogentco.com [154.25.1.65]
+  6    12 ms    23 ms    11 ms  be2661.ccr42.fra03.atlas.cogentco.com [154.54.63.9]
+  7    12 ms    11 ms    13 ms  be4423.rcr21.b015749-1.fra03.atlas.cogentco.com [154.54.75.82]
+  8    12 ms    12 ms    11 ms  149.14.156.138
+  9    14 ms    14 ms    13 ms  g-telecity-3.rlp-net.net [217.198.247.197]
+ 10    14 ms    14 ms    13 ms  g-uni-ma-1.rlp-net.net [217.198.240.49]
+ 11    15 ms    16 ms    13 ms  g-hbf-kl-2.rlp-net.net [217.198.240.117]
+ 12    15 ms    16 ms    15 ms  g-hbf-tr-1.rlp-net.net [217.198.240.125]
+ 13    17 ms    20 ms    20 ms  g-uni-tr-1.rlp-net.net [217.198.240.74]
+ 14    15 ms    14 ms    15 ms  uni-tr-gate.rlp-net.net [217.198.241.194]
+ 15    15 ms    14 ms    14 ms  core.uni-trier.de [136.199.42.1]
+ 16    19 ms    15 ms    13 ms  www.uni-trier.de [136.199.189.15]
+
+Ablaufverfolgung beendet.
+		***AUSGABE-ENDE***
+
+
+Tracert 
+
+Ablauf Tracet:
+	- Start: Das Tool sendet ein Paket mit TTL=1.
+
+	- Erster Hop: Der erste Router verringert die TTL um 1 (TTL=0) und verwirft das Paket.
+	Dann sendet der Router eine ICMP-Zeitüberschreitungsnachricht (Time Exceeded) zurück an den Absender.
+
+	- Erhöhung der TTL: Traceroute erhöht die TTL um 1 und sendet das nächste Paket (TTL=2).
+	Der zweite Router verringert die TTL erneut um 1 und verwirft das Paket, da TTL=0 erreicht wird.
+	Auch hier wird eine ICMP-Zeitüberschreitungsnachricht zurückgesendet.
+
+	- Wiederholung: Dieser Prozess wird fortgesetzt, bis das Paket sein Ziel erreicht.
+	Wenn das Ziel erreicht ist, sendet es eine ICMP-Echo-Antwort oder eine andere Antwort zurück.
+
+
+
+
+Aufgabe 3
+===================================================================================
+
+        ***AUSGABE-START***
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-14 14:07 Mitteleuropäische Sommerzeit
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.16s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 993 closed tcp ports (reset)
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+80/tcp    open     http
+135/tcp   filtered msrpc
+139/tcp   filtered netbios-ssn
+445/tcp   filtered microsoft-ds
+9929/tcp  open     nping-echo
+31337/tcp open     Elite
+
+Nmap done: 1 IP address (1 host up) scanned in 4.02 seconds
+        ***AUSGABE-ENDE***
+
+        ***AUSGABE-START***
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-14 14:10 Mitteleuropäische Sommerzeit
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.15s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 947 closed udp ports (port-unreach), 52 open|filtered udp ports (no-response)
+PORT    STATE SERVICE
+123/udp open  ntp
+
+Nmap done: 1 IP address (1 host up) scanned in 1751.66 seconds
+        ***AUSGABE-ENDE***
+
+1. Protokoll-Eigenarten:
+TCP-Protokoll:
+TCP ist ein verbindungsorientiertes Protokoll. Ein TCP-SYN-Scan (auch als halboffener Scan bekannt) sendet SYN-Pakete an die Zielports und wartet auf SYN-ACK-Antworten. Wenn eine Antwort kommt, wird der Port als offen markiert. Dies geschieht sehr effizient und schnell, da nur wenige Pakete ausgetauscht werden.
+UDP-Protokoll:
+UDP ist ein verbindungsloses Protokoll. Ein UDP-Scan sendet UDP-Pakete an die Zielports und wartet auf ICMP-Port-unreachable-Nachrichten. Da UDP verbindungslos ist, gibt es keine direkte Antwort, wenn der Port offen ist, was den Scan langsamer und ressourcenintensiver macht. Zudem werden viele UDP-Pakete einfach verworfen oder durch Firewalls blockiert, was zu einer langen Wartezeit führt, um sicherzustellen, dass keine Antwort kommt.
+
+2. Programm-Eigenarten:
+Nmap-Verhalten bei TCP:
+Nmap kann bei einem TCP-SYN-Scan schnell erkennen, ob ein Port offen, geschlossen oder gefiltert ist, da es auf direkte Antworten (SYN-ACK, RST) wartet.
+Nmap-Verhalten bei UDP:
+Nmap muss oft wiederholte Scans und längere Wartezeiten einplanen, um sicherzustellen, dass keine Antwort tatsächlich bedeutet, dass der Port offen ist, was die Scan-Zeit erheblich erhöht.
+
+
+
+Aufgabe 4
+===================================================================================
+Ich habe am TokenRing viel herumprobiert, allerdings bin ich nicht zu einer fertigen Lösung gekommen.
+Vielleicht hätte ich es noch hinbekommen, bin aber leider an ein Zeitlichen limit gekommen.
+
+Meine Idee war es, dass nach dem Erhalt eines Pakets eine Antwort gesendet wird. Dann sollte je nach Ausgang des ganzen eine Problembehandlung
+durchläuft die nach mehreren Versuchen ohne Antwort den nächsten Host, der nicht antwortet aus der Liste entfernt und überspringt.

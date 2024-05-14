@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -23,6 +24,16 @@ public class Token {
     public Token append(Endpoint endpoint) {
         ring.offer(endpoint);
         return this;
+    }
+
+    public boolean remove(Endpoint endpoint){
+        ring.remove(endpoint);
+        return true;
+    }
+
+    public boolean remove(String ip, int port){
+        ring.removeIf(endpoint -> endpoint.ip().equals(ip)&&endpoint.port()==port);
+        return true;
     }
 
     public Endpoint first() {
@@ -64,13 +75,41 @@ public class Token {
         send(s, endpoint.ip(), endpoint.port());
     }
 
-    public static Token receive(DatagramSocket s) throws IOException {
+    public static void sendAnswer(DatagramSocket s, InetAddress ip_address, int port) throws IOException {
+        String answer = "Recived";
+        byte[] answer_bytes = answer.getBytes(StandardCharsets.UTF_8);
+        DatagramPacket packet = new DatagramPacket(answer_bytes, answer_bytes.length, ip_address, port);
+        s.send(packet);
+
+    }
+
+    public static Token receiveToken(DatagramSocket s) throws IOException {
         byte[] buf = new byte[max_buffer_size];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         s.receive(packet);
         String rc_json = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
         // System.out.printf("Received %s from %s:%d\n", rc_json, packet.getAddress().getHostAddress(), packet.getPort());
+        sendAnswer(s,packet.getAddress(), packet.getPort());
+        System.out.println(packet.getPort() + " " + packet.getAddress());
         return fromJSON(rc_json);
+    }
+
+    public static Boolean receiveAnswer(DatagramSocket s) throws IOException {
+        byte[] buf = new byte[max_buffer_size];
+        DatagramPacket packet = new DatagramPacket(buf, buf.length);
+        s.setSoTimeout(4000);
+        try {
+            s.receive(packet);
+        } catch (SocketTimeoutException e) {
+            // handle the timeout here
+            System.out.println("Timeout reached. No packet received.");
+            return false;
+        }
+        String answer = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
+        if(!answer.equals("Recived")){
+            return false;
+        }
+        return true;
     }
 
     @JsonProperty
