@@ -1,6 +1,5 @@
 # Rechnernetze Übung 02 David Jacobs – 1619007
 
-
 ## Setup:
 Wireshark-Profil und Spalten konfiguriert gemäß Empfehlungen in den YT-Videos von LanWanNinja
 
