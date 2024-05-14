@@ -64,6 +64,10 @@ public class Token {
         send(s, endpoint.ip(), endpoint.port());
     }
 
+    public void remove(Endpoint endpoint) {
+        ring.remove(endpoint);
+    }
+
     public static Token receive(DatagramSocket s) throws IOException {
         byte[] buf = new byte[max_buffer_size];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
