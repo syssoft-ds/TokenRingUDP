@@ -1,0 +1,6 @@
+----- Aufgabe 1 -----
+
+http contains "password"
+
+http.response.code >= 400
+
