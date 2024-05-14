@@ -1,0 +1,58 @@
+## U2_s4jeheid ##
+
+# Challenge 1:
+
+display filter: http.request.method == "POST"
+
+Because we are Students, and the lecture focuses on Internet and protocols, 
+a HTTP POST request to login was simple enough for the hint "password".
+
+This filter only returned a single result.
+in the Payload is a json object of a Members login credential
+The password object being 8 characters long, only lowercase and numbers
+
+String value: dzh20szq
+
+# Challenge 2:
+Now the second Challenge should be a modified display filter to check HTTP error transmissions
+
+since the response.code of a sucessful HTTP request is 200,
+display filter: http.response.code !=200
+returns 6 Packets:
+{1x 371, 3x 372, 1x 302, 1x 401}
+Since a http.response.code of 404 is close to 401 this has to be the Packet I was looking for.
+Response Phrase: ra6rgv7h  
+
+# Challenge 3:
+
+clue= "Hiddeninping"
+maybe filtering for "ping packets"?
+
+Okay I have no idea how but I didn't use any display filter, I just clicked on the column 'length'.
+First Packet has "Echo (ping) request" written in the infor column...
+
+ICMP = "Internet Control Message Protocol"
+Type: 8 (Echo (ping) request)
+...
+Data (8 bytes):
+    Data: "6e64376861726b33"
+    *left click on that highlights the 8 character long lowercase and numbers String in the 'packet bytes box'
+    right clicking on "6e64376861726b33" -> copy as printable text gives me the desired 8 length sized String:
+    "nd7hark3"
+
+The final solution code is = "Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh"
+
+a quick python programm to test different encodings resulted in:
+
+import base64
+text = 'Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh'
+decoded_text = base64.b64decode(text).decode('utf-8')
+print(decoded_text)
+
+returns: "Congrats_This_Is_the_Bonus!"
+
+
+
+
+
+
