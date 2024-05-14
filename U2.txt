@@ -1,0 +1,71 @@
+Aufgabe 1:
+
+Erster Filter -> http.request.method
+Zweiter Filter -> http.response.code > 200
+Dritter Filter -> ICMP
+
+Endcode: Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
+
+Aufgabe 2:
+Die tracert zu den 2 beispiel Seiten hat folgende Ausgaben geliefert:
+
+|  Routenverfolgung zu dns.google [8.8.8.8]
+|  über maximal 30 Hops:
+|
+|    1    <1 ms    <1 ms    <1 ms  hitronhub.home [192.168.0.1]
+|    2    38 ms    15 ms    19 ms  ip53a9b744.static.kabel-deutschland.de [83.169.183.68]
+|    3    16 ms    14 ms    14 ms  ip5886c96d.static.kabel-deutschland.de [88.134.201.109]
+|    4    33 ms    30 ms    15 ms  145.254.3.168
+|    5    23 ms    14 ms    14 ms  145.254.2.179
+|    6    15 ms    14 ms    14 ms  74.125.32.52
+|    7    15 ms    14 ms    14 ms  108.170.235.151
+|    8    16 ms    14 ms    14 ms  142.251.64.185
+|    9    15 ms    14 ms    21 ms  dns.google [8.8.8.8]
+|
+|  Ablaufverfolgung beendet.
+
+Und analog:
+
+
+| Routenverfolgung zu terra-web.anu.edu.au [130.56.67.33]
+| über maximal 30 Hops:
+|
+|   1    <1 ms    <1 ms    <1 ms  hitronhub.home [192.168.0.1]
+|   2    17 ms    19 ms    19 ms  ip53a9b744.static.kabel-deutschland.de [83.169.183.68]
+|   3    14 ms    19 ms    19 ms  ip5886cb75.static.kabel-deutschland.de [88.134.203.117]
+|   4    19 ms    19 ms    19 ms  145.254.3.170
+|   5    20 ms    19 ms    19 ms  145.254.2.209
+|   6    22 ms    14 ms    24 ms  4.68.72.213
+|   7     *        *        *     Zeitüberschreitung der Anforderung.
+|   8    29 ms    34 ms    34 ms  AARNET-PTY.ear4.London1.Level3.net [217.163.113.74]
+|   9   298 ms   303 ms   304 ms  et-0-3-0.pe1.actn.act.aarnet.net.au [113.197.15.11]
+|  10     *        *        *     Zeitüberschreitung der Anforderung.
+|  11     *        *        *     Zeitüberschreitung der Anforderung.
+|  12     *        *        *     Zeitüberschreitung der Anforderung.
+|  13     *        *        *     Zeitüberschreitung der Anforderung.
+|  14     *        *        *     Zeitüberschreitung der Anforderung.
+|  15     *        *        *     Zeitüberschreitung der Anforderung.
+|  16     *        *        *     Zeitüberschreitung der Anforderung.
+|  17     *        *        *     Zeitüberschreitung der Anforderung.
+|  18     *        *        *     Zeitüberschreitung der Anforderung.
+|  19     *        *        *     Zeitüberschreitung der Anforderung.
+|  20     *        *        *     Zeitüberschreitung der Anforderung.
+|  21     *        *        *     Zeitüberschreitung der Anforderung.
+|  22     *        *        *     Zeitüberschreitung der Anforderung.
+|  23     *        *        *     Zeitüberschreitung der Anforderung.
+|  24     *        *        *     Zeitüberschreitung der Anforderung.
+|  25     *        *        *     Zeitüberschreitung der Anforderung.
+|  26     *        *        *     Zeitüberschreitung der Anforderung.
+|  27     *        *        *     Zeitüberschreitung der Anforderung.
+|  28     *        *        *     Zeitüberschreitung der Anforderung.
+|  29     *        *        *     Zeitüberschreitung der Anforderung.
+|  30     *        *        *     Zeitüberschreitung der Anforderung.
+|
+| Ablaufverfolgung beendet.
+
+traceroute funktioniert indem es jeden routenden hop anpingt, auf eine antwort wartet, um es dann nochmal anzupingen
+damit es als antowrt die IP adresse herausbekommt. falls es eine zeitüberschreitung gibt wird es nochmal versucht bis die 
+maximalzahl (in dem fall 30) erreicht ist.
+jede zeile hat die folgende syntax:
+Hop(oder wiederholung) | 1st ping | 1st response | 2nd ping | IP response
+
