@@ -1,0 +1,74 @@
+Rechnernetze Übung 2:
+Philipp Seibel, 1296632
+
+[===================================================================================================]
+
+Aufgabe 1: WireShark 
+1. tcp contains "password" 	-> dzh20szq
+2. http.response.code > 200	-> ra6rgv7h
+3. icmp				-> nd7hark3 -> Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
+
+[===================================================================================================]
+
+Aufgabe 2: Traceroute
+Routenverfolgung zu anu.edu.au [130.56.67.33]
+über maximal 30 Hops:
+
+  1     1 ms    <1 ms    <1 ms  fritz.box [192.168.178.1]
+  2     9 ms     7 ms     7 ms  192.168.203.24
+  3     9 ms     7 ms     7 ms  192.168.125.3
+  4     8 ms     6 ms     7 ms  192.168.125.12
+  5     9 ms     7 ms     6 ms  252-145-088-212.ip-addr.vsenet.de [212.88.145.252]
+  6    10 ms     7 ms     7 ms  et-5-0-2.0.vs-dis-r1.6838.ip.vsenet.de [217.24.235.189]
+  7     8 ms    10 ms     9 ms  et-2-0-5.0.vs-core-r1.6838.ip.vsenet.de [217.24.235.181]
+  8    11 ms     8 ms     8 ms  et-2-1-2.0.vs-core-r1.6898.ip-addr.vsenet.de [217.24.235.153]
+  9    14 ms    10 ms    10 ms  et-3-0-23.edge9.Frankfurt1.Level3.net [62.67.66.45]
+ 10     *        *        *     Zeitüberschreitung der Anforderung.
+ 11    27 ms    26 ms    24 ms  AARNET-PTY.ear4.London1.Level3.net [217.163.113.74]
+ 12   295 ms   292 ms   294 ms  et-0-3-0.pe1.actn.act.aarnet.net.au [113.197.15.11]
+ 13     *        *        *     Zeitüberschreitung der Anforderung.
+... und so weiter ...
+
+TRACERT ermittelt den Weg zu einem Ziel durch Senden von ICMP-Echopaketen mit steigenden TTL-Werten an das Ziel. 
+Da jeder Router auf dem Weg die TTL des Pakets mindestens um 1 herunterzählen muss, bevor das Paket weitervermittelt wird, ist die TTL praktisch ein "Hop-Zähler".
+Wenn der TTL-Wert für ein Paket "0" erreicht, sendet der Router die ICMP-Meldung "Zeitüberschreitung".
+
+[===================================================================================================]
+
+Aufgabe 3: nmap
+
+TCP-SYN scannt tausende Ports pro Sekunde und ist dabei relativ unauffällig, da er TCP-Verbindungen niemals abschließt (halboffenes Scannen). 
+UDP-Scan hingegen sendet einen leeren UDP-Header an alle Ziel-Ports. Offene und gefilterte Ports antworten jedoch nur selten, wodurch Nmap Zeitbeschränkungen überschreitet und seine Anfragen erneut sendet, für den Fall, dass das Testpaket oder die Antwort verloren ging. Bei Geschlossenen Ports tritt oft noch ein größeres Problem ein: Port-unreachable-Fehlermeldungen werden z.B. bei Linux auf eine pro Sekunde beschränkt. 
+Ein Scan von 65.536 Ports dauert dementsprechend über 18 Stunden. 
+Beschleunigen kann man das wiefolgt: (Eine Ausgabe befindet sich unter 2 Optionen)
+
+Beliebte Ports zuerst scannen: -F (nmap -sU -F scanme.nmap.org)
+Not shown: 84 closed udp ports (port-unreach)
+PORT      STATE         SERVICE
+67/udp    open|filtered dhcps
+68/udp    open|filtered dhcpc
+123/udp   open          ntp
+135/udp   open|filtered msrpc
+137/udp   open|filtered netbios-ns
+138/udp   open|filtered netbios-dgm
+139/udp   open|filtered netbios-ssn
+445/udp   open|filtered microsoft-ds
+514/udp   open|filtered syslog
+515/udp   open|filtered printer
+623/udp   open|filtered asf-rmcp
+1022/udp  open|filtered exp2
+1812/udp  open|filtered radius
+5060/udp  open|filtered sip
+5353/udp  open|filtered zeroconf
+10000/udp open|filtered ndmp
+Nmap done: 1 IP address (1 host up) scanned in 295.60 seconds
+
+Timing Template (-T4): verhindert, dass die dynamische Scan-Verzögereung für TCP-Ports 10ms überschreitet
+Version detection (-sV): differenziert zwischen open und filtered UDP Ports. Langsamer, aber mit:
+--version intensity 0: werden nur die Probes gesendet, die an jenem Port am wahrscheinlichsten wirksam sind. 
+
+Kombinieren: (nmap -sUV -T4 -F --version-intensity 0 scanme.nmap.org)
+Not shown: 99 open|filtered udp ports (no-response)
+PORT    STATE SERVICE VERSION
+123/udp open  ntp     NTP v4 (secondary server)
+Nmap done: 1 IP address (1 host up) scanned in 32.39 seconds
