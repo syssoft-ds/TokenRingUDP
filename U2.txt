@@ -1,3 +1,5 @@
+Sascha Schäfer 1545577
+
 Aufgabe 1:
 
 Erster Filter -> http.request.method
@@ -64,8 +66,34 @@ Und analog:
 | Ablaufverfolgung beendet.
 
 traceroute funktioniert indem es jeden routenden hop anpingt, auf eine antwort wartet, um es dann nochmal anzupingen
-damit es als antowrt die IP adresse herausbekommt. falls es eine zeitüberschreitung gibt wird es nochmal versucht bis die 
+damit es als antwort die IP adresse herausbekommt. falls es eine zeitüberschreitung gibt wird es nochmal versucht bis die
 maximalzahl (in dem fall 30) erreicht ist.
 jede zeile hat die folgende syntax:
 Hop(oder wiederholung) | 1st ping | 1st response | 2nd ping | IP response
+
+ Aufgabe 3:
+ Der TCP Scan ist deutlich schneller als der UDP scan da in einem TCP protokoll etabliert ist ob eine verbindung besteht
+ (3 way handshake) während in UDP auf eine antwort zufällig gewartet werden muss.
+
+ Diese UDP verbindung kann auch ins Leere schlagen und somit sehr lang laufen.
+
+ Mögliche behebungen sind z.b. hierbei zusätzliche bedingungen zu erstellen wie einen timeout zähler
+ (--max--rtt--timeout) aber das sind alles rounfabout wege um es zu beschleunigen da es keine protokollinterne bestätigung gibt,
+ dass eine verbindung besteht!
+
+ | UDP scan(nmap -sU scanme.nmap.org): Nmap done: 1 IP address (1 host up) scanned in 1036.18 seconds
+ |
+ | TCP scan(nmap -sS scanme.nmap.org): Nmap done: 1 IP address (1 host up) scanned in 28.50 seconds
+ |
+ | UDP scan gefiltert(nmap -sU --max-rtt-timeout 10 scanme.nmap.org): Nmap done: 1 IP address (1 host up) scanned in 1031.04 seconds
+
+ Wie hier zu sehen dauerte der UDP scan ohne Filter länger (wenn auch nicht viel :/ ).
+ Und der TCP scan ist immernoch magnituden kürzer.
+
+ Aber mit Timeout muss man aufpassen da eine zu kurz gezwungende timeout alles verlängern kann
+
+ | UDP scan (nmap -sU --max-rtt-timeout 1 scanme.nmap.org): Nmap done: 1 IP address (1 host up) scanned in 1093.84 seconds
+
+
+
 

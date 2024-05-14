@@ -32,6 +32,8 @@ public class Token {
     public Endpoint poll() {
         return ring.poll();
     }
+    //remove function um element einfach zu entfernen
+   // public Endpoint remove() { return ring.remove();}
 
     public int length () {
         return ring.size();
