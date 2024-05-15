@@ -51,8 +51,53 @@ print(decoded_text)
 
 returns: "Congrats_This_Is_the_Bonus!"
 
+## AUFGABE 2 ##
+
+$ tracert www.anu.edu.au
+
+Routenverfolgung zu terra-web.anu.edu.au [130.56.67.33]
+▒ber maximal 30 Hops:
+
+  1     1 ms     1 ms     1 ms  kabelbox.local [192.168.0.1]
+  2     9 ms    10 ms     7 ms  ip5b43a1fe.dynamic.kabel-deutschland.de [91.67.161.254]
+  3     8 ms    10 ms     7 ms  ip53a9b1de.static.kabel-deutschland.de [83.169.177.222]
+  4    13 ms    12 ms    12 ms  ip5886c2aa.static.kabel-deutschland.de [88.134.194.170]
+  5    13 ms     *       14 ms  145.254.3.170
+  6    12 ms    12 ms    14 ms  145.254.2.209
+  7    16 ms    15 ms    17 ms  4.68.72.213
+  8     *        *        *     Zeit▒berschreitung der Anforderung.
+  9    26 ms    28 ms    27 ms  AARNET-PTY.ear4.London1.Level3.net [217.163.113.74]
+ 10   301 ms   301 ms   301 ms  et-0-3-0.pe1.actn.act.aarnet.net.au [113.197.15.11]
+ 11     *        *        *     Zeit▒berschreitung der Anforderung.
+ 12     *        *        *     Zeit▒berschreitung der Anforderung.
+ 13     *        *        *     Zeit▒berschreitung der Anforderung.
+ 14     *        *        *     Zeit▒berschreitung der Anforderung.
+ 15     *        *        *     Zeit▒berschreitung der Anforderung.
+ 16     *        *        *     Zeit▒berschreitung der Anforderung.
+ 17     *        *        *     Zeit▒berschreitung der Anforderung.
+ 18     *        *        *     Zeit▒berschreitung der Anforderung.
+ 19     *        *        *     Zeit▒berschreitung der Anforderung.
+ 20     *        *        *     Zeit▒berschreitung der Anforderung.
+ 21     *        *        *     Zeit▒berschreitung der Anforderung.
+ 22     *        *        *     Zeit▒berschreitung der Anforderung.
+ 23     *        *        *     Zeit▒berschreitung der Anforderung.
+ 24     *        *        *     Zeit▒berschreitung der Anforderung.
+ 25     *        *        *     Zeit▒berschreitung der Anforderung.
+ 26     *        *        *     Zeit▒berschreitung der Anforderung.
+ 27     *        *        *     Zeit▒berschreitung der Anforderung.
+ 28     *        *        *     Zeit▒berschreitung der Anforderung.
+ 29     *        *        *     Zeit▒berschreitung der Anforderung.
+ 30     *        *        *     Zeit▒berschreitung der Anforderung.
+
+## Aufgabe 3 ##
 
 
+Die Befehle nmap -sU scanme.nmap.org und nmap -sS scanme.nmap.org führen UDP- bzw. TCP-Port-Scans durch.
 
+Der Unterschied in der Geschwindigkeit zwischen den beiden Scans liegt in den Eigenheiten der TCP- und UDP-Protokolle. TCP ist ein verbindungsorientiertes Protokoll, das eine Verbindung aufbaut, bevor Daten gesendet werden. Dieser “Handshake” macht TCP zuverlässiger, aber auch langsamer im Vergleich zu UDP, das ein verbindungsloses Protokoll ist und Daten ohne vorherige Verbindung sendet1.
+
+Allerdings ist in der Praxis der TCP-Scan (nmap -sS) oft schneller als der UDP-Scan (nmap -sU). Das liegt daran, dass viele Netzwerke UDP-Pakete langsamer behandeln oder sogar blockieren, um Denial-of-Service-Angriffe (DoS) zu verhindern1.
+
+Um Nmap-Scans zu beschleunigen, können Sie verschiedene Techniken anwenden. Eine Möglichkeit ist die Verwendung des -n-Parameters, um die umgekehrte DNS-Auflösung zu deaktivieren2. Dies kann besonders nützlich sein, wenn Sie ein großes Netzwerk scannen möchten2.
 
 

@@ -61,7 +61,14 @@ public class Token {
     }
 
     public void send (DatagramSocket s, Endpoint endpoint) throws IOException {
-        send(s, endpoint.ip(), endpoint.port());
+        try{
+            send(s, endpoint.ip(), endpoint.port());
+        } catch (IOException e) {
+            //When the endpoint is not reachable, remove it from the ring
+            System.out.println("Error sending packet: " + e.getMessage());
+            remove(endpoint);
+            throw e;
+        }
     }
 
     public static Token receive(DatagramSocket s) throws IOException {
@@ -88,5 +95,10 @@ public class Token {
 
     public static Token fromJSON(String json) throws IOException {
         return serializer.readValue(json, Token.class);
+    }
+    //remove an endpoint from the ring
+    public Token remove(Endpoint endpoint) {
+        ring.remove(endpoint);
+        return this;
     }
 }
