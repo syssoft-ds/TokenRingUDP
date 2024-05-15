@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -13,7 +14,8 @@ public class Token {
 
     private static final int max_buffer_size = 4096;
 
-    public record Endpoint(String ip, int port) {}
+    public record Endpoint(String ip, int port) {
+    }
 
     public Token append(String ip, int port) {
         ring.offer(new Endpoint(ip, port));
@@ -33,7 +35,7 @@ public class Token {
         return ring.poll();
     }
 
-    public int length () {
+    public int length() {
         return ring.size();
     }
 
@@ -51,7 +53,7 @@ public class Token {
         sequence++;
     }
 
-    public void send (DatagramSocket s, String ip_address, int port ) throws IOException {
+    public void send(DatagramSocket s, String ip_address, int port) throws IOException {
         String rc_json = toJSON();
         byte[] rc_json_bytes = rc_json.getBytes(StandardCharsets.UTF_8);
         InetAddress address = InetAddress.getByName(ip_address);
@@ -60,13 +62,15 @@ public class Token {
         s.send(packet);
     }
 
-    public void send (DatagramSocket s, Endpoint endpoint) throws IOException {
-        try{
+    public void send(DatagramSocket s, Endpoint endpoint) throws IOException {
+        try {
             send(s, endpoint.ip(), endpoint.port());
         } catch (IOException e) {
             //When the endpoint is not reachable, remove it from the ring
             System.out.println("Error sending packet: " + e.getMessage());
-            remove(endpoint);
+            //initialize rebuild the ring:
+            //Each build a 1 to 1 ring, and if successful, add the next endpoint from the old ring
+
             throw e;
         }
     }
@@ -75,7 +79,7 @@ public class Token {
         byte[] buf = new byte[max_buffer_size];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         s.receive(packet);
-        String rc_json = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
+        String rc_json = new String(packet.getData(), 0, packet.getLength(), StandardCharsets.UTF_8);
         // System.out.printf("Received %s from %s:%d\n", rc_json, packet.getAddress().getHostAddress(), packet.getPort());
         return fromJSON(rc_json);
     }
@@ -96,6 +100,7 @@ public class Token {
     public static Token fromJSON(String json) throws IOException {
         return serializer.readValue(json, Token.class);
     }
+
     //remove an endpoint from the ring
     public Token remove(Endpoint endpoint) {
         ring.remove(endpoint);
