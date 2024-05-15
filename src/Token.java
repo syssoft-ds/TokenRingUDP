@@ -80,6 +80,10 @@ public class Token {
         return ring;
     }
 
+    public void remove(String ip, int port) {
+        ring.removeIf(endpoint -> endpoint.ip().equals(ip) && endpoint.port() == port);
+    }
+
     private static final ObjectMapper serializer = new ObjectMapper();
 
     public String toJSON() throws JsonProcessingException {

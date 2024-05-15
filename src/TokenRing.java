@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.net.*;
 import java.util.LinkedList;
 
-
 public class TokenRing {
 
     private static void loop(DatagramSocket socket, String ip, int port, boolean first){
@@ -10,9 +9,10 @@ public class TokenRing {
         if (first) {
             candidates.add(new Token.Endpoint(ip, port));
         }
+        Token rc = null;
         while (true) {
             try {
-                Token rc = Token.receive(socket);
+                rc = Token.receive(socket);
                 System.out.printf("Token: seq=%d, #members=%d", rc.getSequence(), rc.length());
                 for (Token.Endpoint endpoint : rc.getRing()) {
                     System.out.printf(" (%s, %d)", endpoint.ip(), endpoint.port());
@@ -37,6 +37,13 @@ public class TokenRing {
             }
             catch (IOException e) {
                 System.out.println("Error receiving packet: " + e.getMessage());
+                if (rc != null) {
+                    rc.remove(ip, port);
+                }
+            }
+            catch (InterruptedException e) {
+                System.out.println("Error: " + e.getMessage());
+                Thread.currentThread().interrupt();
             }
             catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
@@ -52,26 +59,20 @@ public class TokenRing {
             int port = socket.getLocalPort();
             System.out.printf("UDP endpoint is (%s, %d)\n", ip, port);
             if (args.length == 0) {
-                loop(socket,ip,port,true);
-            }
-            else if (args.length == 2) {
-                Token rc = new Token().append(ip,port);
-                rc.send(socket,args[0],Integer.parseInt(args[1]));
-                loop(socket,ip,port,false);
-            }
-            else {
+                loop(socket, ip, port, true);
+            } else if (args.length == 2) {
+                Token rc = new Token().append(ip, port);
+                rc.send(socket, args[0], Integer.parseInt(args[1]));
+                loop(socket, ip, port, false);
+            } else {
                 System.out.println("Usage: \"java TokenRing\" or \"java TokenRing <ip> <port>\"");
             }
-        }
-        catch (SocketException e) {
+        } catch (SocketException e) {
             System.out.println("Error creating socket: " + e.getMessage());
-        }
-        catch (UnknownHostException e) {
+        } catch (UnknownHostException e) {
             System.out.println("Error while determining IP address: " + e.getMessage());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("IO error: " + e.getMessage());
-            System.out.println(e.getStackTrace());
         }
     }
 }
