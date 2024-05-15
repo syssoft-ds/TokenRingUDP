@@ -1,0 +1,53 @@
+Aufgabe 1: Wireshark
+
+First Challenge: Nach HTTP Filtern -> "password" = dzh20szq in #213
+Second Challenge: Nach HTTP Filtern + Paket suchen (Paketdetails/Zeichenkette = error) -> ra6rgvh7 in #491
+Third Challenge: Filter: data matches "^[a-z0-9]{8}$" -> nd7hark3 in #342
+
+
+Aufgabe 2: Traceroute
+
+Copy-Pasta:
+________________________________________________________________________________________________________
+C:\>tracert www.anu.edu.au
+
+Routenverfolgung zu terra-web.anu.edu.au [130.56.67.33]
+über maximal 30 Hops: 
+
+ 1    <1 ms    <1 ms    <1 ms  speedport.ip [192.168.2.1]
+  2     8 ms     7 ms     7 ms  p3e9bf679.dip0.t-ipconnect.de [62.155.246.121]
+  3    13 ms    12 ms    13 ms  f-eh1-i.F.DE.NET.DTAG.DE [217.5.118.78]
+  4     *        *        *     Zeitüberschreitung der Anforderung.
+  5     *        *        *     Zeitüberschreitung der Anforderung.
+  6    25 ms    25 ms    28 ms  AARNET-PTY.ear4.London1.Level3.net [217.163.113.74]
+  7   306 ms   302 ms   302 ms  et-0-3-0.pe1.actn.act.aarnet.net.au [113.197.15.11]
+  8     *        *        *     Zeitüberschreitung der Anforderung.
+  ...
+ 30     *        *        *     Zeitüberschreitung der Anforderung.
+
+Ablaufverfolgung beendet.
+________________________________________________________________________________________________________
+
+Antwort: 
+Traceroute sendet vom befehlsausführenden System ausgehend in Richtung des Ziel-Hosts ein kleines Datenpaket. 
+Dabei werden alle Router dazwischen abgeklappert. Der erste Router, der erreicht wird, erhält das Paket, mit vermutlich einer TTL von 1, verringert diese um 1, also auf 0 und sendet seinen Namen und IP zurück. Dies geschieht in 3 Paketen, so dass Traceroute 3mal den Ping zu dem Router und seinen IP-Adresse ausgibt. Dann wird die TTL im Startsystem auf 2 gesetzt und sendet über Router 1 zu Router 2, wobei bei passierten Router die TTL wieder um 1 verringert wird, so dass sie bei Router 2 wieder auf 0 springt. Dieser sendet wieder IP-Adresse und Namen an das Ausgangssystem. Dies wiederholt sich standardmäßig n=30 mal. Wurde das Ziel innerhalb der 30 Hops erreicht, werden die verbleibenden Hops noch ausgeführt, allerdings mit dem Ergebnis, dass eine Zeitüberschreitung der Anforderung stattfindet, da kein weiterer Router über das Ziel hinaus erreichbar ist und nach 30 Hops wird die Ablaufverfolgung beendet. Anhand des Pings lässt sich außerdem abschätzen, wie groß die Distanz, bzw welcher Art die Verbindung zwischen den jeweiligen Zwischenstationen ist. 
+
+
+Aufgabe 3: Nmap
+
+Antworten: 
+Warum ist einer der beiden Scans wesentlich schneller als der Andere? Welche Eigenarten der Protokolle oder des Programms führen dazu? 
+
+Beobachtung: 
+1. Die Beobachtung zeigt, dass der UDP Scan (-sU) nicht zu enden scheint und der TCP Syn-Scan (-sS) bereits nach wenigen Sekunden beendet ist. 
+2. Nmap sendet anscheinend in Richtung Ziel-IP Pakete des verwendeten Protokolls und kann damit offene Ports ausfindig machen. 
+3. TCP Scan liefert, dass 4 der 1000 TCP Ports des Ziels offen sind, nämlich 22, 80, 9929 und 31337 und gibt noch deren Service an: ssh, http, nping-echo, Elite. Der Scan dauert insgesamt nur 2.72s.
+4. UDP Scan läuft insgesamt 2758s, also 45min und liefert den freien UDP Port 123 mit Service NTP, wobei 920 der 1000 Ports als closed erkannt werden wegen (port-unreach) und 79 als open, aber gefiltered werden wegen (no-response)
+
+Fazit:
+Die Vermutung liegt nahe, dass bei UDP als best effort Protokoll Nmap keine Bestätigung darüber bekommt, ob die Pakete das Ziel erreichen. Ein intensiverer Scan via "nmap -sU -T4 -A -v" legt nahe, dass Nmap mit einem "Send Delay" arbeitet. In der intensiven Variante wird dieses Delay sukzessive erhöht um unter anderem zu kompensieren, dass immer wieder "probes" verloren gehen bis das Delay bei 1000ms zu einem stabilen Scan zu führen scheint. Dies Verluste scheinen im (-sU) Scan nicht kompensierbar und führt in der intensiven Variante dazu, dass der Scan ungemein verlangsamt wird. Ob diese Verluste nur auf die Art des Protokolls in Verbindung mit der Art des Scans von Nmap zusammen hängen, kann ich so nicht erkennen, aber sie könnten auch firewall- oder routerbedingt sein sein. Außerdem dauert der intensive TCP Scan lediglich 21.18s im Gegensatz zum UDP Scan, den ich nach +45min abbreche, weil anscheinend der Ziel-Host beginnt die Anfrage zurückzuweisen. 
+
+Gibt es Möglichkeiten, den Scan schneller durchzuführen?
+Ja, zb wenn man das "Quick Scan" Preset verwendet, also "nmap -sU -T4 -F scanme.nmap.org" ausführen lässt. Ergebnis bei UDP: 14.1s Scan und Port 123 gefunden. 
+Etwas mehr Details liefert das Preset "Quick Scan plus", also "nmap -sU -sV -T4 -O -F --version-light scanme.nmap.org", allerdings auf Kosten der Laufzeit, die 89.11s beträgt.
+Außerdem könnte man die Zielports partitionieren, bspw in 10er Paketen und 100 Scans parallel laufen lassen. 
