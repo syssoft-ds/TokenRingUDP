@@ -1,0 +1,12 @@
+Filter 1: frame contains "password"
+Zeichenkette 1: dzh20szq
+
+Filter 2: (http.request or http.request_in)
+Zeichenkette 2: ra6rgv7h
+
+Filter 3: data.len == 8
+Zeichenkette 3: nd7hark3
+
+Habe mit Filtern die mir sinnvoll für diese Challenge erschienen angefangen. Habe so zuerst
+das 3te, dann das 2te und dann das 1te gefunden. Deswegen entsprechen die Filter auch nicht
+den clues auf seiner Seite...

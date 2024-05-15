@@ -1,0 +1,78 @@
+2. Traceroute
+
+An sich gibt mir traceroute den Pfad aus, den Daten von meinem PC zu einem anderen PC/Server nehmen. Dabei
+wird mir in der ersten Spalte die Zahl des Hops bzw. das n der n-ten Zwischenstation angezeigt. Die Adresse
+daneben ist dann die IPv4-Adresse der Zwischenstation. Wiederum daneben wird die Zeit, die Daten von den
+Stationen zum Erreichen meines PC brauchen, in Millisekunden ms angezeigt. Diese Zeit wird auch Round-Trip-Zeit genannt.
+So sieht z.B die Ausgabe bei dem traceroute zur Australian National University aus:
+
+bicks@PC-von-Biyan:~$ traceroute www.anu.edu.au
+traceroute to www.anu.edu.au (130.56.67.33), 30 hops max, 60 byte packets
+ 1  PC-von-Biyan.vm.net (172.29.16.1)  0.582 ms  0.508 ms  0.499 ms
+ 2  192.168.178.43 (192.168.178.43)  0.666 ms  1.292 ms  0.890 ms
+ 3  p3e9bf6a7.dip0.t-ipconnect.de (62.155.246.167)  7.763 ms  8.028 ms  9.308 ms
+ 4  f-eh1-i.F.DE.NET.DTAG.DE (217.0.201.78)  12.489 ms f-eh1-i.F.DE.NET.DTAG.DE (217.5.85.162)
+    13.873 ms f-eh1-i.F.DE.NET.DTAG.DE (217.5.118.90)  14.551 ms
+ 5  * * *
+ 6  * * *
+ 7  AARNET-PTY.ear4.London1.Level3.net (217.163.113.74)  29.848 ms  33.497 ms  33.247 ms
+ 8  et-0-3-0.pe1.actn.act.aarnet.net.au (113.197.15.11)  304.914 ms  306.318 ms  307.079 ms
+ 9  138.44.161.3 (138.44.161.3)  330.853 ms  331.140 ms  331.135 ms
+10  core-te-1-1-4.anu.edu.au (150.203.201.5)  310.037 ms  309.038 ms  310.347 ms
+11  vlan-2100-palo.anu.edu.au (150.203.201.33)  308.711 ms  305.847 ms  309.757 ms
+12  terra-web.anu.edu.au (130.56.67.33)  311.113 ms  311.107 ms  311.617 ms
+13  anulb02-common-self-ip.anu.edu.au (130.56.66.250)  6312.925 ms !H * *
+
+So sieht man die verschiedenen Zwischenstationen. 5 und 6, bei denen *** angezeigt wird, boten keine
+Antwort in absehbarer Zeit. Vielleicht wurde aufgrund von Firewall oder ähnlichem kein Datenpaket zurückgeschickt.
+Auch lassen sich die Länder ablesen in denen sich die Stationen befinden. Bis Hop 4 (5-6?) befanden wir uns noch in
+Deutschland. Danach ging es zu einem Aarnet Server in London (London1) bei Hop 7. Ab Hop 8 befanden wir
+uns in Australien. Der große Zeitunterschied zwischen London und Australien lässt sich wahrscheinlich durch den großen
+Distanzunterschied beider Orte zu uns in Deutschland erklären. Dabei sind Daten dann durch ein Kilometerlanges
+Seekabel nach Australien gereist.
+
+
+3. NMap
+
+Über TCP ist es schneller, da TCP anscheinend verbindungsorientiert ist. Jede Übertragung fordert eine Bestätigung,
+wodurch es einfacher ist, zu erkennen, ob ein TCP Port offen ist. UDP aber ist unzuverlässiger und verbindungslos, was
+bedeutet, dass es schwieriger ist festzustellen, ob ein Port offen ist, weil ja keine Bestätigungen für den Empfang von
+Daten gesendet werden. Nmap verwendet verschiedene Scanmethoden für TCP- und UDP-Scans. Die SYN-Scan-Methode (-sS) für
+TCP ist anscheinend schnell, da sie nur einen "Handshake-Prozess" verwendet, um festzustellen, ob ein Port offen ist,
+ohne eine vollständige Verbindung herzustellen. Der UDP-Scan hingegen erfordert häufig den Austausch von Datenpaketen
+mit dem Ziel, um festzustellen, ob ein Port offen ist, was zeitaufwändiger sein kann.
+Um die Zeit eines UDP Scans zu verkürzen bietet NMAP Befehle bzw. Befehlsparameter wie: -Tn und -p n-m. -Tn
+beschränkt, so wie ich es verstanden habe, die Wart-Zeit auf n, wohingegen -p n-m nur Ports n bis m betrachtet.
+Ich habe z.B nmap -sU -p 1-10 -T4 scanme.nmap.org benutzt und so sehr schnell Ergebnisse erhalten.
+(Die Ports waren alle geschlossen, zumal 10 Ports anzuschauen nicht gerade viel ist.)
+
+
+4. TokenRing
+
+Ich habe ChatGPT 3.5 aufgrund von Zeitmangel jetzt (23:45) zuerst nach den Funktionalitäten, und schließlich nach den
+Code-Snippets gefragt. Die Funktionalitäten waren:
+
+    Fehlererkennung und -behandlung: Implementiere eine Mechanik, um die
+    Erreichbarkeit der Knoten im Ring zu überwachen. Wenn ein Knoten ausfällt,
+    entferne ihn aus der Liste der aktiven Knoten und starte gegebenenfalls
+    einen Prozess zur Wiederherstellung des Rings.
+
+    Reorganisation des Rings: Implementiere eine Methode zum Neuorganisieren des
+    Rings, wenn ein Knoten ausfällt. Dies kann bedeuten, dass die Reihenfolge der
+    verbleibenden Knoten angepasst wird, um die Kommunikation aufrechtzuerhalten.
+
+    Fehlerresistenz: Implementiere Mechanismen zur Wiederherstellung des Betriebs
+    nach einem Knotenausfall, z. B. durch die Wahl eines neuen Ringführers oder die
+    Neuanordnung der Kommunikationswege.
+
+    Kommunikationsprotokoll: Überarbeite das Kommunikationsprotokoll, um sicherzustellen,
+    dass Nachrichten zuverlässig übertragen werden, selbst wenn Knoten ausfallen oder
+    wiederhergestellt werden müssen.
+
+    Wiederherstellung von ausgefallenen Knoten: Implementiere eine Methode zur Wiederherstellung
+    eines ausgefallenen Knotens, sobald er wieder online geht. Stelle sicher, dass der Knoten
+    wieder in den Ring integriert wird, ohne den Betrieb des Rings zu beeinträchtigen.
+
+Den Code konnte ich nicht vollständig nachvollziehen und testen. Der Ring läuft jedoch schonmal.
+Testen und nachvollziehen tue ich dann nachträglich.
+

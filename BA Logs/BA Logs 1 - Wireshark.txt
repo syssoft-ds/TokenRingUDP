@@ -1,0 +1,54 @@
+## Aufgabe 1:
+Setup/Klonen des Repositories verlief unter aktuellster Java Version 
+und in IntelliJ eigentlich reibungslos. Ausführung zunächst durch die Fatjar.
+
+
+## Aufgabe 2:
+Ähnlich zur Vorlesung habe ich zunächst einen lokalen Token-Ring "geschaffen", 
+indem ich die bereitgestellte .jar wie in der README erklärt, mehrmals in Windows 
+PowerShell mit den jeweiligen Eigenschaften aufgerufen habe. Hier die Ausgaben:
+
+UDP endpoint is (192.168.178.22, 57255)
+Token: seq=2, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=4, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=6, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=8, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=10, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=12, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=14, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=16, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=18, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=20, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=22, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=24, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=26, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=28, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=30, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=32, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=34, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+Token: seq=36, #members=2 (192.168.178.22, 57254) (192.168.178.22, 57255)
+
+
+## Aufgabe 3:
+Auf WireShark habe ich dann lange nach den Nachrichten des Rings gesucht, 
+bin mir aber unsicher wirklich was Brauchbares gefunden zu haben. Displayfilterbefehle wie:
+
+tcp.port== / udp.port== 
+ip.src== and ip.dst== 
+
+waren hier nicht hilfreich. Stellt sich heraus, dass ich, zumindest jetzt für meinen lokalen Ring, 
+beim Start WireSharks nicht "Ethernet", sondern "Adapter for loopback traffic capture" aufzeichnen musste. 
+Dort fand ich dann folgende Nachrichten des Rings (lokal):
+
+Nr.   Time        Source            Destination       Prot. Lngth Infos (Ports und Len)
+9192	191.308945	192.168.178.22	192.168.178.22	UDP	131	57255 → 57254 Len=99
+9191	190.301247	192.168.178.22	192.168.178.22	UDP	131	57254 → 57255 Len=99
+9190	189.295071	192.168.178.22	192.168.178.22	UDP	131	57255 → 57254 Len=99
+9185	188.289710	192.168.178.22	192.168.178.22	UDP	131	57254 → 57255 Len=99
+9158	187.274716	192.168.178.22	192.168.178.22	UDP	131	57255 → 57254 Len=99
+9157	186.269175	192.168.178.22	192.168.178.22	UDP	131	57254 → 57255 Len=99
+9156	185.263522	192.168.178.22	192.168.178.22	UDP	131	57255 → 57254 Len=99
+
+Ich kann dem noch nicht viel entnehmen, jedoch ist klar, dass die Länge der Nachricht sowie die IP-Adressen, 
+so wie man es eben annimmt, gleich bleiben, die Ports jedoch sich stetig ändern, aber zwischen Nachrichten doch 
+gleich bleiben. Sprich ein Port ist immer Destination und danach Source. 
