@@ -66,7 +66,7 @@ public class Token implements Runnable {
     public Endpoint replyTo;
 
     public boolean remove(Endpoint ep) {
-        System.out.println("removed " + ep.port);
+        System.out.println("removed " + ep.ip + ", " + ep.port);
         return ring.remove(ep);
     }
 
@@ -77,10 +77,10 @@ public class Token implements Runnable {
         if (expectingAnswer == null) return false;
         if (t.getSequence() == - getSequence()) {
             expectingAnswer = null;
-            System.out.println("accepted " + t.getSequence());
+            //System.out.println("accepted " + t.getSequence());
             return true;
         } else {
-            System.out.println("not accepted " + t.getSequence() + "  " + getSequence());
+            //System.out.println("not accepted " + t.getSequence() + "  " + getSequence());
             return false;
         }
     }
@@ -89,7 +89,7 @@ public class Token implements Runnable {
         if (length() <= 2) return;
         repetitionSocket = s;
         expectingAnswer = ep;
-        System.out.println("expecting: " + getSequence());
+        //System.out.println("expecting: " + getSequence());
         Thread thread = new Thread(this);
         thread.start();
     }
@@ -129,7 +129,7 @@ public class Token implements Runnable {
         DatagramPacket packet = new DatagramPacket(rc_json_bytes, rc_json_bytes.length, address, port);
         // System.out.printf("Sending %s to %s:%d\n", rc_json, ip_address, port);
         s.send(packet);
-        System.out.println("sent " + getSequence());
+        //System.out.println("sent " + getSequence());
     }
 
     public void send (DatagramSocket s, Endpoint endpoint) throws IOException {

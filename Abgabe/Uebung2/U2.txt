@@ -1,0 +1,175 @@
+Rechnernetze 2024, Übung 2, Julian Hauck
+
+************************************************************************
+Aufgabe 1
+************************************************************************
+
+1.Schritt:
+Display-Filter: frame contains "password"
+Zeichenfolge: dzh20szq
+
+2. Schritt
+Display-Filter: http.response.code >= 400
+ra6rgv7h
+
+3.Schritt
+Display-Filter: icmp
+nd7hark3
+
+Lösungscode:
+Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
+
+
+************************************************************************
+Aufgabe 2
+************************************************************************
+
+Ausgabe beim Ausführen von traceroute www.anu.edu.au:
+
+traceroute to www.anu.edu.au (130.56.67.33), 30 hops max, 60 byte packets
+ 1  speedport.ip (192.168.2.1)  1.138 ms  1.636 ms  1.581 ms
+ 2  p3e9bf679.dip0.t-ipconnect.de (62.155.246.121)  6.916 ms  8.655 ms  8.612 ms
+ 3  f-eh1-i.F.DE.NET.DTAG.DE (217.5.118.74)  12.769 ms f-eh1-i.F.DE.NET.DTAG.DE (217.0.198.42)  12.722 ms f-eh1-i.F.DE.NET.DTAG.DE (217.5.118.74)  12.723 ms
+ 4  193.158.39.70 (193.158.39.70)  11.405 ms  11.369 ms  12.603 ms
+ 5  * * *
+ 6  AARNET-PTY.ear4.London1.Level3.net (217.163.113.74)  24.659 ms  23.525 ms  22.900 ms
+ 7  et-0-3-0.pe1.actn.act.aarnet.net.au (113.197.15.11)  304.288 ms  305.766 ms  304.356 ms
+ 8  138.44.161.3 (138.44.161.3)  299.891 ms  301.012 ms  301.459 ms
+ 9  core-te-1-1-4.anu.edu.au (150.203.201.5)  304.504 ms  304.458 ms  304.416 ms
+10  vlan-2100-palo.anu.edu.au (150.203.201.33)  304.248 ms  304.165 ms  304.140 ms
+11  tuckwell.anu.edu.au (130.56.67.33)  306.890 ms  306.538 ms  307.035 ms
+12  * * *
+13  anulb02-common-self-ip.anu.edu.au (130.56.66.250)  3641.458 ms !H  3907.910 ms !H  3609.512 ms !H
+
+Zunächst sendet mein Rechner ein ICMP-Paket mit TTL=1, welches von meinem heimischen Router empfangen und zurückgesendet wird. Anschließend sendet mein Rechner ein Paket mit TTL=2, welches von meinem Router an einen Router der Telekom gesendet wird, der sich laut meiner Recherche (auf nordvpn.com) in Aachen befindet und auf selbigem Wege zurück antwortet. Das nächste Paket mit TTL=3 erreicht einen Router der Telekom mit unbekanntem Standort. Nach dessen Antwort sendet mein Rechner ein Paket mit TTL=4 an einen Knotenpunkt der Telekom in Köln. Der nachfolgende Router, der das Paket mit TTL=5 erhält, antworte nicht, was entweder auf eine Überlastung zurückzuführen ist oder wahrscheinlicher daran liegt, dass er so konfiguriert ist, dass er generell solche Pakete wegfiltert. Der nächste Knotenpunkt befindet in Dublin Irland, bevor das Paket mit TTL=7 bereits das Zielland Australien, genauer gesagt Melbourne erreicht. Der nächste Hop erreicht Albury. Bei allen nachfolgenden Stationen handelt es sich um Router des Netzes der Australien National University.
+
+
+************************************************************************
+Aufgabe 3
+************************************************************************
+
+Ausgabe der beiden Scans:
+
+julian@iupiter:~$ sudo nmap -sU scanme.nmap.org
+Starting Nmap 7.80 ( https://nmap.org ) at 2024-05-11 14:45 CEST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.23s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 997 closed ports
+PORT    STATE         SERVICE
+68/udp  open|filtered dhcpc
+123/udp open          ntp
+162/udp open|filtered snmptrap
+
+Nmap done: 1 IP address (1 host up) scanned in 1124.21 seconds
+julian@iupiter:~$ sudo nmap -sS scanme.nmap.org
+[sudo] password for julian:               
+Starting Nmap 7.80 ( https://nmap.org ) at 2024-05-11 15:06 CEST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.42s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 996 closed ports
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+9929/tcp  open  nping-echo
+31337/tcp open  Elite
+
+Nmap done: 1 IP address (1 host up) scanned in 2.35 seconds
+
+
+Der Scan der TCP-Ports ist wie man sieht wesentlich schneller als der der UDP-Ports, weil TCP ein verbindungsorientiertes Protokoll ist. Eine Verbindung wird durch den sogenannten Three-Way-Handshake aufgebaut. Das heißt, der Client sendet ein SYN-Paket (SYN wie synchronize) an den Server, der wiederum ein SYN-ACK-Paket (ACK wie acknowlegement) an den Client schickt, welcher schließlich mit einem ACK-Paket antwortet. Da dieser Prozess für eine gute Verbindung darauf ausgelegt ist, schnell abzulaufen, kann davon ausgegangen werden, dass ein offener TCP-Port schnell antwortet, wenn es untersucht wird. Ist der untersuchte TCP-Port geschlossen, erhält der Client ein RST-Paket (RST wie reset), sodass er mit dem Scan weiterer Ports fortfahren kann.
+UDP hingegen ist nicht verbindungsorientiert und verfolgt einen Best-Effort-Ansatz. Das heißt, man kann keine feste Annahme darüber treffen, wie schnell ein offener Port antwortet und es ist auch nicht sichergestellt, dass das gesendete Paket ankommt. Also muss man beim Scannen ein längeres Timeout gewähren und bei ausbleibender Antwort mehrere Versuche unternehmen, um zumindest mit annähernder, aber niemals mit vollständiger Sicherheit sagen zu können, ob ein Port geschlossen ist.
+Eine erste Idee zur Verschnellerung des UDP-Scans ist die Begrenzung des Timeouts
+Um auf einen sinnvolen Wert für das Timeout zu kommen, habe ich Pings durchgeführt:
+
+ping scanme.nmap.org
+PING scanme.nmap.org(scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f)) 56 data bytes
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=1 ttl=52 time=164 ms
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=2 ttl=52 time=163 ms
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=3 ttl=52 time=163 ms
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=4 ttl=52 time=338 ms
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=5 ttl=52 time=362 ms
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=6 ttl=52 time=181 ms
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=7 ttl=52 time=164 ms
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=8 ttl=52 time=163 ms
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=9 ttl=52 time=162 ms
+64 bytes from scanme.nmap.org (2600:3c01::f03c:91ff:fe18:bb2f): icmp_seq=10 ttl=52 time=162 ms
+
+Daraufhin habe ich NMAP mit einem maximalen Timneout von 350 ms gestartet.
+
+sudo nmap -sU --max-rtt-timeout 350ms scanme.nmap.org
+[sudo] password for julian:               
+Starting Nmap 7.80 ( https://nmap.org ) at 2024-05-15 12:27 CEST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.18s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 995 closed ports
+PORT    STATE         SERVICE
+68/udp  open|filtered dhcpc
+123/udp open          ntp
+162/udp open|filtered snmptrap
+434/udp open|filtered mobileip-agent
+657/udp open|filtered rmc
+
+Nmap done: 1 IP address (1 host up) scanned in 1012.11 seconds 
+
+Im Vergleich zum vorherigen Scan verlief dieser ca. 100 Sekunden schneller. Das lag allerdings vielmehr, daran, dass ich die Scans an verschiedenen Tagen durchgeführt habe, als am maximalen Timeout, wie folgender Standard-Scan zeigt, den ich für einen tagesaktuellen Vergleich durchgeführt habe:
+
+julian@iupiter:~$ sudo nmap -sU scanme.nmap.org
+Starting Nmap 7.80 ( https://nmap.org ) at 2024-05-15 13:05 CEST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.19s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 995 closed ports
+PORT      STATE         SERVICE
+68/udp    open|filtered dhcpc
+123/udp   open          ntp
+162/udp   open|filtered snmptrap
+21104/udp open|filtered unknown
+21318/udp open|filtered unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 1001.05 seconds
+
+Eine weitere Idee ist die Begrenzung der Wiederholungen von Anfragen an einen Port.
+
+julian@iupiter:~$ sudo nmap -sU --max-rtt-timeout 350ms --max-retries 1 scanme.nmap.org
+[sudo] password for julian:               
+Starting Nmap 7.80 ( https://nmap.org ) at 2024-05-15 12:53 CEST
+Warning: 45.33.32.156 giving up on port because retransmission cap hit (1).
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.18s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 818 open|filtered ports, 181 closed ports
+PORT    STATE SERVICE
+123/udp open  ntp
+
+Nmap done: 1 IP address (1 host up) scanned in 175.76 seconds
+julian@iupiter:~$ sudo nmap -sU scanme.nmap.org
+Starting Nmap 7.80 ( https://nmap.org ) at 2024-05-15 12:59 CEST
+
+Offenbar habe ich die Anzahl der Wiederholungen aber zu niedrig angesetzt, um ein brauchbares Ergebnis zu erhalten.
+
+Die in meinen Versuchen beste Lösung zur Verschnellerung des UDP-Scans war die Begrenzung auf das Untersuchen von Ports, die mit erhöhter Wahrscheinlichkeit offen sind:
+
+julian@iupiter:~$ sudo nmap -sU -F scanme.nmap.org
+Starting Nmap 7.80 ( https://nmap.org ) at 2024-05-15 12:59 CEST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.21s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 97 closed ports
+PORT    STATE         SERVICE
+68/udp  open|filtered dhcpc
+123/udp open          ntp
+162/udp open|filtered snmptrap
+
+Nmap done: 1 IP address (1 host up) scanned in 91.62 seconds
+
+
+************************************************************************
+Aufgabe 4
+************************************************************************
+
+Der Klasse Token habe ich eine Methode remove(Endpoint ep) hinzugefügt, die den übergebenen Endpoint aus dem TokenRing löscht. Umfangreicher war die Implementierung der Funktionalitäten zum Erkennen eines ausgefallenen Knotens. Hierbei habe ich folgendes Konzept umgesetzt: Sobald ein Token-Ring mehr als zwei Knoten umfasst (ansonsten gibt es ohnehin nichts zu reparieren), sendet ein Knoten B, wenn er einen Token erhält, diesen wie gehabt an einen Knoten C weiter, aber sendet den empfangenen Token zusätzlich mit negierter Sequenz an den Sender A zurück. Das Antworten an den Sender A erfolgt erst nach der Weitergabe des Tokens, damit A davon ausgehen kann, dass der Token nicht nur von B empfangen wurde, sondern tatsächlich noch im Umlauf ist. (Ansonsten könnte es sein, dass B zwar antwortet, aber vor der Weitergabe an C ausfällt.) 
+Erhält A keine Anwort, entfernt es B aus der Endpoint-Queue des Tokens und sendet den Token (mit unveränderter Sequenznummer) an C. Für den Fall dass das Token bereits von B an C weitergegeben wurde, aber B vor der Antwort an A ausgefallen ist, sind nun zunächst zwei Token in Umlauf. Allerdings ist durch einen hinreichend hohen Timeout seitens A gewährleistet, dass der Token von B vor dem Token von A bei C ankommt. C erkennt, dass der Token von A eine niedrigere Sequenz als der bereits erhaltene von B hat und ignoriert diesen, sodass wieder nur ein Token in Umlauf ist. Somit befindet sich B zwar noch in der Enpoint-Queue des Tokens, wird aber im nächsten Durchlauf von A entfernt (sofern B noch immer ausfällt). 
+Besteht der Ring nur noch aus einem Token, muss das Programm neu gestartet werden.
