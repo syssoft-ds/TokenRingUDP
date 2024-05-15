@@ -20,12 +20,19 @@ final solution code: Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
 
 Aufgabe2)
 
-traceroute schickt drei seperate Pakete an das Ziel schickt. Dabei antworten alle zwischenstationen bis zum ziel und es wird die zeit bis dorthin und zurück, also die Ping-Zeit zwischen den Hops, in der Konsole wiedergegeben. Normalerweise haben die Pakete eine TTL von 30. Also machen 30 hops. In meinem Fall erreichten meine Pakete die Australian National University nicht. Da 30 hops nicht ausreichten. Auch bei mehr hops bekommt man einen Timeout. Aber laut chatgpt kann es sein das die Router in der Australian National University keine Antwort auf den Ping zurück schicken.
+traceroute schickt drei seperate Pakete an das Ziel schickt. Dabei antworten alle zwischenstationen bis zum ziel und es
+wird die zeit bis dorthin und zurück, also die Ping-Zeit zwischen den Hops, in der Konsole wiedergegeben.
+Normalerweise haben die Pakete eine TTL von 30. Also machen 30 hops.
+In meinem Fall erreichten meine Pakete die Australian National University nicht.
+Da 30 hops nicht ausreichten. Auch bei mehr hops bekommt man einen Timeout.
+Aber laut chatgpt kann es sein das die Router in der Australian National University keine Antwort auf den Ping zurück schicken.
 
 Aufgabe3)
 
-Da UDP ein best effort verhalten hat, ist es nicht garantiert das eine Antwort kommt. Bei TCP hingegen wird sichergestellt das man eine Antwort erhält.
-Da UDP deshalb nicht genau weiß, ob es eine Antwort erhält, dauert es auch länger bis man feststellen kann ob überhaupt eine Antwort kommt. D.h. dauert länger bis man einen Timeout festsellt.
+Da UDP ein best effort verhalten hat, ist es nicht garantiert das eine Antwort kommt.
+Bei TCP hingegen wird sichergestellt das man eine Antwort erhält.
+Da UDP deshalb nicht genau weiß, ob es eine Antwort erhält, dauert es auch länger bis man feststellen kann ob überhaupt eine Antwort kommt.
+D.h. dauert länger bis man einen Timeout festsellt.
 Man kann die Ports beschränken oder die Timeout- Zeit geringen machen.
 
 Mein UDP scan hat auch nach mehreren Minuten keine Ergebnisse erzielt.
