@@ -1,0 +1,50 @@
+Filter: http.file_data matches "[a-z0-9]{8}$"
+=> Passwort im Packet: dzh20szq
+=> Next Clue: One HTTP error is different.
+Filter: http.response.code >= 400
+=> Passwort im Packet: ra6rgv7h
+=> Next Clue: Hidden in Ping
+Filter: icmp
+=>Passwort im Packet: nd7hark3
+=> Final Solution "Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh", welcher Base64-enkodiert ist und dekodiert "Congrats_This_Is_the_Bonus!" bedeutet.
+
+traceroute "www.anu.edu.au"
+traceroute to www.anu.edu.au (130.56.67.33), 30 hops max, 60 byte packets
+1  _gateway (192.168.178.1)  1.277 ms  2.145 ms  2.560 ms
+2  * * *
+3  ip5886c969.static.kabel-deutschland.de (88.134.201.105)  23.469 ms ip5886cb79.static.kabel-deutschland.de (88.134.203.121)  23.463 ms  23.455 ms
+4  145.254.3.170 (145.254.3.170)  25.940 ms 145.254.3.168 (145.254.3.168)  25.932 ms  27.209 ms
+5  145.254.2.209 (145.254.2.209)  24.552 ms  23.419 ms  25.904 ms
+6  ae-7.edge9.Frankfurt1.Level3.net (4.68.74.9)  34.517 ms  28.037 ms  27.722 ms
+7  * * *
+8  AARNET-PTY.ear4.London1.Level3.net (217.163.113.74)  36.316 ms  36.311 ms  34.326 ms
+9  et-0-3-0.pe1.actn.act.aarnet.net.au (113.197.15.11)  302.490 ms  302.148 ms  302.480 ms
+10  138.44.161.3 (138.44.161.3)  324.906 ms  322.955 ms  322.506 ms
+11  core-te-1-1-4.anu.edu.au (150.203.201.5)  299.035 ms  300.609 ms  300.026 ms
+12  vlan-2100-palo.anu.edu.au (150.203.201.33)  300.018 ms  354.954 ms  354.948 ms
+13  anu.edu.au (130.56.67.33)  354.943 ms  354.902 ms  354.894 ms
+14  anulb02-common-self-ip.anu.edu.au (130.56.66.250)  1686.479 ms !H  1686.472 ms !H  1686.457 ms !H
+
+traceroute sendet zuerst ein ICMP-Echo Request mit TTL 1 an die Zieladresse. Der erste Router auf dem Weg zum Ziel verringert TTL um 1, erreicht es 0 wird das Request nicht mehr weitergeleitet und der Router antwortet mit ICMP-Antwortpacket, welches die IP-Adresse des jeweiligen Router enthält. Dies wird dann für immer höhere TTL-Werte wiederholt, bis die Zieladresse erreicht wurde. So kann dann der Weg den ein Paket zur Zieladresse nimmt, veranschaulicht werden. Im Beispiel von www.anu.edu.au geht das Paket über _gateway, ip5886c969.static.kabel-deutschland.de, ..., bis schließlich anu.edu.au und anulb02-common-self-ip.anu.edu.au.
+2 Router haben das ICMP-Echo Request ignoriert und sind mit * * * gekennzeichnet.
+
+Ein nmap-Scan von UDP-Ports ist langsam, da UDP ein verbindundsloses Protokoll ist und auf empfangene Paket nicht mit einem Acknowledge geantwortet werden muss.
+Für bekannte Ports sendet nmap spezifische Pakete, ansonsten leere.
+
+sudo nmap -sS scanme.nmap.org
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.17s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 993 closed tcp ports (reset)
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+80/tcp    open     http
+135/tcp   filtered msrpc
+139/tcp   filtered netbios-ssn
+445/tcp   filtered microsoft-ds
+9929/tcp  open     nping-echo
+31337/tcp open     Elite
+
+Nmap done: 1 IP address (1 host up) scanned in 8.89 seconds
+
+Mithilfe von -T4 ("aggresive" statt -T3 "normal") kann die Zeit des UDP Scannens verringert werden, indem verschiedene Timings beim Portscannen enger gesetzt werden.

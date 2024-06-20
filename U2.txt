@@ -1,0 +1,3 @@
+http.file_data matches "[a-z0-9]{8}$"
+http.response.code >= 400
+icmp
