@@ -1,0 +1,83 @@
+Aufgabe 1:
+http -> Zum finden des Passworts. Dabei habe ich mir dann die Post request an /login angeschaut. Damit habe ich das Passwort: dzh20szq gefunden.
+http -> Ich habe das Packet mit dem 401 Fehler untersucht und die Response Phrase: ra6rgv7h gefunden, welche zum dritten Hinweis führt.
+icmp -> Dort habe ich das folgende als data gefunden nd7hark3
+Damit habe ich die Lösung gefunden: Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
+
+Aufgabe 2:
+Tracecert zeigt über eine maximale Anzahl von 30 hops, über welche Knotenpunkte die Anfrage an den Server für www.anu.edu.au geleitet wird.
+
+  1     5 ms     3 ms     3 ms  fritz.box [192.168.178.1]
+  2    11 ms    10 ms     8 ms  p3e9bf639.dip0.t-ipconnect.de [62.155.246.57]
+  3    14 ms    13 ms    14 ms  f-eh1-i.F.DE.NET.DTAG.DE [217.5.85.174]
+  4     *        *        *     Request timed out.
+  5     *        *        *     Request timed out.
+  6    26 ms    27 ms    26 ms  AARNET-PTY.ear4.London1.Level3.net [217.163.113.74]
+  7   308 ms   306 ms   308 ms  et-0-3-0.pe1.actn.act.aarnet.net.au [113.197.15.11]
+  8     *        *        *     Request timed out.
+  9     *        *        *     Request timed out.
+ 10     *        *        *     Request timed out.
+ 11     *        *        *     Request timed out.
+ 12     *        *        *     Request timed out.
+ 13     *        *        *     Request timed out.
+ 14     *        *        *     Request timed out.
+ 15     *        *        *     Request timed out.
+ 16     *        *        *     Request timed out.
+ 17     *        *        *     Request timed out.
+ 18     *        *        *     Request timed out.
+ 19     *        *        *     Request timed out.
+ 20     *        *        *     Request timed out.
+ 21     *        *        *     Request timed out.
+ 22     *        *        *     Request timed out.
+ 23     *        *        *     Request timed out.
+ 24     *        *        *     Request timed out.
+ 25     *        *        *     Request timed out.
+ 26     *        *        *     Request timed out.
+ 27     *        *        *     Request timed out.
+ 28     *        *        *     Request timed out.
+ 29     *        *        *     Request timed out.
+ 30     *        *        *     Request timed out.
+
+Das hier ist mein Output von tracert www.www.anu.edu.au.
+Dabei lässt sich immer die Hop-Nummer in der ersten Spalte erkennen, die Round-Trip Time der drei Pakete welche gesendet werden und in der letzten Spalter der Hostname und die IP-Adresse. Es werden 3 Pakete gesendet, um Inkosistenzen in der response-time zu erkennen und dementsprechend genauere Ergebnisse zu liefern.
+Nachdem das Netwerkgerät an Hop-Nummer 7 erreicht wurde gibt es time-outs bis zum Ende nach 30 Hops. Das heißt normalerweise, dass keine Antwort empfangen wurde. Dies kann durch Firewalleinstellungen oder anderweitige Konfigurationen der Geräte hervorgerufen werden, dass diese ICMP Anfragen nicht beantworten sollen.
+
+Aufgabe 3:
+Die großen Unterschiede in der Verbindungsgeschwindigkeit lässt sich auf die Eigenarten der beiden Protokolle zurückführen. TCP ist verbindungsorientiert, d.h. es wird eine Verbindung aufgebaut und erst dann werden Pakete gesendet. Der Scan erwartet nur einmal SYN/ACK Antworten, was aber nicht vollständig abgeschlossen wird, weshalb der SCan wesentlich schneller ist. Bei UDP werden UDP-Pakete an die Zielports gesendet, jedoch kann eine fehlende Antwort nicht bedeuten, dass der Port geschlossen ist, deshalb hat man längere Wartezeiten.
+Dies ist mein Output zu nmap -sS scanme.nmap.org
+
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-07 11:19 Mitteleuropõische Sommerzeit
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.17s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 993 closed tcp ports (reset)
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+80/tcp    open     http
+135/tcp   filtered msrpc
+139/tcp   filtered netbios-ssn
+445/tcp   filtered microsoft-ds
+9929/tcp  open     nping-echo
+31337/tcp open     Elite
+
+Nmap done: 1 IP address (1 host up) scanned in 6.13 seconds
+
+
+Nach mehreren Minuten war der Scan zu UDP immer noch nicht fertig und das war der Output.
+
+nmap -sU scanme.nmap.org
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-07 11:20 Mitteleuropõische Sommerzeit
+Warning: 45.33.32.156 giving up on port because retransmission cap hit (10).
+
+Um den Scan schneller durchzuführen kann man beispielsweise die maximale Wartezeit für eine Antwort begrenzen, in diesem Fall auf 100 Millisekunden. Ebenfalls kann man die Anzahl der Wiederholungsversuche auf 1 begrenzen, um den Scan zu beschleunigen. Ebenfalls kann man den Command auf mehreren Threads ausführen, was zu einer Performanceverbesserung führt.
+nmap -sU --max-rtt-timeout 100ms --max-retries 1 scanme.nmap.org
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-07 11:32 Mitteleuropõische Sommerzeit
+Warning: 45.33.32.156 giving up on port because retransmission cap hit (1).
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.17s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 970 open|filtered udp ports (no-response), 29 closed udp ports (port-unreach)
+PORT    STATE SERVICE
+123/udp open  ntp
+
+Nmap done: 1 IP address (1 host up) scanned in 35.95 seconds
