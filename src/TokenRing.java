@@ -1,39 +1,57 @@
 import java.io.IOException;
 import java.net.*;
 import java.util.LinkedList;
+import java.util.Queue;
 
 
 public class TokenRing {
 
+    private static Token expecting = null;
+
+    private synchronized static void receivedAnswer(Token t) {
+        if (expecting.acceptAnswer(t)) expecting = null;
+    }
+
     private static void loop(DatagramSocket socket, String ip, int port, boolean first){
         LinkedList<Token.Endpoint> candidates = new LinkedList<>();
-        if (first) {
-            candidates.add(new Token.Endpoint(ip, port));
-        }
+        int lastSequence = 0;
         while (true) {
             try {
                 Token rc = Token.receive(socket);
+                if (rc.getSequence() < 0) {
+                    receivedAnswer(rc);
+                    continue;
+                }
+                if (rc.getSequence() > 0 && rc.getSequence() <= lastSequence) continue;
+                if (rc.getSequence() > 0) lastSequence = rc.getSequence();
                 System.out.printf("Token: seq=%d, #members=%d", rc.getSequence(), rc.length());
                 for (Token.Endpoint endpoint : rc.getRing()) {
                     System.out.printf(" (%s, %d)", endpoint.ip(), endpoint.port());
                 }
                 System.out.println();
                 if (rc.length() == 1) {
-                    candidates.add(rc.poll());
+                    candidates.offer(rc.poll());
                     if (!first) {
+                        if (candidates.peek().equals(new Token.Endpoint(ip,port))) {
+                            first = true;
+                        }
                         continue;
+                    } else {
+                        candidates.offer(new Token.Endpoint(ip, port));
                     }
                 }
                 first = false;
-                for (Token.Endpoint candidate : candidates) {
-                    rc.append(candidate);
+                while (!candidates.isEmpty()) {
+                    rc.append(candidates.poll());
                 }
-                candidates.clear();
                 Token.Endpoint next = rc.poll();
                 rc.append(next);
                 rc.incrementSequence();
                 Thread.sleep(1000);
                 rc.send(socket, next);
+                rc.expectAnswer(socket, next);
+                expecting=rc;
+                if (rc.getSequence() > 1) rc.reply(socket);
             }
             catch (IOException e) {
                 System.out.println("Error receiving packet: " + e.getMessage());
