@@ -64,9 +64,10 @@ public class Token {
         send(s, endpoint.ip(), endpoint.port());
     }
 
-    public static Token receive(DatagramSocket s) throws IOException {
+    public static Token receive(DatagramSocket s, int timeout) throws IOException {
         byte[] buf = new byte[max_buffer_size];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
+        s.setSoTimeout(timeout); // Set the socket timeout
         s.receive(packet);
         String rc_json = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
         // System.out.printf("Received %s from %s:%d\n", rc_json, packet.getAddress().getHostAddress(), packet.getPort());
@@ -74,7 +75,7 @@ public class Token {
     }
 
     @JsonProperty
-    private final Queue<Endpoint> ring = new LinkedList<>();
+    private static final Queue<Endpoint> ring = new LinkedList<>();
 
     public Queue<Endpoint> getRing() {
         return ring;
@@ -88,5 +89,10 @@ public class Token {
 
     public static Token fromJSON(String json) throws IOException {
         return serializer.readValue(json, Token.class);
+    }
+
+    //Method to remove a node from the ring
+    public static void removeNode(Endpoint endpoint) {
+        ring.remove(endpoint);
     }
 }

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 public class TokenRing {
 
+    private static final int TIMEOUT_THRESHOLD = 10000; // Timeout threshold (milliseconds)
+
     private static void loop(DatagramSocket socket, String ip, int port, boolean first){
         LinkedList<Token.Endpoint> candidates = new LinkedList<>();
         if (first) {
@@ -12,7 +14,7 @@ public class TokenRing {
         }
         while (true) {
             try {
-                Token rc = Token.receive(socket);
+                Token rc = Token.receive(socket, TIMEOUT_THRESHOLD);
                 System.out.printf("Token: seq=%d, #members=%d", rc.getSequence(), rc.length());
                 for (Token.Endpoint endpoint : rc.getRing()) {
                     System.out.printf(" (%s, %d)", endpoint.ip(), endpoint.port());
@@ -34,6 +36,13 @@ public class TokenRing {
                 rc.incrementSequence();
                 Thread.sleep(1000);
                 rc.send(socket, next);
+            }
+            catch (SocketTimeoutException e) {
+                System.out.println("Node timed out. Removing from the ring.");
+                //remove failed node from the list
+                Token.Endpoint failedNode = candidates.poll();
+                //remove failed node from token
+                Token.removeNode(failedNode);
             }
             catch (IOException e) {
                 System.out.println("Error receiving packet: " + e.getMessage());
