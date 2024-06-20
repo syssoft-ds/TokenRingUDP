@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 
 public class TokenRing {
+    static Token latestrc;
 
     private static void loop(DatagramSocket socket, String ip, int port, boolean first){
         LinkedList<Token.Endpoint> candidates = new LinkedList<>();
@@ -13,6 +14,7 @@ public class TokenRing {
         while (true) {
             try {
                 Token rc = Token.receive(socket);
+                latestrc = rc;
                 System.out.printf("Token: seq=%d, #members=%d", rc.getSequence(), rc.length());
                 for (Token.Endpoint endpoint : rc.getRing()) {
                     System.out.printf(" (%s, %d)", endpoint.ip(), endpoint.port());
@@ -32,6 +34,8 @@ public class TokenRing {
                 Token.Endpoint next = rc.poll();
                 rc.append(next);
                 rc.incrementSequence();
+                int noOfMembers = rc.length();
+                socket.setSoTimeout(1500*noOfMembers);
                 Thread.sleep(1000);
                 rc.send(socket, next);
             }
@@ -62,9 +66,6 @@ public class TokenRing {
             else {
                 System.out.println("Usage: \"java TokenRing\" or \"java TokenRing <ip> <port>\"");
             }
-        }
-        catch (SocketException e) {
-            System.out.println("Error creating socket: " + e.getMessage());
         }
         catch (UnknownHostException e) {
             System.out.println("Error while determining IP address: " + e.getMessage());
