@@ -1,0 +1,69 @@
+Roman Schander - 1598510
+
+Aufgabe 1 - Wireshark
+------------------------
+
+1. Hinweis: "Find The Password"
+Filter:
+http.request.method == "POST"
+
+Form item: "password" = "dzh20szq"
+
+2. Hinweis: "One HTTP error is different"
+Filter:
+http.response.code > 400
+
+"ra6rgv7h"
+
+3. Hinweis: "Hiddeninping"
+Filter:
+icmp
+"nd7hark3"
+
+
+Lösungscode:
+Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
+
+
+Aufgabe 2 - Traceroute
+-------------------------
+
+Ausgabe von "traceroute www.anu.edu.au":
+
+ 1  fritz.box (192.168.178.1)  3.943 ms  3.798 ms  6.840 ms
+ 2  p3e9bf61d.dip0.t-ipconnect.de (62.155.246.29)  11.311 ms  11.203 ms  11.037 ms
+ 3  f-eh1-i.F.DE.NET.DTAG.DE (217.0.201.30)  15.342 ms  15.234 ms  15.062 ms
+ 4  * * *
+ 5  * * *
+ 6  AARNET-PTY.ear4.London1.Level3.net (217.163.113.74)  28.841 ms  23.286 ms  24.357 ms
+ 7  et-0-3-0.pe1.actn.act.aarnet.net.au (113.197.15.11)  432.593 ms  433.340 ms  434.910 ms
+ 8  138.44.161.3 (138.44.161.3)  435.314 ms  436.448 ms  436.318 ms
+ 9  core-te-1-1-4.anu.edu.au (150.203.201.5)  436.235 ms  436.561 ms  437.430 ms
+10  vlan-2100-palo.anu.edu.au (150.203.201.33)  434.973 ms  429.846 ms  429.620 ms
+11  anu.edu.au (130.56.67.33)  436.007 ms  435.169 ms  435.839 ms
+12  * * *
+13  anulb02-common-self-ip.anu.edu.au (130.56.66.250)  2940.598 ms !H  3110.743 ms !H  3109.687 ms !H
+
+
+Traceroute ist ein Netzwerkanalyse Befehl, welches verwendet wird um den Weg der Pakete vom eigenen Netzwerk bis zum angegebenen Host aufzeichnet.
+Dabei werden nacheinander einzelne Pakete mit größer werdenden Time-To-Live (TTL) an die Adresse gesendet und Informationen bezüglich des letzten Hosts
+gespeichert. 
+Hierbei startet das Programm mit einer TTL von 1 im eigenen Netzwerk und steigert die TTL bis der Host des Australian National University erreicht wurde.
+Einige Etappen sind mit * * * verborgen, da an diesen stellen der traceroute Befehl scheinbar fehlschlägt.
+
+
+Aufgabe 3 - Nmap
+-------------------------
+
+Der TCP-Scan von nmap ist wesentlich schneller als der UDP-Scan. Dies liegt daran, dass beim TCP Protokoll ein Verbindungsaufbau (Über einen 3-Wege-Handschlag) erfolgen muss
+bevor eine Verbindung zwischen den beiden Rechnern besteht. Aus diesem Grund können Ports schnell gescannt werden, da nach erfolgreichem bzw. fehlgeschlagenem Verbingdungsaufbau
+feststeht ob der Port verwendet wird oder nicht.
+Der UDP-Scan hingegen basiert auf einem Best-Effort Kommunikationsverfahren und sendet Pakete ohne vorherigen Verbindungsaufbau. Aus diesem Grund wird für jeden Port 
+eine gewisse Zeit gewartet und anschließend analysiert, ob eine Verbindung stattgefunden hat oder nicht.
+
+Einige Möglichkeiten den Scan schneller durchzuführen sind z.B.:
+- Anpassen des Timeout-Templates mit -T<0,2,3,4,5> ermöglicht schnellere Scans
+- Auswahl an zu scannenden Ports einschränken mit -p
+
+
+
