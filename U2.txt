@@ -1,0 +1,87 @@
+Aufgabe1)
+nach http paketen gesucht ->
+http
+passwort gefunden:
+dzh20szq
+
+hinweis one http error is different
+
+ra6rgv7h
+
+https://www.lanwan.ninja/ra6rgv7h/
+
+hinweis Hiddeninping
+
+filter: icmp
+
+nd7hark3
+
+final solution code: Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
+
+Aufgabe2)
+
+traceroute schickt drei seperate Pakete an das Ziel schickt. Dabei antworten alle zwischenstationen bis zum ziel und es
+wird die zeit bis dorthin und zurück, also die Ping-Zeit zwischen den Hops, in der Konsole wiedergegeben.
+Normalerweise haben die Pakete eine TTL von 30. Also machen 30 hops.
+In meinem Fall erreichten meine Pakete die Australian National University nicht.
+Da 30 hops nicht ausreichten. Auch bei mehr hops bekommt man einen Timeout.
+Aber laut chatgpt kann es sein das die Router in der Australian National University keine Antwort auf den Ping zurück schicken.
+
+Aufgabe3)
+
+Da UDP ein best effort verhalten hat, ist es nicht garantiert das eine Antwort kommt.
+Bei TCP hingegen wird sichergestellt das man eine Antwort erhält.
+Da UDP deshalb nicht genau weiß, ob es eine Antwort erhält, dauert es auch länger bis man feststellen kann ob überhaupt eine Antwort kommt.
+D.h. dauert länger bis man einen Timeout festsellt.
+Man kann die Ports beschränken oder die Timeout- Zeit geringen machen.
+
+Mein UDP scan hat auch nach mehreren Minuten keine Ergebnisse erzielt.
+also hab ich den portbereich beschränkt und die timeout zeit verringert mit : nmap -sU -p 0-100 --max-rtt-timeout 1 --initial-rtt-timeout 1 scanme.nmap.org
+
+tcp scan:
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.15s latency).
+Not shown: 995 closed tcp ports (reset)
+PORT      STATE    SERVICE
+21/tcp    filtered ftp
+22/tcp    open     ssh
+80/tcp    open     http
+9929/tcp  open     nping-echo
+31337/tcp open     Elite
+
+udp scan:
+
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.15s latency).
+Not shown: 91 closed udp ports (port-unreach)
+PORT   STATE         SERVICE
+1/udp  open|filtered tcpmux
+9/udp  open|filtered discard
+28/udp open|filtered unknown
+41/udp open|filtered graphics
+49/udp open|filtered tacacs
+56/udp open|filtered xns-auth
+66/udp open|filtered sqlnet
+67/udp open|filtered dhcps
+68/udp open|filtered dhcpc
+70/udp open|filtered gopher
+
+Nmap done: 1 IP address (1 host up) scanned in 295.93 seconds
+
+
+
+
+Aufgabe 4)
+
+hinzugefügt das ein Knoten nach 5 sec timeout rausgeworfen wird. Und das ein Tokenring sich
+nicht selber löscht. Außerdem werden Bestätigungsnachrichten gesendet, damit ein Knoten
+weiß ob die Nachricht angekommen ist.
+
+optimal Fall nachdem ein Knoten gelöscht wurde:
+
+Token: seq=7, #members=4 (192.168.137.69, 57687) (192.168.137.69, 57685) (192.168.137.69, 57684) (192.168.137.69, 57686)
+Bestätigungsnachricht ist korrekt
+Token: seq=11, #members=4 (192.168.137.69, 57687) (192.168.137.69, 57685) (192.168.137.69, 57684) (192.168.137.69, 57686)
+Timeout: Removing node from the ring
+Bestätigungsnachricht ist korrekt
+Token: seq=14, #members=3 (192.168.137.69, 57685) (192.168.137.69, 57684) (192.168.137.69, 57686)

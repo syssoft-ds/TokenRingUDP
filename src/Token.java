@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -37,6 +38,11 @@ public class Token {
         return ring.size();
     }
 
+    Endpoint lastsenderendpoint = null;
+    public Endpoint getLastSender() { return lastsenderendpoint;}
+
+    public void setLastSender(Endpoint last) {lastsenderendpoint = last;}
+
     private int sequence = 0;
 
     public int getSequence() {
@@ -64,13 +70,29 @@ public class Token {
         send(s, endpoint.ip(), endpoint.port());
     }
 
-    public static Token receive(DatagramSocket s) throws IOException {
+    public static Token receive(DatagramSocket s, int Timeouttime) throws IOException {
         byte[] buf = new byte[max_buffer_size];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
-        s.receive(packet);
+        try {
+            s.setSoTimeout(Timeouttime);
+            s.receive(packet);
+        } catch (SocketTimeoutException e) {
+            throw e;
+        }
         String rc_json = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
-        // System.out.printf("Received %s from %s:%d\n", rc_json, packet.getAddress().getHostAddress(), packet.getPort());
         return fromJSON(rc_json);
+    }
+
+    public void remove(Endpoint endpoint) {
+        ring.remove(endpoint);
+    }
+
+    public static void bestaetigungSchicken(DatagramSocket socket, Token.Endpoint endpoint, Token rc) throws IOException {
+        Token ackToken = new Token();
+        Token.Endpoint confirm = new Token.Endpoint("0.0.0.0.0",0); // Erstellen Sie ein Token mit einem leeren Endpunkt fuer die Bestaetigungsnachricht
+        ackToken.append(confirm); // Fuegen Sie den leeren Endpunkt hinzu
+        rc.setLastSender(endpoint); // Setzen Sie den letzten Sender auf diesen Knoten
+        ackToken.send(socket, new Token.Endpoint(rc.getLastSender().ip(),rc.getLastSender().port())); //verschicke leeren Endpoint an den letzten Sender
     }
 
     @JsonProperty
