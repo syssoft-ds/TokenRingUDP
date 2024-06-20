@@ -1,0 +1,48 @@
+##########
+#Aufgabe 1
+##########
+# da nach einem Passwort gesucht werden muss, habe ich mir alle HTTP Protokolle anzeigen gelassen, welche form-Elemente enthalten
+urlencoded-form
+
+# mit dem "Wireshark class 4" Video habe ich mir folgende Anfrage zusammengebaut, danach habe ich in den GET Methoden geschaut, welcher Inhalt dort steht.
+http.request.method == "GET" and (http.request or http.request_in)
+
+# dies listet mir alle ping-Protokolle auf, im Inhalt des Pings habe ich die Zeichenkette gefunden, welche zur Lösung führt
+icmp
+
+##########
+#Aufgabe 2
+##########
+Traceroute gibt an, welche Zwischenstationen zwischen mir und dem Zielhost liegen. Dabei werden die Zeiten gemessen, wie lange die Pakete unterwegs sind.
+Standardmäßig werden maximal 30 Pakete gesendet, bis Traceroute beendet wird. Traceroute nimmt ausschließlich IP-Adressen als Parameter an, weshalb mit
+`nslookup NAME` die IP-Adresse ausgelesen werden muss.
+Die Anzahl der Hops zwischen mir und google beträgt 7, wenn ich zur Uni-Trier Website route, dann benötige ich sogar 13 Hops.
+Aus der Auflistung von Zwischenstationen lässt sich bei den meisten Routern oder Gateways herausfinden wo diese stehen. Beispielsweise werde ich auf dem
+Weg zur Uni-Trier Website über HBF Mainz -> HBF Koblenz -> HBF Trier und dann zur Uni geschickt. An der Uni angekommen werde ich weitere 4 mal weitergeleitet,
+bis ich am Ziel bin.
+Für jede Zwischenstation wird ein Eintrag generiert, dieser enthält drei Zeiten. Jede Zeit steht für ein Paket, wie lange es von mir zur Zwischenstation benötigt
+hat.
+Versuche ich zur Australian National University zu gelangen, so sind die ersten 3 Hops erfoglreich, jedoch werden danach die Pakete verloren. Dies wird mit `*`
+markiert. Der Aufruf von Traceroute versucht dies 30 mal, bevor der Befehl beendet wird.
+
+##########
+#Aufgabe 3
+##########
+Per TCP können wesentlich schneller Ports gescannt werden als mit UDP, dies liegt daran, dass bei TCP der "SYN Stealth Scan" durchgeführt wird. Dieser liest
+die Zustände der Ports aus, ohne eine vollständige TCP-Verbindung herzustellen. Für 1000 Ports benötigt TCP ungefähr 10 Sekunden.
+UDP ist im Vergleich zu TCP sehr langsam, da UDP warten muss, bis eine Antwort vom Server kommt. Zudem brechen einige Pakete zwischen der Übertragung ab,
+wodurch die Wartezeit vom nmap verlängert wird. Dadurch muss noch länger auf die zukünftigen Pakete gewartet werden.
+Verbessern könnte man die UDP abfrage, indem nmap mit Threads arbeitet. Dadurch kann die sequentielle Arbeit auf mehrere Threads ausgelagert werden.
+
+#################
+#Aufgabe 4 Zusatz
+#################
+Die Aufgabe 4 ist nicht exakt so gelöst wie die Aufgabenstellung es gefordert hat. Es war mir nicht möglich zu überprüfen, ob ein Port geöffnet oder geschlossen ist,
+dazu habe ich mehrere unterschiedliche Methoden verwendet. Bspw. hat mir die Herangehensweise mit `Socket` fälcherlicherweise false zurückgegeben, obwohl der Port
+offen war. Ebenso hat mir `DatagramSocket` fälchlicherweise `true` zurückgegeben, wenn der Port geschlossen war.
+In WireShark habe ich die Protokolle meiner verschiedenen Herangehensweisen nachverfolgt und gesehen, dass mein Programm nicht mehr gearbeitet hat, weil 
+"Destination unreachable (Port unreachable)" nicht abgefangen wurde. In der Konsole wurde mir bei keinem Versuch eine Ausgabe gegeben oder Exception geworfen,
+was die Fehlersuche erschwert hat.
+Habe ich einen Knoten aus dem UDP Ring deaktiviert, so haben die noch aktiven nur gewartet, nichts mehr gesendet und nichts mehr empfangen.
+Die momentane Implementierung arbeitet wie folgt: Es lassen sich 2 Knoten starten und der dritte Knoten ersetzt den 1. Knoten. Dies soll simulieren, dass ein
+Knoten "unreachable" ist, aber der UDP-Ring weiter bestehen bleibt und der Ring wieder geschlossen wird. 
