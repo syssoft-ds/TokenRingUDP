@@ -1,0 +1,207 @@
+# Rechnernetze Übung 02 David Jacobs – 1619007
+
+## Setup:
+Wireshark-Profil und Spalten konfiguriert gemäß Empfehlungen in den YT-Videos von LanWanNinja
+
+## Aufgabe 1)
+Annahme: Das PW besteht aus genau 8 alphanumerischen Chars und ist von Leerzeichen umgeben.
+Filter:
+frame matches " [a-zA-Z0-9]{8} "
+Das Ergebnis beinhaltet genau einen Eintrag, dem mit der Nummer 493. "Candidate 1" als Kommentar hinzugefügt
+493	200.034154365	0.000000000	192.168.1.166	3000	192.168.1.101	55064	HTTP	1403	Candidate 1	HTTP/1.1 401  ra6rgv7h      (text/html)
+
+https://www.lanwan.ninja/ra6rgv7h/ führt zum nächsten Hinweis
+
+2. Hinweis: "Hiddeninping"
+Annahme: frame enthält den String "Hiddeninping"
+Filter: frame contains "Hiddeninping" liefert keinen Treffer, genauso wenig wie frame contains "Hidden", frame contains "ping"
+"Hiddenping" ist kein String.
+
+Annahme: "Hiddeninping" ist wörtlich gemeint. Das gesuchte pw ist in einem Ping versteckt.
+Suche nach Pings durch Filter analog zu LanWanNinja-Video "Wireshark class 4.2"
+Filter:
+icmp && data.len >=1
+Anwenden des Filters liefert 2 Kandidaten:
+342	115.570252212	0.000000000	192.168.1.101		192.168.1.177		ICMP	50	The one	Echo (ping) request  id=0x7857, seq=0/0, ttl=64 (reply in 343)
+343	115.571830260	0.001578048	192.168.1.177		192.168.1.101		ICMP	60		Echo (ping) reply    id=0x7857, seq=0/0, ttl=64 (request in 342)
+
+343 liefert das gesuchte pw unter "data:"
+https://www.lanwan.ninja/nd7hark3/
+liefert schließlich das finale Codewort:
+Q29uZ3JhdHNfVGhpc19Jc190aGVfQm9udXMh
+
+Bonus: Das finale Codewort ist in Base64 kodiert. Die ASCII-Entsprechung lautet:
+Congrats_This_Is_the_Bonus!
+
+## Aufgabe 2)
+durchgeführt unter Windows 10
+
+C:\Users\Nutzer>tracert www.anu.edu.au
+
+Tracing route to terra-web.anu.edu.au [130.56.67.33]
+over a maximum of 30 hops:
+
+  1    <1 ms    <1 ms    <1 ms  fritz.box [192.168.178.1]
+  2     6 ms     5 ms     5 ms  p3e9bf618.dip0.t-ipconnect.de [62.155.246.24]
+  3    10 ms     9 ms    10 ms  f-eh1-i.F.DE.NET.DTAG.DE [217.5.118.86]
+  4     *        *        *     Request timed out.
+  5     *        *        *     Request timed out.
+  6    24 ms    22 ms    22 ms  AARNET-PTY.ear4.London1.Level3.net [217.163.113.74]
+  7   429 ms   427 ms   426 ms  et-0-3-0.pe1.actn.act.aarnet.net.au [113.197.15.11]
+  8     *        *        *     Request timed out.
+...
+ 30     *        *        *     Request timed out.
+
+Trace complete.
+
+--
+traceroute liefert Einblick für den Weg, den Paket vom Ausgangsrechner zur Ziel IP zurücklegt und verwendet dabei ICMP.
+Bei jedem Hop wird die TTL dekrementiert. Erreicht sie null, sendet der aktuelle Knoten eine "time exceeded"-Message zum Sender zurück. Die TTL wird auf dem Rückweg bei jedem Hop inkrementiert.
+tracert führt diesen Prozess n Mal durch, startet mit TTL=1 und erhöht die TTL jeweils um 1.
+Jede Zeile repräsentiert dabei einen Hop.
+Spalten:
+1. Spalte: zeigt Anzahl der benötigten Hops vom Sender bis zum jeweiligen Knoten
+2.-4. Spalte: Anwortzeiten (hin und zurück) des jeweiligen Knotens
+5. Spalte: domain name und ip des jeweiligen Knotens bzw. Time-Out-Message
+
+Auswertung Zeilen:
+1. Zeile: lokaler Router (FritzBox)
+2.-3. Zeile: externe Gateways liefern Antwort (Antwortzeiten werden größer je größer Anzahl an Hops)
+4.-5. Zeile: Request timed out. Wahrscheinlich sind die Knoten so konfiguriert, dass sie nicht auf traceroute-Anfragen antworten
+6. Zeile: aarnet-gateway in London (IP mithilfe von iplocation.net gecheckt, Standort London wahrscheinlich)
+7. Zeile: aarnet.gateway Standort in Australien, wommöglich in Perth, Western Australia (iplocation.net, listet mehrere mögliche Standorte innerhalb Australiens)
+Hohe Durchlaufzeit, anscheinend der physischen Distanz geschuldet.
+Zielknoten(130.56.67.33) ist noch nicht erreicht.
+8.-30. Zeile: Alle weiteren Hops liefern time outs. Da keine "ICMP port unreachable"-Message zurückkommt, ist es möglich, dass die Pakete dennoch ankommen, die traceroute-Anfragen jedoch nicht beantwortet werden.
+Mit Sciherheit lässt sich dies jedoch nicht beantworten, da traceroute von der "Kooperation" der beteiligten Knoten abhängt.
+
+
+## Aufgabe 3)
+
+### Vergleich Scan UDP v TCP
+
+UDP-Scan dauert wesentlich länger als TCP-Scan.
+
+TCP:
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-04 14:09 W. Europe Daylight Time
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.19s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 993 closed tcp ports (reset)
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+80/tcp    open     http
+135/tcp   filtered msrpc
+139/tcp   filtered netbios-ssn
+445/tcp   filtered microsoft-ds
+9929/tcp  open     nping-echo
+31337/tcp open     Elite
+
+Nmap done: 1 IP address (1 host up) scanned in 5.91 seconds
+--
+UDP:
+
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-04 14:06 W. Europe Daylight Time
+Warning: 45.33.32.156 giving up on port because retransmission cap hit (10).
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.17s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 993 closed udp ports (port-unreach)
+PORT    STATE         SERVICE
+68/udp  open|filtered dhcpc
+123/udp open          ntp
+135/udp open|filtered msrpc
+137/udp open|filtered netbios-ns
+138/udp open|filtered netbios-dgm
+139/udp open|filtered netbios-ssn
+445/udp open|filtered microsoft-ds
+
+Nmap done: 1 IP address (1 host up) scanned in 1121.97 seconds
+--
+
+Anders als UDP wird bei TCP vor dem Senden eine Verbindung über einen Syn(synchronize)-Ack(acknowledge)-Handshake hergestellt. Der Sender schickt eine syn-Anfrage an den Empfänger.
+Stellt der Sender eine syn an einen geschlossenen Port gibt dieser ein RST(reset) packet zurück. Der Sender erhält also eine schnelle Rückmeldung, dass der Port nicht geöffnet ist und kann weitermachen und den nächsten Port prüfen.
+UDP arbeitet ohne Verbindung, kein Handshake wird hergestellt. Der Sender erhält bei Anfrage an einen geschlossenen Port i.d.R. keine Antwort, muss daher warten und versucht erneut an den Port zu senden bis das retransmission limit erreicht ist und
+geht erst dann weiter und prüft den nächsten Port. Im konkreten Fall gab es 993 geschlossene UDP-Ports beim Empfänger, weshalb der Scan insgesamt über 1100 Sekunden dauerte.
+
+### UDP-Scan-Performance optimieren:
+
+#### Durch ein strikteres Timing kann der Scan beschleunigt werden, wobei jedoch offene Ports bei zu langsamer Antwort fälschlich als geschlossene eingestuft werden könnten.
+Betrachten wir das Timing Template -T4(aggressive):
+$ nmap -sU -T4 scanme.nmap.org
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-04 14:38 W. Europe Daylight Time
+Warning: 45.33.32.156 giving up on port because retransmission cap hit (6).
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.17s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 979 closed udp ports (port-unreach)
+PORT      STATE         SERVICE
+68/udp    open|filtered dhcpc
+111/udp   open|filtered rpcbind
+123/udp   open          ntp
+135/udp   open|filtered msrpc
+137/udp   open|filtered netbios-ns
+138/udp   open|filtered netbios-dgm
+139/udp   open|filtered netbios-ssn
+445/udp   open|filtered microsoft-ds
+1014/udp  open|filtered unknown
+1032/udp  open|filtered iad3
+1719/udp  open|filtered h323gatestat
+16972/udp open|filtered unknown
+17146/udp open|filtered unknown
+18888/udp open|filtered apc-necmp
+19075/udp open|filtered unknown
+21568/udp open|filtered unknown
+22799/udp open|filtered unknown
+26872/udp open|filtered unknown
+31109/udp open|filtered unknown
+32775/udp open|filtered sometimes-rpc14
+49184/udp open|filtered unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 1072.67 seconds
+1072.67s < 1121.97s
+Zeitersparnis ist gering, jedoch vorhanden.
+
+#### Durch strengere Limitierung der max retries(von 10 auf 1)
+
+$ nmap -sU scanme.nmap.org --max-retries 1
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-04 15:28 W. Europe Daylight Time
+Warning: 45.33.32.156 giving up on port because retransmission cap hit (1).
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.17s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 851 open|filtered udp ports (no-response), 148 closed udp ports (port-unreach)
+PORT    STATE SERVICE
+123/udp open  ntp
+
+Nmap done: 1 IP address (1 host up) scanned in 145.35 seconds
+Beschleunigung um etwa Faktor 8. Erheblich
+
+#### -T4 und --max-retries 1
+$ nmap -sU -T4 scanme.nmap.org --max-retries 1
+Starting Nmap 7.95 ( https://nmap.org ) at 2024-05-04 15:23 W. Europe Daylight Time
+Warning: 45.33.32.156 giving up on port because retransmission cap hit (1).
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.17s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 889 open|filtered udp ports (no-response), 110 closed udp ports (port-unreach)
+PORT    STATE SERVICE
+123/udp open  ntp
+
+Nmap done: 1 IP address (1 host up) scanned in 105.15 seconds
+
+Die Kombination von -T4 und --max-retries 1 führt zu einem nicht unerheblichen Zeitgewinn.
+
+## Aufgabe 4
+
+In der gegebenen Implementierung des Token-Ring sendet ein Knoten im Ring ein Paket an den nächsten Knoten, dieser Knoten dann wiederum eines an den folgenden Knoten.
+Ausgenommen der 1. Token sendet ein Knoten nur dann ein Paket an den folgenden Knoten, wenn es zuvor ein Paket erhalten hat. Fällt ein Knoten aus, kommt der Nachrichten-Ring zum Stillstand, da
+kein Node mehr ein Paket erhält.
+
+Um das Funktionieren des Ringes aufrecht zu erhalten bei Ausfall einzelner Knoten, muss ein Ausfall zunächst festgestellt werden, da eine Erhaltbestätigung eines Pakets für den Sender kein Bestandteil der UDP-Kommunikation ist.
+Eine solche müsste zunächst implementiert werden.
+Falls nach Senden eines Pakets der Sender keine Antwortbestätigung erhielte, müsste er den Empfänger von der Liste der Knoten empfangen und ein Paket an den nächstfolgenden Knoten senden.
+
+Die Implementierung dieses Ansatzes ist mir jedoch (bislang) nicht gelungen.
+
+
