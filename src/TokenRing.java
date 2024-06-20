@@ -10,14 +10,16 @@ public class TokenRing {
         if (first) {
             candidates.add(new Token.Endpoint(ip, port));
         }
-        while (true) {
+
+        while(true) {
             try {
-                Token rc = Token.receive(socket);
+                Token rc = Token.receiveToken(socket);
                 System.out.printf("Token: seq=%d, #members=%d", rc.getSequence(), rc.length());
                 for (Token.Endpoint endpoint : rc.getRing()) {
                     System.out.printf(" (%s, %d)", endpoint.ip(), endpoint.port());
                 }
                 System.out.println();
+
                 if (rc.length() == 1) {
                     candidates.add(rc.poll());
                     if (!first) {
@@ -34,9 +36,20 @@ public class TokenRing {
                 rc.incrementSequence();
                 Thread.sleep(1000);
                 rc.send(socket, next);
+
+                if(!Token.receiveAnswer(socket)) {
+                    rc.remove(next);
+                    next =rc.poll();
+                    rc.append(next);
+                    rc.send(socket, next);
+                    System.out.println("No Answer was received");
+                }else{
+                    System.out.println("Answer was received");
+                }
+
             }
             catch (IOException e) {
-                System.out.println("Error receiving packet: " + e.getMessage());
+                // System.out.println("Error receiving packet: " + e.getMessage());
             }
             catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
