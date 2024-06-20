@@ -1,0 +1,46 @@
+Der Befehl nmap -sS scanme.nmap.org führt einen SYN Scan auf TCP Ports aus, im Gegensatz nmap -sU scanme.nmap.org
+der einen UDP-PortScan ausführt.
+
+Der SYN Scan ist ind er regel schneller als der UDP Scan wegen:
+
+1. SYN-Scan benutzt das TCP-Handshake Protokoll aus, um festzustellen, ob ein Port offen ist oder nicht indem
+es eine SYN Anforderung sendet und auf eien SYN/ACK Antwort wartet. Wennd der Port offen ist antwortet das 
+Zielsystem mit SYN/ACK. Ist der Port geschlossen, antwortet es mit einem RST. Das ermöglicht es, offene Ports 
+besser zu erkennen, ohne den Verbindungsaufbau abzuschließen.
+
+2. UDP Scans sind langsamer weil das UDP Protokoll keine Bestätigung der Paketübertragungen vorsieht. Wenn ein
+UDP Paket an einen geschlossenen Port gesendet wird, antwortet das Zielsystem nicht mit einer Fehlermeldung wie bei TCP.
+Daher muss nmap darauf warten, bis ein Timeout auftritt, um zu bestimmen, ob der Port offen ist oder nicht.
+Dies erhöht die Scanzeit ehrherblich umso mehr desto mehr Ports gescannt werden müssen.
+
+UDP-Scan:
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.18s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 993 closed udp ports (port-unreach)
+PORT    STATE         SERVICE
+68/udp  open|filtered dhcpc
+123/udp open          ntp
+135/udp open|filtered msrpc
+137/udp open|filtered netbios-ns
+138/udp open|filtered netbios-dgm
+139/udp open|filtered netbios-ssn
+445/udp open|filtered microsoft-ds
+
+Nmap done: 1 IP address (1 host up) scanned in 1058.61 seconds
+
+SYN-Scan:
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.23s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 993 closed tcp ports (reset)
+PORT      STATE    SERVICE
+22/tcp    open     ssh
+80/tcp    open     http
+135/tcp   filtered msrpc
+139/tcp   filtered netbios-ssn
+445/tcp   filtered microsoft-ds
+9929/tcp  open     nping-echo
+31337/tcp open     Elite
+
+Nmap done: 1 IP address (1 host up) scanned in 36.10 seconds
