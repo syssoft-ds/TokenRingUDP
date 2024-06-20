@@ -7,21 +7,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Queue;
 
 public class Token {
 
     private static final int max_buffer_size = 4096;
-
-    private boolean isConfirmation;
-
-    public void setIsConfirmation(boolean isMessage) {
-        this.isConfirmation = isMessage;
-    }
-    public boolean getIsConfirmation() {
-        return isConfirmation;
-    }
 
     public record Endpoint(String ip, int port) {}
 
@@ -35,9 +25,6 @@ public class Token {
         return this;
     }
 
-    public void remove(Endpoint endpoint) {
-        ring.remove(endpoint);
-    }
     public Endpoint first() {
         return ring.peek();
     }
@@ -68,9 +55,8 @@ public class Token {
         String rc_json = toJSON();
         byte[] rc_json_bytes = rc_json.getBytes(StandardCharsets.UTF_8);
         InetAddress address = InetAddress.getByName(ip_address);
-        //System.out.println(address.isReachable(1000));
         DatagramPacket packet = new DatagramPacket(rc_json_bytes, rc_json_bytes.length, address, port);
-        //System.out.printf("Sending %s to %s:%d\n", rc_json, ip_address, port);
+        // System.out.printf("Sending %s to %s:%d\n", rc_json, ip_address, port);
         s.send(packet);
     }
 
@@ -79,7 +65,6 @@ public class Token {
     }
 
     public static Token receive(DatagramSocket s) throws IOException {
-
         byte[] buf = new byte[max_buffer_size];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         s.receive(packet);
@@ -88,19 +73,8 @@ public class Token {
         return fromJSON(rc_json);
     }
 
-
-
     @JsonProperty
-    private final LinkedList<Endpoint> ring = new LinkedList<>();
-    private ListIterator<Endpoint> iterator = ring.listIterator();
-
-    public Endpoint previous() {
-        if (iterator.hasPrevious()) {
-            return iterator.previous();
-        } else {
-            return null;
-        }
-    }
+    private final Queue<Endpoint> ring = new LinkedList<>();
 
     public Queue<Endpoint> getRing() {
         return ring;
