@@ -12,7 +12,12 @@ public class TokenRing {
         }
         while (true) {
             try {
+                /*Idee wäre es gewesen auf einen spezifischen Timeout zu warten der, falls in einem um dann
+                gegebenen zeitraum kein token mehr ankommt (dynamisch zu member liste),
+                dann das oberste element entfernt und den kreis wieder neu zu schließen will
+                indem das oberste element erst entfernt und dann erst das poll ausgeführt wird*/
                 Token rc = Token.receive(socket);
+                System.out.println(rc.length()); //Ausgabe für verständnis
                 System.out.printf("Token: seq=%d, #members=%d", rc.getSequence(), rc.length());
                 for (Token.Endpoint endpoint : rc.getRing()) {
                     System.out.printf(" (%s, %d)", endpoint.ip(), endpoint.port());
