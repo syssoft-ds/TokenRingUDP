@@ -56,7 +56,7 @@ public class Token {
         byte[] rc_json_bytes = rc_json.getBytes(StandardCharsets.UTF_8);
         InetAddress address = InetAddress.getByName(ip_address);
         DatagramPacket packet = new DatagramPacket(rc_json_bytes, rc_json_bytes.length, address, port);
-        // System.out.printf("Sending %s to %s:%d\n", rc_json, ip_address, port);
+        System.out.printf("Sending %s to %s:%d\n", rc_json, ip_address, port);
         s.send(packet);
     }
 
@@ -69,7 +69,7 @@ public class Token {
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
         s.receive(packet);
         String rc_json = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
-        // System.out.printf("Received %s from %s:%d\n", rc_json, packet.getAddress().getHostAddress(), packet.getPort());
+        System.out.printf("Received %s from %s:%d\n", rc_json, packet.getAddress().getHostAddress(), packet.getPort());
         return fromJSON(rc_json);
     }
 
