@@ -1,0 +1,19 @@
+Display-Filter
+
+Display-Filter greifen nachdem die Pakete bereits von Wireshark erfasst wurden. Sie beeinflussen lediglich, welche der erfassten Pakete in der Wireshark-Paketliste angezeigt werden. Alle erfassten Daten bleiben im Speicher und können durch Ändern des Display-Filters wieder sichtbar gemacht werden.
+
+Beispiel "host 192.168.1.100" -> Erfasst nur Pakete, die mit der IP-Adresse 192.168.1.100 als Quelle oder Ziel in Verbindung stehen.
+
+
+
+Capture-Filter
+
+Capture-Filter greifen bevor die Pakete überhaupt von Wireshark erfasst und angezeigt werden. Sie instruieren die zugrunde liegende Packet-Capture-Bibliothek (wie libpcap unter Linux/macOS oder WinPcap/Npcap unter Windows), welche Pakete überhaupt aufgezeichnet werden sollen. Alle Pakete, die nicht dem Capture-Filter entsprechen, werden vom Netzwerk-Interface verworfen und gelangen nicht in die Wireshark-Ansicht.
+
+Beispiel "ip.addr == 192.168.1.100" -> Zeigt nur Pakete mit der IP-Adresse 192.168.1.100 als Quelle oder Ziel.
+
+
+
+Protokoll (4 Teilnehmer, selber PC)
+
+Das Protokoll selbst ist in einer separaten Datei hinterlegt. Beim Aufzeichnen kam es anfangs zu Problemen bei der Einrichtung des Filters, da ich mit der UI noch nicht vertraut bin. Als gefunden hatte, wo ich den Filter einrichten kann, war es jedoch kein Problem und die Nachrichten wurden - wie dem Protokoll zu entnehmen ist - korrekt gefiltert.
