@@ -18,6 +18,8 @@ Der `TokenRing` wird in JSON kodiert und an den nächsten Knoten gesendet.
 # Aufgabe 3
 
 Wir können Wireshark dazu nutzen Netzwerktraffic aufzuzeichnen.
+Zuerst müssen wir entscheiden welches Netzwerk wir aufzeichnen wollen.
+Um Kommunikation auf unterschiedlichen Geräten aufzuzeichnen, müssen wir ein Netzwerkgerät auswählen. Für Kommunikation von Programmen auf demselben Rechner muss das Loopback device gewählt werden.
 Diese Aufzeichnung können wir nachher Filtern. Zum Beispiel können wir nach Paketen filtern, die das UDP Prokotoll verwenden. Dies können wir mit folgendem Filter erreichen.
 > udp
 
@@ -26,11 +28,15 @@ Dies filtert jedoch nicht Protokolle, die auf udp aufbauen. Um nur reine UDP Pro
 
 Wollen wir nur bestimmte Pakete aufzeichnen können wir eine sogenannten Capturefilter verwenden. Dieser verwendet jedoch ein anderes Format wie der Displayfilter und ist limitierter. Wir können wieder nach dem UDP Protokoll filtern mit dem Filter
 >udp
+
 Wollen wir Protokolle, die auf UDP aufbauen filtern können wir uns eines Tricks bedienen und bestimmte Portnummern aus der Aufzeichnung filtern.
 Zum Beispiel mit derm Filter
->
+>udp and not port 53 and not port 5353,
 
-Wir können nun die Aufzeichung der Pakete asuwerten.
+welcher DNS Anfragen auf Port 53 und mDNS Anfragen auf 5353 ausblendet.
+
+
+Wir können nun die Aufzeichung der Pakete auswerten.
 Die Zusammenfassung eines Pakets dieht wie folgt aus.
 >76	5.006948038	192.168.0.237	192.168.0.237	UDP	138	60718 → 47275 Len=96
 
@@ -52,7 +58,7 @@ Im Fenster unter der Liste der Pakete können wir detailiertet Informationen üb
 0080   22 3a 34 37 32 37 35 7d 5d 7d
 ```
 
-Dekodiert ist in diesem Paket die folgenden Nachricht.
+Dekodiert ist in diesem Paket die folgende Nachricht.
 ```
 {"sequence":83,"ring":[{"ip":"192.168.0.237","port":47275},{"ip":"192.168..237","port":60718}]}
 ```
@@ -60,4 +66,4 @@ Dekodiert ist in diesem Paket die folgenden Nachricht.
 
 # Aufgabe 4
 
-Name des Branches: 
+Name des Branches: S25-CN-PS
