@@ -23,5 +23,3 @@ The ring leader can be started by just running `java -jar TokenRingUDP.jar`. The
 leader then prints its IP address and port number to the console. Any subsequent
 node can join by running `java -jar TokenRingUDP.jar <ip> <port>` for any `<ip>`
 and `<port`> of a node already part of the ring.
-
-
