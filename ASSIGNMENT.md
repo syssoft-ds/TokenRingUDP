@@ -10,7 +10,7 @@ Die `disconnect()` Methode hebt nun die oben genannte Restriktion auf jedoch ble
 Ist das Programm der erste Knoten im TokenRing, wird nun auf diesem Port gewartet, bis ein Paket ankommt.
 Ist das Programm nicht der erste Knoten im TokenRing, wird ein Paket an einen bereits beigetretenen Knoten gesendet. Dieser fügt den neuen Knoten in eine Kandidatenliste ein, die später dem `TokenRing` hinzugefügt wird.
 
-Der `TokenRing` ist im Wesentlichen eine `Queue`, deren Kopf auf den Knoten zeigt, an den das nächste Paket gesendet werden soll. Wird der 'TokenRing' auf einem 'DatagrammSocket' empfangen wird er ausgelesen. Das erste Element, also der nächste Knoten im Ring, wird extrahiert und in einer lokalen Variable gespeichert. Anschließend wird dieser Knoten am Ende der `Queue` eingefügt.
+Der `TokenRing` ist im Wesentlichen eine `Queue`, deren Kopf auf den Knoten zeigt, an den das nächste Paket gesendet werden soll. Wird der `TokenRing` auf einem `DatagrammSocket` empfangen wird er ausgelesen. Das erste Element, also der nächste Knoten im Ring, wird extrahiert und in einer lokalen Variable gespeichert. Anschließend wird dieser Knoten am Ende der `Queue` eingefügt.
 Der `TokenRing` wird in JSON kodiert und an den nächsten Knoten gesendet.
 
 # Aufgabe 2
