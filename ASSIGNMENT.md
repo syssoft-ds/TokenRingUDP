@@ -1,5 +1,8 @@
-# Aufgabe 1
-Ich habe das Projekt zuert in ein äquivalentes gradle Projekt geändert. 
+# Rechnernetze Hausaufgabe 1
+
+## Aufgabe 1
+
+Ich habe das Projekt zuert in ein äquivalentes gradle Projekt geändert.
 Um den TokenRing zu starten, führe ich den Befehl `./gradlew run` in einem Terminal im root Verzeichnis des Projektes aus. Anschließend kann ich ein zweites Terminal öffnen und mit dem Befehl `./gradlew run --args="<ip> <port>"` dem Tokenring beitreten. Die beiden Programme schicken sich nun abwechselnd Pakete zu.
 
 Das Programm versucht zuerst eine Verbindung zum Google DNS Sercer 8.8.8.8 auf Port 10002 zu erzeugen.
@@ -13,9 +16,22 @@ Ist das Programm nicht der erste Knoten im TokenRing, wird ein Paket an einen be
 Der `TokenRing` ist im Wesentlichen eine `Queue`, deren Kopf auf den Knoten zeigt, an den das nächste Paket gesendet werden soll. Wird der `TokenRing` auf einem `DatagrammSocket` empfangen wird er ausgelesen. Das erste Element, also der nächste Knoten im Ring, wird extrahiert und in einer lokalen Variable gespeichert. Anschließend wird dieser Knoten am Ende der `Queue` eingefügt.
 Der `TokenRing` wird in JSON kodiert und an den nächsten Knoten gesendet.
 
-# Aufgabe 2
+## Aufgabe 2
 
-# Aufgabe 3
+Wir haben versucht vor der Vorlesung einen TokenRing aufzubauen.
+Dies hat leider nicht funktioniert, da wahrscheinlich die Firewall des Kommilitonen keine entsprechende Ausnahme konfiguriert hatte.
+Später haben wir versucht den TokenRing aus unseren jeweiligen Heimnetzen aufzubauen.
+Trotz richtig konfigurierter Firewall und entsprechendes Port-Forwarding hat dies leider auch nicht wie gewünscht geklappt.
+Zu guter Letzt haben sich ein Kommilitone und ich bei mir Zuhause getroffen und den TokenRing im Heimnetz aufgebaut.
+Dies hat funktioniert und die folgende Ausgabe produziert:
+
+```
+Sending {"sequence":0,"ring":[{"ip":"192.168.0.21","port":57723}]} to 192.168.0.237:39405
+Received {"sequence":2,"ring":[{"ip":"192.168.0.237","port":39405},{"ip":"192.168.0.21","port":57723}]} from 192.168.0.237:39405
+Token: seq=2, #members=2 (192.168.0.237, 39405) (192.168.0.21, 57723)
+```
+
+## Aufgabe 3
 
 Wir können Wireshark dazu nutzen Netzwerktraffic aufzuzeichnen.
 Zuerst müssen wir entscheiden welches Netzwerk wir aufzeichnen wollen.
@@ -35,10 +51,9 @@ Zum Beispiel mit derm Filter
 
 welcher DNS Anfragen auf Port 53 und mDNS Anfragen auf 5353 ausblendet.
 
-
 Wir können nun die Aufzeichung der Pakete auswerten.
 Die Zusammenfassung eines Pakets dieht wie folgt aus.
->76	5.006948038	192.168.0.237	192.168.0.237	UDP	138	60718 → 47275 Len=96
+>76 5.006948038 192.168.0.237 192.168.0.237 UDP 138 60718 → 47275 Len=96
 
 Am Anfang steht die Nummer des Pakets, die von Beginn der Aufzeichnung die Pakete aufzählt `76`.
 Dahinter steht die Zeit, die von Beginn der Aufzeichung bis zum Erhalt des Paketes verstrichen ist `5.006948038s`. Es folgen die Adresse des Absenders `192.168.0.237` und die des Empfängers `192.168.0.237`. Anschließend können wir sehen um welches Protokoll es sich handelt. Es folgt die Länge des gesamten Pakets `138 bytes`.
@@ -59,11 +74,11 @@ Im Fenster unter der Liste der Pakete können wir detailiertet Informationen üb
 ```
 
 Dekodiert ist in diesem Paket die folgende Nachricht.
+
 ```
-{"sequence":83,"ring":[{"ip":"192.168.0.237","port":47275},{"ip":"192.168..237","port":60718}]}
+{"sequence":83,"ring":[{"ip":"192.168.0.237","port":47275},{"ip":"192.168.0.237","port":60718}]}
 ```
 
-
-# Aufgabe 4
+## Aufgabe 4
 
 Name des Branches: S25-CN-PS
