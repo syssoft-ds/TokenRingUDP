@@ -1,0 +1,5 @@
+Übung01:
+
+In Aufgabe 2 war es mir lediglich möglich, Lokal mit meinem eigenen Rechner über zwei verschiedene Terminalfenster zu kommunizieren. Ich hatte mit mehreren anderen Modulteilnehmern versucht einen Ring aufzubauen, hatte es aber nicht hinbekommen. Die letzte Möglichkeit, die KI mir vorgeschlagen hatte, war etwas in meinen Firewall Einstellungen zu ändern, das war mir dann aber zu unsicher. Mit Wireshark konnte ich allerdings meinen Lokalen Traffic beobachten, Screenshot ist beigefügt. Informationen, welche ich rauslesen konnte, sind von wo der Traffic kommt, wo er hingeht und die ?Länge?
+
+Insgesamt habe ich mich mit anderen Studenten zusammengesetzt und KI gefragt, wie ich mit den Problemen umgehen soll.
