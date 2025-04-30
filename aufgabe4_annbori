@@ -1,0 +1,16 @@
+Rechnernetze SoSe2025                                                                       
+Borisenko Anna 1446265
+Übung 1                                                                                                
+Aufgabe 4
+Zunächst habe ich das Programm auf einem Laptop gestartet. Der TokenRing funktionierte problemlos. 
+Die einzige Herausforderung war die Java-Version. Das Leader-Programm lief in IntelliJ IDEA mit JDK 21, während ich den Knoten im Terminal starten wollte, wo jedoch nur Java 8 verfügbar war. 
+Dieses Problem konnte ich lösen, indem ich systemweit eine aktuelle JDK-Version installierte und die Umgebungsvariablen entsprechend anpasste.
+Anschließend habe ich versucht, das Programm auf zwei verschiedenen Geräten zu starten: einem Laptop (WLAN) und einem PC (LAN). Beide Geräte befanden sich im selben lokalen Netzwerk. 
+Obwohl auf beiden Rechnern die gleiche JDK-Version verwendet wurde, konnten sich die Geräte zunächst nicht gegenseitig erreichen (getestet mit ping). 
+Das Problem lag an der Windows-Firewall, die die UDP-Kommunikation blockierte. Nach dem temporären Deaktivieren der Firewall auf beiden Geräten konnte der Token erfolgreich zwischen ihnen übertragen werden.
+Um die UDP-Pakete in Wireshark aufzuzeichnen, musste ich den richtigen Netzwerkadapter auswählen:
+•	Beim lokalen Test (beide Programme auf demselben Laptop) musste ich Adapter for loopback traffic capture auswählen.
+•	Bei der Kommunikation zwischen zwei verschiedenen Geräten wählte ich WLAN-Traffic aus.
+Mit dem Display-Filter udp oder in meinem Fall konkreter udp.port==59966 und udp.port==64625 konnte ich die Token-Nachrichten in Wireshark finden, z.B.:
+User Datagram Protocol, Src Port: 64625, Dst Port: 59966
+User Datagram Protocol, Src Port: 59966, Dst Port: 64625
