@@ -5,16 +5,54 @@ import java.util.LinkedList;
 
 public class TokenRing {
 
-    private static void loop(DatagramSocket socket, String ip, int port, boolean first){
+    private static void loop(DatagramSocket socket, String ip, int port, boolean first) throws SocketException {
         LinkedList<Token.Endpoint> candidates = new LinkedList<>();
         if (first) {
             candidates.add(new Token.Endpoint(ip, port));
         }
+        socket.setSoTimeout(5000);
+        Token rc;
+        Token lastValidToken = null;
         while (true) {
             try {
-                Token rc = Token.receive(socket);
+                try {
+                    rc = Token.receive(socket);
+
+                    // Gültigen letzten Token zwischenspeichern
+                    if (rc.length() > 0) {
+                        lastValidToken = rc;
+                    }
+
+                    if (lastValidToken != null && rc.getSequence() < lastValidToken.getSequence()) {
+                        continue; // veralteter Token → ignorieren
+                    }
+
+                } catch (SocketTimeoutException e) {
+                    System.out.println("Timeout beim Warten auf Token.");
+
+                    if (lastValidToken == null) {
+                        System.out.println("Kein Token verfügbar – warte weiter...");
+                        continue;
+                    }
+
+                    // letzten Token verwenden und nicht sendenden  Teilnehmer entfernen (wenn er nicht der letzte ist)
+                    rc = lastValidToken;
+                    if (rc.length() > 1) {
+                        Token.Endpoint failed = rc.removeEndpoint();;
+                        if (failed != null) {
+                            System.out.printf("Entferne ausgefallenen Knoten (%s:%d)\n", failed.ip(), failed.port());
+                        }
+                    } else {
+                        System.out.println("Keine anderen Teilnehmer im Ring – warte auf neue Verbindungen...");
+                    }
+
+                } catch (IOException e) {
+                    System.out.println("Fehler beim Empfang des Tokens: " + e.getMessage());
+                    continue;
+                }
                 System.out.printf("Token: seq=%d, #members=%d", rc.getSequence(), rc.length());
                 for (Token.Endpoint endpoint : rc.getRing()) {
+
                     System.out.printf(" (%s, %d)", endpoint.ip(), endpoint.port());
                 }
                 System.out.println();
@@ -29,11 +67,13 @@ public class TokenRing {
                     rc.append(candidate);
                 }
                 candidates.clear();
+
                 Token.Endpoint next = rc.poll();
                 rc.append(next);
                 rc.incrementSequence();
                 Thread.sleep(1000);
                 rc.send(socket, next);
+
             }
             catch (IOException e) {
                 System.out.println("Error receiving packet: " + e.getMessage());

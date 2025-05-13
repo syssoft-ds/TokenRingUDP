@@ -51,6 +51,14 @@ public class Token {
         sequence++;
     }
 
+    public Endpoint removeEndpoint () {
+        if (!ring.isEmpty()) {
+            return ((LinkedList<Endpoint>) ring).removeLast();
+        }
+        return null;
+    }
+
+
     public void send (DatagramSocket s, String ip_address, int port ) throws IOException {
         String rc_json = toJSON();
         byte[] rc_json_bytes = rc_json.getBytes(StandardCharsets.UTF_8);
