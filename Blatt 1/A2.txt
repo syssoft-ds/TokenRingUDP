@@ -1,0 +1,11 @@
+UDP endpoint is (192.168.137.32, 40203)
+Received {"sequence":0,"ring":[{"ip":"192.168.178.66","port":64784}]} from 192.168.137.1:64784
+Token: seq=0, #members=1 (192.168.178.66, 64784)
+Sending {"sequence":1,"ring":[{"ip":"192.168.178.66","port":64784},{"ip":"192.168.137.32","port":40203}]} to 192.168.137.32:40203
+Received {"sequence":1,"ring":[{"ip":"192.168.178.66","port":64784},{"ip":"192.168.137.32","port":40203}]} from 192.168.137.32:40203
+Token: seq=1, #members=2 (192.168.178.66, 64784) (192.168.137.32, 40203)
+Sending {"sequence":2,"ring":[{"ip":"192.168.137.32","port":40203},{"ip":"192.168.178.66","port":64784}]} to 192.168.178.66:64784
+
+Das ist die erste Aufgezeichnete (versuchte) Kommunikation zwishcen zwei Geräten.
+Den anderen Rechner konnte ich nicht dazu bekommen das Token zu empfangen.
+Inzwischen ist es mir gelungen, wie man in der Datei "Wireshark zwei PC Mitschnitt.png" sehen kann, aber ich habe vergessen den Log zu kopieren und er musste gehen.

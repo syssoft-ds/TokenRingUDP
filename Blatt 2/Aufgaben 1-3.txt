@@ -1,0 +1,107 @@
+Aufgabe 1)
+frame contains "password"   - Für die erste Stufe
+
+http contains "Error"       - Für die zweite Stufe
+
+icmp                        - Für die dritte Stufe
+
+
+Aufgabe 2)
+~traceroute www.anu.edu.au
+traceroute to www.anu.edu.au (130.56.67.33), 30 hops max, 60 byte packets
+ 1  cisco-40.uni-trier.de (136.199.40.1)  2.444 ms  4.837 ms  4.769 ms
+ 2  vzimks2.uni-trier.de (136.199.189.1)  4.687 ms  4.622 ms  4.553 ms
+ 3  gw.uni-trier.de (136.199.42.2)  4.978 ms  4.921 ms  4.863 ms
+ 4  g-uni-tr-1.rlp-net.net (217.198.241.193)  5.305 ms  5.936 ms  5.878 ms
+ 5  g-hbf-tr-1.rlp-net.net (217.198.240.73)  5.821 ms  6.331 ms  6.533 ms
+ 6  g-hbf-kl-2.rlp-net.net (217.198.240.126)  7.310 ms g-hbf-ko-2.rlp-net.net (217.198.247.113)  3.751 ms g-hbf-ko-2.rlp-net.net (217.198.240.109) 3.907 ms
+ 7  g-hbf-mz-1.rlp-net.net (217.198.240.105)  5.304 ms g-uni-ma-1.rlp-net.net (217.198.240.118)  5.904 ms  6.740 ms
+ 8  g-interxion-3.rlp-net.net (217.198.240.9)  6.405 ms * *
+ 9  g-interxion-4.rlp-net.net (217.198.246.254)  6.226 ms * *
+10  * * *
+11  * * *
+12  g-interxion-4.rlp-net.net (217.198.246.250)  5.074 ms * *
+13  * * *
+14  ae10.cr1.lhr15.uk.eth.zayo.com (64.125.29.17)  141.767 ms * *
+15  * ae2.cr1.lhr11.uk.zip.zayo.com (64.125.24.140)  141.206 ms *
+16  * * *
+17  ae0.cs2.lga5.us.eth.zayo.com (64.125.29.187)  175.662 ms * *
+18  * * *
+19  * ae16.cr2.ord9.us.zip.zayo.com (64.125.25.234)  142.277 ms  142.156 ms
+    #überquert den großen Teich zu den USA
+20  ae12.cr1.sea1.us.zip.zayo.com (64.125.19.4)  142.036 ms  141.958 ms  142.251 ms
+21  * * *
+22  ae16.cr2.ord9.us.zip.zayo.com (64.125.25.234)  142.181 ms  142.620 ms ae27.mpr1.sea1.us.zip.zayo.com (64.125.29.1)  141.512 ms
+23  64.125.193.130.i223.above.net (64.125.193.130)  141.452 ms ae12.cr1.sea1.us.zip.zayo.com (64.125.19.4)  208.441 ms  208.315 ms
+24  * et-10-0-5.170.pe1.brwy.nsw.aarnet.net.au (113.197.15.62)  263.365 ms *
+25  * * et-1-1-0.pe1.rsby.nsw.aarnet.net.au (113.197.15.12)  265.641 ms
+26  et-0-3-0.pe1.actn.act.aarnet.net.au (113.197.15.11)  263.362 ms 64.125.193.130.i223.above.net (64.125.193.130)  207.690 ms et-0-3-0.pe1.actn.act.aarnet.net.au (113.197.15.11)  264.130 ms
+27  138.44.161.3 (138.44.161.3)  263.518 ms  265.155 ms  313.066 ms
+28  core-te-1-1-4.anu.edu.au (150.203.201.5)  412.807 ms  412.881 ms  358.576 ms
+29  vlan-2100-palo.anu.edu.au (150.203.201.33)  263.883 ms et-0-3-0.pe1.actn.act.aarnet.net.au (113.197.15.11)  264.837 ms  262.922 ms
+30  anu.edu.au (130.56.67.33)  263.750 ms  264.106 ms 138.44.161.3 (138.44.161.3)  415.227 ms
+
+Zuerst befinden wir uns im Uni-Netz.
+Mit Sdem 5. "Hop" wird das Uni-Netz verlassen und wir gelangen zum Hauptbahnhof.
+Die Nächsten "Hops" wandern entlang der Gkeise über den HBF Kaiserslautern und Mainz.
+Ab Schritt 14 sind wir in Großbritannien und gelangen mit Shcritt 17 in die USA.
+Mit Schritt 24 geangen wir nach Australien und kommen im 30. Schritt schließlich bei der gewünschten Seite an.
+
+
+Aufgabe 3)
+~sudo nmap -sS scanme.nmap.org
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-05-08 12:49 CEST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.21s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 996 closed tcp ports (reset)
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+9929/tcp  open  nping-echo
+31337/tcp open  Elite
+Nmap done: 1 IP address (1 host up) scanned in 516.72 seconds
+
+~sudo nmap -sU scanme.nmap.org
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-05-08 13:00 CEST
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.23s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 988 closed udp ports (port-unreach)
+PORT     STATE         SERVICE
+67/udp   open|filtered dhcps
+68/udp   open|filtered dhcpc
+123/udp  open          ntp
+135/udp  open|filtered msrpc
+137/udp  open|filtered netbios-ns
+138/udp  open|filtered netbios-dgm
+139/udp  open|filtered netbios-ssn
+161/udp  open|filtered snmp
+162/udp  open|filtered snmptrap
+445/udp  open|filtered microsoft-ds
+1900/udp open|filtered upnp
+5353/udp open|filtered zeroconf
+Nmap done: 1 IP address (1 host up) scanned in 1109.06 seconds
+
+Das sind die Ergebnisse und Laufzeiten der beiden Scans. Es fällt auf, dass der TCP-Scan deutlich schneller war.
+Das liegt unter anderem daran, dass UDP keine Verbindung aufbaut. Wenn ein Port geschlossen ist,
+antwortet die Gegenseite möglicherweise "ICMP-Port-Unreachable-Paket" und selbst wenn ein Port offen ist, gibt es häufig keine Antwort.
+Nmap muss daher lange warten, um sicher zu sein, dass ein Port offen ist (Timeout), was die Scanzeit stark verlängert.
+
+TCP hingegen baut eine Verbindung mit klarer Kommunikation auf, weshalb direkt ersichtlich ist, wann ein Port offen oder geschlossen ist.
+
+
+Mit ""--min-parallelism 10"" als Parameter konnte ich den TCP-Scan deutlich beschleunigen:
+~sudo nmap -sS --min-parallelism 10 scanme.nmap.org
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.14s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 996 closed tcp ports (reset)
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+9929/tcp  open  nping-echo
+31337/tcp open  Elite
+Nmap done: 1 IP address (1 host up) scanned in 14.41 seconds
+
+Den UCP-Scan konnte ich nicht beschleunigen. Einige von ChatGpt vorgeschlagene Parameter haben es nur weiter verlangsamt.
