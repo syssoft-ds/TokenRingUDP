@@ -1,0 +1,7 @@
+Der UDP scan ist wesentlich langsamer da er nicht nur eine protokollanfrage macht und bei einer antwort abbricht sondern eine vollständige verbindung 
+zu jedem einzelnen port aufbaut und daraufhin ein packet sendet. außerdem scheinen udp anfragen wesentlich häufiger fehlzuschlagen als tcp was im 
+output der beiden zu sehen ist. 
+
+um udp schneller zu scannen würde ich den schritten auf dieser seite ( https://nmap.org/book/scan-methods-udp-scan.html ) folgen.
+
+scanergebnisse sind in den dateien Ab2Auf3_1.txt (UDP) und Ab2Auf3_2.txt (TCP) zu finden. beide scans wurden mit den argumenten -v und --min-hostgroup 100 durchgeführt.

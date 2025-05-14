@@ -1,0 +1,8 @@
+2:
+
+Aufgabe 2 war mir leider aus kommunikationstechnichen gründen erschwert (probleme mit uni mail) daher habe ich diese zwischen meinem Pc und meinem Raspberry Pi durchgeführt.
+dabei gab es das problem, dass die aktuellste jdk auf raspbian die openjdk-17 ist und daher musste die jar auf dieser version neu kompiliert werden.
+
+3:
+
+schnelles googlen der displayfilter hat gezeigt, dass sowohl ein host als auch ein protokoll filter möglich sind womit das erfassen simpler/repetitiver kommunikationen recht trivial wurde

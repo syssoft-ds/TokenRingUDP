@@ -21,7 +21,9 @@ public class Token {
     }
 
     public Token append(Endpoint endpoint) {
-        ring.offer(endpoint);
+        if (!ring.contains(endpoint)){
+            ring.offer(endpoint);
+        }
         return this;
     }
 
@@ -51,26 +53,35 @@ public class Token {
         sequence++;
     }
 
+
     public void send (DatagramSocket s, String ip_address, int port ) throws IOException {
         String rc_json = toJSON();
         byte[] rc_json_bytes = rc_json.getBytes(StandardCharsets.UTF_8);
         InetAddress address = InetAddress.getByName(ip_address);
         DatagramPacket packet = new DatagramPacket(rc_json_bytes, rc_json_bytes.length, address, port);
         System.out.printf("Sending %s to %s:%d\n", rc_json, ip_address, port);
+        s.setSoTimeout(1000);
         s.send(packet);
+        s.setSoTimeout(0);
     }
 
     public void send (DatagramSocket s, Endpoint endpoint) throws IOException {
         send(s, endpoint.ip(), endpoint.port());
     }
 
-    public static Token receive(DatagramSocket s) throws IOException {
+    public static DatagramPacket receive(DatagramSocket s) throws IOException {
         byte[] buf = new byte[max_buffer_size];
         DatagramPacket packet = new DatagramPacket(buf, buf.length);
+        s.setSoTimeout(10000);
         s.receive(packet);
+        s.setSoTimeout(0);
         String rc_json = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
         System.out.printf("Received %s from %s:%d\n", rc_json, packet.getAddress().getHostAddress(), packet.getPort());
-        return fromJSON(rc_json);
+        return packet;
+    }
+    public static String genJSON(DatagramPacket packet){
+        String rc_json = new String(packet.getData(),0,packet.getLength(), StandardCharsets.UTF_8);
+        return rc_json;
     }
 
     @JsonProperty
@@ -88,5 +99,8 @@ public class Token {
 
     public static Token fromJSON(String json) throws IOException {
         return serializer.readValue(json, Token.class);
+    }
+    public void remove(Endpoint endpoint) {
+        ring.remove(endpoint); // NEU: Knoten aus dem Ring entfernen
     }
 }
