@@ -1,0 +1,36 @@
+traceroute to anu.edu.au (130.56.67.33), 30 hops max, 60 byte packets
+ 1  DESKTOP-MUCG0QL.mshome.net (172.21.208.1)  0.222 ms  0.207 ms  0.171 ms
+ 2  fritz.local (192.168.178.1)  2.889 ms  3.113 ms  1.254 ms
+ 3  95.88.74.254 (95.88.74.254)  27.290 ms  13.860 ms  27.364 ms
+ 4  83.169.177.222 (83.169.177.222)  17.112 ms  18.842 ms  18.711 ms
+ 5  88.134.194.170 (88.134.194.170)  24.400 ms  24.309 ms  24.307 ms
+ 6  145.254.3.170 (145.254.3.170)  24.214 ms  39.403 ms  23.470 ms
+ 7  145.254.2.195 (145.254.2.195)  23.387 ms 145.254.2.209 (145.254.2.209)  23.266 ms  19.541 ms
+ 8  * * *
+ 9  * * *
+10  * * *
+11  * * *
+12  * * *
+13  ae2.cr1.lhr11.uk.zip.zayo.com (64.125.24.140)  318.644 ms * *
+14  * * *
+15  * * *
+16  ae20.cr1.ord8.us.zip.zayo.com (64.125.29.199)  150.054 ms  154.185 ms  157.465 ms
+17  * * *
+18  ae12.cr1.sea1.us.zip.zayo.com (64.125.19.4)  153.121 ms  150.690 ms  154.907 ms
+19  * * *
+20  * * *
+21  64.125.193.130.i223.above.net (64.125.193.130)  148.965 ms  148.866 ms  149.132 ms
+22  et-10-0-5.170.pe1.brwy.nsw.aarnet.net.au (113.197.15.62)  286.020 ms  287.177 ms  292.267 ms
+23  et-1-1-0.pe1.rsby.nsw.aarnet.net.au (113.197.15.12)  290.074 ms  286.776 ms  286.519 ms
+24  et-0-3-0.pe1.actn.act.aarnet.net.au (113.197.15.11)  294.316 ms  295.096 ms  289.880 ms
+25  138.44.161.3 (138.44.161.3)  443.286 ms *  333.207 ms
+26  core-te-1-1-4.anu.edu.au (150.203.201.5)  291.227 ms  291.303 ms  289.035 ms
+27  vlan-2100-palo.anu.edu.au (150.203.201.33)  288.851 ms  288.915 ms  289.473 ms
+28  anu.edu (130.56.67.33)  290.659 ms  292.784 ms  296.886 ms
+29  * * *
+30  * * *
+
+
+Traceroute zeigt jeden einzelnen erreichten server auf dem weg zum gewünschten server an. die "zeilennummer" gibt TTL bei jedem einzelnen knotenpunkt 
+an und die zahlen am ende geben die latenz dort an. der gesamte trace wird drei mal durchgeführt und * bedeutet, dass ein knotenpunkt in diesem 
+versuch entweder nicht erreichbar war oder nicht geantwortet hat.

@@ -1,0 +1,50 @@
+Starting Nmap 7.80 ( https://nmap.org ) at 2025-05-14 15:11 CEST
+Initiating Ping Scan at 15:11
+Scanning scanme.nmap.org (45.33.32.156) [4 ports]
+Completed Ping Scan at 15:11, 0.24s elapsed (1 total hosts)
+Initiating Parallel DNS resolution of 1 host. at 15:11
+Completed Parallel DNS resolution of 1 host. at 15:11, 0.00s elapsed
+Initiating UDP Scan at 15:11
+Scanning scanme.nmap.org (45.33.32.156) [1000 ports]
+Increasing send delay for 45.33.32.156 from 0 to 50 due to max_successful_tryno increase to 4
+Increasing send delay for 45.33.32.156 from 50 to 100 due to max_successful_tryno increase to 5
+Increasing send delay for 45.33.32.156 from 100 to 200 due to max_successful_tryno increase to 6
+Increasing send delay for 45.33.32.156 from 200 to 400 due to max_successful_tryno increase to 7
+Increasing send delay for 45.33.32.156 from 400 to 800 due to 11 out of 11 dropped probes since last increase.
+UDP Scan Timing: About 4.28% done; ETC: 15:23 (0:11:34 remaining)
+UDP Scan Timing: About 7.42% done; ETC: 15:24 (0:12:41 remaining)
+UDP Scan Timing: About 11.24% done; ETC: 15:26 (0:13:33 remaining)
+UDP Scan Timing: About 18.67% done; ETC: 15:26 (0:12:43 remaining)
+UDP Scan Timing: About 24.78% done; ETC: 15:26 (0:11:53 remaining)
+UDP Scan Timing: About 30.88% done; ETC: 15:27 (0:11:00 remaining)
+UDP Scan Timing: About 36.69% done; ETC: 15:27 (0:10:07 remaining)
+UDP Scan Timing: About 42.09% done; ETC: 15:27 (0:09:19 remaining)
+UDP Scan Timing: About 47.29% done; ETC: 15:27 (0:08:29 remaining)
+UDP Scan Timing: About 52.48% done; ETC: 15:27 (0:07:40 remaining)
+UDP Scan Timing: About 57.99% done; ETC: 15:27 (0:06:47 remaining)
+Discovered open port 123/udp on 45.33.32.156
+UDP Scan Timing: About 63.37% done; ETC: 15:27 (0:05:54 remaining)
+UDP Scan Timing: About 69.02% done; ETC: 15:27 (0:05:05 remaining)
+UDP Scan Timing: About 74.34% done; ETC: 15:27 (0:04:13 remaining)
+UDP Scan Timing: About 79.53% done; ETC: 15:27 (0:03:23 remaining)
+UDP Scan Timing: About 84.68% done; ETC: 15:27 (0:02:33 remaining)
+UDP Scan Timing: About 89.92% done; ETC: 15:27 (0:01:41 remaining)
+UDP Scan Timing: About 95.02% done; ETC: 15:27 (0:00:50 remaining)
+Completed UDP Scan at 15:28, 1019.23s elapsed (1000 total ports)
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.16s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 992 closed ports
+PORT    STATE         SERVICE
+67/udp  open|filtered dhcps
+68/udp  open|filtered dhcpc
+123/udp open          ntp
+135/udp open|filtered msrpc
+137/udp open|filtered netbios-ns
+138/udp open|filtered netbios-dgm
+139/udp open|filtered netbios-ssn
+445/udp open|filtered microsoft-ds
+
+Read data files from: /usr/bin/../share/nmap
+Nmap done: 1 IP address (1 host up) scanned in 1019.65 seconds
+           Raw packets sent: 1344 (40.399KB) | Rcvd: 2075 (99.739KB)
